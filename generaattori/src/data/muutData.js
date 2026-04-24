@@ -1,0 +1,158 @@
+export const luonteet = [
+  {
+    nimi: 'Seikkailija',
+    kuvaus: 'Janoaa uusia kokemuksia ja ärsykkeitä, spontaani ja energinen',
+    stuntti: 'Voit uusintaa epäonnistuneen heiton kun kohtaat uuden ja jännittävän tilanteen'
+  },
+  {
+    nimi: 'Rakentaja',
+    kuvaus: 'Arvostaa perinteitä ja turvallisuutta, järjestelmällinen ja vastuuntuntoinen',
+    stuntti: 'Saat +2 bonuksen kun noudatat suunnitelmaa tai käytät aikaisempaa kokemustasi'
+  },
+  {
+    nimi: 'Johtaja',
+    kuvaus: 'Analyyttinen ja looginen ajattelija, kilpailuhenkinen ja päättäväinen',
+    stuntti: 'Voit ottaa komentovallan kriisitilanteessa ja antaa liittolaisille +1 bonuksen'
+  },
+  {
+    nimi: 'Neuvottelija',
+    kuvaus: 'Empaattinen ja intuitiivinen, diplomaattinen ja yhteistyökykyinen',
+    stuntti: 'Saat +2 bonuksen sosiaalisissa tilanteissa kun ymmärrät toisten tunteita'
+  }
+];
+
+export const skaala = [
+  {
+    taso: 1,
+    nimi: 'Tavallinen',
+    kuvaus: 'Normaalin maailman toimija'
+  },
+  {
+    taso: 2,
+    nimi: 'Yliluonnollinen',
+    kuvaus: 'Tavallista suurempia kykyjä'
+  },
+  {
+    taso: 3,
+    nimi: 'Legendaarinen',
+    kuvaus: 'Tarinoiden sankari'
+  },
+  {
+    taso: 4,
+    nimi: 'Eeppinen',
+    kuvaus: 'Jumalten suosikki'
+  },
+  {
+    taso: 5,
+    nimi: 'Tarumainen',
+    kuvaus: 'Mytologinen olento'
+  }
+];
+
+export const kuvaukset = [
+    {
+        "nimi": "Hurmaava",
+        "kuvaus": "Olet luonnostaan viehättävä ja muut ihmiset haluavat auttaa sinua. Sinussa on jotain erityistä, joka vetää muita puoleesi.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 sosiaaliseen vuorovaikutukseen tai uusintaaksesi heiton.",
+        "haitta": "Kun joku vastustaa sinua tai viehätysvoimasi ei tehoa, voit saada fate-pisteen toimimalla turhautuneesti tai epätoivoisesti."
+    },
+    {
+        "nimi": "Ovela",
+        "kuvaus": "Olet nokkela ja kekseliäs. Löydät ratkaisuja, joita muut eivät näe, ja osaat kääntää tilanteet edukseen.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 juonien havaitsemiseen tai suunnitteluun.",
+        "haitta": "Kun asiat ovat liian yksinkertaisia tai suoraviivaisia, voit saada fate-pisteen mutkistamalla tilannetta tarpeettomasti."
+    },
+    {
+        "nimi": "Vahva",
+        "kuvaus": "Olet fyysisesti voimakas ja kestävä. Pystyt tekemään asioita, joihin useimmat eivät pysty.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 voimaa vaativaan tehtävään tai murskataksesi esteen.",
+        "haitta": "Kun hienovaraisuus olisi tarpeen, voit saada fate-pisteen ratkaisemalla ongelman raakalla voimalla – ja aiheuttamalla sivullisia vahinkoja."
+    },
+    {
+        "nimi": "Nopea",
+        "kuvaus": "Olet poikkeuksellisen nopea ja ketterä. Liikut kuin varjo ja reagoit ennen kuin muut ehtivät ajatella.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 nopeutta vaativaan tehtävään tai toimia ensin aloitejärjestyksessä.",
+        "haitta": "Kun tilanne vaatisi kärsivällisyyttä ja odottelua, voit saada fate-pisteen toimimalla impulsiivisesti ja ennenaikaisesti."
+    },
+    {
+        "nimi": "Viisas",
+        "kuvaus": "Olet oppinut ja tiedonjanoinen. Olet lukenut paljon ja ymmärrät asioita, jotka ovat muille outoja.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 muinaisten tarujen, historian tai taikuuden tuntemukseen.",
+        "haitta": "Kun aika on kortilla, voit saada fate-pisteen jäämällä pohtimaan asiaa liian pitkäksi aikaa tai kaivamalla esiin tarpeettoman yksityiskohdan."
+    },
+    {
+        "nimi": "Karski",
+        "kuvaus": "Olet sitkeä ja luja. Mikään ei murra sinua helposti, ja kestät vaikeuksia joista toiset eivät selviäisi.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 kestävyyttä vaativaan tehtävään tai vähentääksesi saamaasi vahinkoa.",
+        "haitta": "Kun olisi viisasta perääntyä tai antaa periksi, voit saada fate-pisteen jatkamalla taistelua järjen vastaisesti."
+    },
+    {
+        "nimi": "Salaperäinen",
+        "kuvaus": "Olet arvoituksellinen. Kukaan ei oikein tiedä, mitä ajatella sinusta, ja se tekee sinusta pelottavan.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 harhautukseen tai siihen, että joku uskoo sinun olevan jotain muuta kuin olet.",
+        "haitta": "Kun luottamus olisi tarpeen, voit saada fate-pisteen siitä, että joku epäilee sinua tai kieltäytyy auttamasta sala-peräisyytesi takia."
+    },
+    {
+        "nimi": "Mystinen",
+        "kuvaus": "Olet tekemisissä yliluonnollisen kanssa. Aistit asioita, joita toiset eivät näe, ja ymmärrät taikuutta.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 taian tai yliluonnollisen ilmiön tunnistamiseen tai aistimiseen.",
+        "haitta": "Kun arkitodellisuus vaatisi huomiotasi, voit saada fate-pisteen keskittymällä liikaa näkymättömiin voimiin ja unohtamalla ilmeiset asiat."
+    },
+    {
+        "nimi": "Röyhkeä",
+        "kuvaus": "Olet rohkea ja peloton – ehkä vähän liiankin. Otat riskejä, joita muut eivät uskaltaisi edes harkita.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 rohkeutta tai pelottomuutta vaativaan tehtävään.",
+        "haitta": "Kun varovaisuus olisi viisasta, voit saada fate-pisteen hyökkäämällä pää edellä ansaan tai haastamalla ylivoimaisen vastustajan."
+    },
+    {
+        "nimi": "Kunniallinen",
+        "kuvaus": "Noudatat tiukkaa moraalikoodia. Sanasi on luottamuksen arvoinen ja teot puhuvat puolestasi.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 tilanteessa, jossa rehellisyyttäsi tai luotettavuuttasi tarvitaan.",
+        "haitta": "Kun noudattaisit sääntöjä oman etusi vastaisesti, voit saada fate-pisteen kunniasi pakottamana tekemään tyhmän tai jaloin ratkaisun."
+    },
+    {
+        "nimi": "Hiivisklevä",
+        "kuvaus": "Olet tottunut liikkumaan varjoissa ja pysymään näkymättömänä. Kukaan ei näe sinua, ellet itse halua.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 hiipimiseen tai varjostamiseen.",
+        "haitta": "Kun huomion keskipisteenä oleminen olisi tarpeen, voit saada fate-pisteen vetäytymällä varjoihin tai kieltäytymällä puhumasta julkisesti."
+    },
+    {
+        "nimi": "Utelias",
+        "kuvaus": "Sinun täytyy tietää. Tutkit asioita, joita muut jättäisivät rauhaan, ja löydät salaisuuksia.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 tutkimiseen tai salaisuuksien paljastamiseen.",
+        "haitta": "Kun olisi parasta olla puuttumatta asioihin, voit saada fate-pisteen avaamalla kielletyn oven, lukemalla kirotun kirjan tai herättämällä jotain, mikä olisi pitänyt jättää rauhaan."
+    },
+    {
+        "nimi": "Tarkkasilmäinen",
+        "kuvaus": "Huomaat yksityiskohdat, jotka muilta jäävät huomaamatta. Mikään ei pääse karkuun tarkkaa katsettasi.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 havainnointiin tai yksityiskohtien löytämiseen.",
+        "haitta": "Kun nopea reagointi olisi tarpeen, voit saada fate-pisteen jäämällä tutkimaan yksityiskohtia liian pitkäksi aikaa."
+    },
+    {
+        "nimi": "Hyveellinen",
+        "kuvaus": "Pyrit aina tekemään oikein. Autat heikkoja, puolustat sorrettuja ja vastustat pahuutta.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 kun autat heikompaa tai puolustat oikeudenmukaisuutta.",
+        "haitta": "Kun olisi viisasta katsoa toiseen suuntaan, voit saada fate-pisteen puuttumalla vääryyteen – vaikka se vaarantaisi oman tehtäväsi."
+    },
+    {
+        "nimi": "Julma",
+        "kuvaus": "Toimit oman etusi mukaisesti, muiden kustannuksella. Tunne tai sääli eivät hidasta sinua.",
+        "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 pelotteluun tai uhkailuun.",
+        "haitta": "Kun yhteistyö tai myötätunto olisi tarpeen, voit saada fate-pisteen toimimalla itsekkäästi ja menettämällä liittolaisen luottamuksen."
+    }
+];
+
+export const taitotasoSanallisesti = [
+  { taso: 0, nimi: 'Surkea' },
+  { taso: 1, nimi: 'Huono' },
+  { taso: 2, nimi: 'Tavallinen' },
+  { taso: 3, nimi: 'Erinomainen' },
+  { taso: 4, nimi: 'Loistava' },
+  { taso: 5, nimi: 'Uskomaton' },
+  { taso: 6, nimi: 'Legendaarinen' },
+  { taso: 7, nimi: 'Eeppinen' },
+  { taso: 8, nimi: 'Tarumainen' },
+  { taso: 9, nimi: 'Jumalainen' },
+  { taso: 10, nimi: 'Avatar' }
+];
+

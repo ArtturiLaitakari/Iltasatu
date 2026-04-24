@@ -1,0 +1,179 @@
+.paasivu {
+  min-height: 100vh;
+  background: var(--teema-gradient, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+/* Valittu tila */
+.moduli.valittu {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+.moduli.valittu .moduli-nappi {
+  background: rgba(76, 175, 80, 0.3);
+}
+
+.genre-kuvaus {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  opacity: 0.9;
+  text-align: center;
+}
+
+.paasivu-header {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.paasivu-otsikko {
+  font-size: 4rem;
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-family: var(--font-otsikko, Georgia, serif);
+}
+
+.paasivu-sisalto {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.modulit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 800px;
+  width: 100%;
+}
+
+.moduli {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.moduli:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.moduli-nappi {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2rem;
+  color: white;
+  transition: background-color 0.3s ease;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.moduli-nappi:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.moduli-placeholder {
+  padding: 2rem;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+}
+
+.moduli-placeholder .moduli-sisalto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.moduli-sisalto {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.moduli-kuva-alue {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  transition: border-color 0.3s ease;
+}
+
+.moduli-kuva {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.moduli-nappi:hover .moduli-kuva-alue {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.moduli-otsikko {
+  font-size: 2rem;
+  margin: 0 0 1rem 0;
+  font-weight: bold;
+}
+
+.moduli-kuvaus {
+  font-size: 1.1rem;
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+.fantasia-moduli .moduli-nappi:hover {
+  background: rgba(76, 175, 80, 0.2);
+}
+
+.multiversumi-moduli {
+  opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+  .paasivu-otsikko {
+    font-size: 2.5rem;
+  }
+  
+  .modulit-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+  
+  .paasivu-header {
+    padding: 2rem 0;
+  }
+
+  .moduli-kuva-alue {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .moduli-nappi {
+    min-height: 240px;
+  }
+  
+  .moduli-placeholder {
+    min-height: 240px;
+  }
+}
