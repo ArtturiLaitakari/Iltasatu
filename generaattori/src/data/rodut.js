@@ -21,7 +21,6 @@ export const rodut = [
     kuvaus: 'Magialla luotu itsenäistynyt konstruktio, tarvitsee polttoainetta',
     stuntti: 'Olet immuuni myrkkyille ja taudeille, +2 kestävyyttä vaativiin tehtäviin',
     rajoitus: 'Syö polttoainetta (öljy, hiili, puu), kohdellaan koneena.',
-    erikoisominaisuus: 'Lisäkestävyys: vakava'
   },
   {
     nimi: 'Örkki',

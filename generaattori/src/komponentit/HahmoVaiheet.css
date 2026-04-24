@@ -1,3 +1,20 @@
+/* ===== CSS VARIABLES ===== */
+:root {
+  --primary-color: #3498db;
+  --primary-dark: #2980b9;
+  --text-color: #2c3e50;
+  --text-light: #666;
+  --border-light: #e1e1e1;
+  --border-lighter: #e9ecef;
+  --background-light: #f8f9fa;
+  --white-transparent: rgba(255, 255, 255, 0.85);
+  --shadow-primary: 0 4px 12px rgba(52, 152, 219, 0.3);
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --transition-standard: all 0.2s ease;
+  --border-radius-standard: 8px;
+  --border-radius-pill: 25px;
+}
+
 .vaihe-sisalto {
   padding: 0;
 }
@@ -22,10 +39,7 @@
 
 /* Adjektiivi-valinta */
 .adjektiivi-grid {
-  display: grid;
-  gap: 2rem;
   max-width: 900px;
-  margin: 0 auto;
 }
 
 .adjektiivi-kategoria {
@@ -40,59 +54,31 @@
 }
 
 .adjektiivi-sivu-indikaattori {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--white-transparent);
   margin: 0 0 1rem 0;
   font-size: 0.95rem;
 }
 
-.adjektiivi-valinnat {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-}
-
 .adjektiivi-btn {
   padding: 0.5rem 1rem;
-  border: 2px solid #e1e1e1;
-  border-radius: 25px;
-  background: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  border-radius: var(--border-radius-pill);
   font-size: 0.9rem;
-  font-weight: 500;
-  color: #2c3e50;
-}
-
-.adjektiivi-btn:hover {
-  border-color: #3498db;
-  transform: translateY(-2px);
-}
-
-.adjektiivi-btn.valittu {
-  background: #3498db;
-  border-color: #3498db;
-  color: white;
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
 /* Ammatti-valinta */
 .ammatti-grid {
-  display: grid;
-  gap: 2rem;
   max-width: 800px;
-  margin: 0 auto;
 }
 
 .ammatti-kategoria {
-  background: #f8f9fa;
+  background: var(--background-light);
   padding: 1.5rem;
   border-radius: 12px;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--border-lighter);
 }
 
 .ammatti-kategoria h3 {
-  color: #2c3e50;
+  color: var(--text-color);
   margin: 0 0 1rem 0;
   text-align: center;
 }
@@ -107,13 +93,6 @@
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-.ammatti-valinnat {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-}
-
 .ammatti-kortit-lista {
   display: grid;
   grid-template-columns: 1fr;
@@ -124,26 +103,52 @@
 
 .ammatti-btn {
   padding: 0.6rem 1.2rem;
-  border: 2px solid #e1e1e1;
-  border-radius: 8px;
-  background: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
   font-size: 0.9rem;
-  font-weight: 500;
-  color: #2c3e50;
 }
 
+/* Apply base classes to specific elements */
+.adjektiivi-grid,
+.ammatti-grid {
+  display: grid;
+  gap: 2rem;
+  margin: 0 auto;
+}
+
+.adjektiivi-valinnat,
+.ammatti-valinnat,
+.jakamis-toiminnot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.adjektiivi-valinnat,
+.ammatti-valinnat {
+  gap: 0.5rem;
+}
+
+.adjektiivi-btn,
+.ammatti-btn {
+  border: 2px solid var(--border-light);
+  background: white;
+  cursor: pointer;
+  transition: var(--transition-standard);
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.adjektiivi-btn:hover,
 .ammatti-btn:hover {
-  border-color: #3498db;
+  border-color: var(--primary-color);
   transform: translateY(-2px);
 }
 
+.adjektiivi-btn.valittu,
 .ammatti-btn.valittu {
-  background: #3498db;
-  border-color: #3498db;
+  background: var(--primary-color);
+  border-color: var(--primary-color);
   color: white;
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  box-shadow: var(--shadow-primary);
 }
 
 /* Henkilötiedot-lomake */
@@ -152,10 +157,10 @@
   margin: 0 auto;
   display: grid;
   gap: 2rem;
-  background: #f8f9fa;
+  background: var(--background-light);
   padding: 1.5rem;
   border-radius: 12px;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--border-lighter);
 }
 
 .lomake-grid.lomake-grid-taustalla {
@@ -203,39 +208,42 @@
   margin-top: 0.5rem;
 }
 
-.luonne-kortti {
+/* Base card style for all interactive cards */
+.luonne-kortti,
+.esimerkki-btn {
   padding: 1rem;
-  border: 2px solid #e1e1e1;
-  border-radius: 8px;
+  border: 2px solid var(--border-light);
+  border-radius: var(--border-radius-standard);
   background: white;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-standard);
   text-align: center;
 }
 
 .luonne-kortti h4 {
   margin: 0 0 0.5rem 0;
-  color: #2c3e50;
+  color: var(--text-color);
   font-size: 1rem;
   font-weight: 600;
 }
 
 .luonne-kortti p {
   margin: 0;
-  color: #666;
+  color: var(--text-light);
   font-size: 0.85rem;
   line-height: 1.3;
 }
 
-.luonne-kortti:hover {
-  border-color: #3498db;
+.luonne-kortti:hover,
+.esimerkki-btn:hover {
+  border-color: var(--primary-color);
   transform: translateY(-2px);
 }
 
 .luonne-kortti.valittu {
-  background: #3498db;
-  border-color: #3498db;
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-primary);
 }
 
 .luonne-kortti.valittu h4 {
@@ -243,7 +251,7 @@
 }
 
 .luonne-kortti.valittu p {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--white-transparent);
 }
 
 /* Esimerkit sielu-voimalle */
@@ -259,10 +267,8 @@
   border: 1px solid #bdc3c7;
   border-radius: 20px;
   background: #ecf0f1;
-  cursor: pointer;
-  transition: all 0.2s ease;
   font-size: 0.85rem;
-  color: #2c3e50;
+  color: var(--text-color);
 }
 
 .esimerkki-btn:hover {
@@ -271,28 +277,38 @@
   transform: translateY(-1px);
 }
 
-/* Hahmo yhteenveto */
-.paa-kortti {
+/* Hahmo yhteenveto - shared card styles */
+.paa-kortti,
+.info-kortti,
+.teksti-osio {
   background: white;
-  border: 2px solid #e1e1e1;
   border-radius: 12px;
-  padding: 2rem;
-  max-width: 600px;
-  margin: 0 auto 2rem auto;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
 }
 
+.paa-kortti {
+  border: 2px solid var(--border-light);
+  max-width: 600px;
+  margin: 0 auto 2rem auto;
+  box-shadow: var(--shadow-card);
+  padding: 2rem;
+}
+
+.info-kortti,
+.teksti-osio {
+  background: var(--background-light);
+  border: 1px solid var(--border-lighter);
+}
+
+/* Background styles for all cards */
 .paa-kortti.taustalla {
   border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .paa-kortti.taustalla h3,
 .paa-kortti.taustalla h4,
-.paa-kortti.taustalla h5 {
-  color: #ffffff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-}
-
+.paa-kortti.taustalla h5,
 .paa-kortti.taustalla .olen-teksti,
 .paa-kortti.taustalla .tiedot-osio,
 .paa-kortti.taustalla p {
@@ -300,18 +316,19 @@
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-.paa-kortti.taustalla .info-kortti {
+.paa-kortti.taustalla .info-kortti,
+.paa-kortti.taustalla .teksti-osio {
   background: rgba(248, 249, 250, 0.9);
-  color: #2c3e50;
+  color: var(--text-color);
 }
 
 .paa-kortti.taustalla .info-kortti .olen-teksti {
-  color: #2c3e50;
+  color: var(--text-color);
   text-shadow: none;
 }
 
 .paa-kortti h3 {
-  color: #2c3e50;
+  color: var(--text-color);
   font-size: 1.8rem;
   margin: 0 0 0.5rem 0;
   text-align: center;
@@ -319,56 +336,37 @@
 
 .tiedot-osio {
   text-align: center;
-  color: #666;
+  color: var(--text-light);
   font-size: 1.1rem;
   margin: 0 0 2rem 0;
   font-style: italic;
 }
 
-.info-kortti {
-  margin: 1.5rem 0;
-  padding: 1.5rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
-}
-
 .olen-teksti {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #2c3e50;
+  color: var(--text-color);
   margin: 0;
   font-style: italic;
   text-align: center;
 }
 
-.teksti-osio {
-  margin: 1.5rem 0 2rem 0;
-  padding: 1.5rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
-}
-
-.teksti-osio h4 {
-  color: #2c3e50;
+/* Shared heading styles for sections */
+.teksti-osio h4,
+.ominaisuudet h4,
+.persoonallisuus h4,
+.sielu-voima h4,
+.skaala h4 {
+  color: var(--text-color);
   margin: 0 0 1rem 0;
   font-size: 1.2rem;
-  border-bottom: 2px solid #e1e1e1;
+  border-bottom: 2px solid var(--border-light);
   padding-bottom: 0.5rem;
 }
 
-.paa-kortti.taustalla .teksti-osio {
-  background: rgba(248, 249, 250, 0.9);
-}
-
-.paa-kortti.taustalla .teksti-osio h4 {
-  color: #2c3e50;
-  text-shadow: none;
-}
-
+.paa-kortti.taustalla .teksti-osio h4,
 .paa-kortti.taustalla .teksti-osio .voima-item {
-  color: #2c3e50;
+  color: var(--text-color);
   text-shadow: none;
 }
 
@@ -379,21 +377,10 @@
   margin-bottom: 2rem;
 }
 
-.ominaisuudet h4,
-.persoonallisuus h4,
-.sielu-voima h4,
-.skaala h4 {
-  color: #2c3e50;
-  margin: 0 0 1rem 0;
-  font-size: 1.2rem;
-  border-bottom: 2px solid #e1e1e1;
-  padding-bottom: 0.5rem;
-}
-
 .ominaisuus {
   margin: 0.75rem 0;
   padding: 0.5rem;
-  background: #f8f9fa;
+  background: var(--background-light);
   border-radius: 6px;
 }
 
@@ -404,11 +391,37 @@
   line-height: 1.6;
 }
 
-.jakamis-toiminnot {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
+/* Common button styles - merge all button definitions */
+.btn,
+.vaihe-navigation .btn {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: var(--border-radius-standard);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-standard);
+  min-width: 120px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-primary);
+}
+
+.btn-full {
+  width: 100%;
+  padding: 0.75rem;
 }
 
 .vaihe-navigation {
@@ -417,32 +430,6 @@
   margin-top: 3rem;
   padding-top: 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.vaihe-navigation .btn {
-  padding: 0.75rem 2rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 120px;
-}
-
-.vaihe-navigation .btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.vaihe-navigation .btn-primary {
-  background: linear-gradient(135deg, #3498db, #2980b9);
-  color: white;
-}
-
-.vaihe-navigation .btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
 /* Olen-sivu taustakuvalla */
@@ -504,4 +491,423 @@
 
 .kapitalisoi::first-letter {
   text-transform: uppercase;
+}
+
+/* ===== TULOSTUS CSS ===== */
+@media print {
+  /* Perusasetukset tulostukselle */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-size: 10px;
+    line-height: 1.2;
+    background: white !important;
+    overflow: hidden !important;
+  }
+
+  /* Piilota kaikki muu sisältö tulostuksessa */
+  body:not(.tulosta-hahmo) * {
+    display: none !important;
+  }
+
+  /* Näytä vain hahmon sisältö tulostuksessa - vaihe-otsikko pois */
+  body.tulosta-hahmo .paa-kortti,
+  body.tulosta-hahmo .info-kortti,
+  body.tulosta-hahmo .teksti-osio,
+  body.tulosta-hahmo .voima-item,
+  body.tulosta-hahmo .skaala,
+  body.tulosta-hahmo h1, body.tulosta-hahmo h3, body.tulosta-hahmo h4,
+  body.tulosta-hahmo p, body.tulosta-hahmo small, body.tulosta-hahmo strong,
+  body.tulosta-hahmo div, body.tulosta-hahmo span {
+    display: block !important;
+    color: black !important;
+    background: transparent !important;
+    border: none !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Piilota napit ja kaikki vaihe-elementit tulostuksessa */
+  body.tulosta-hahmo .jakamis-toiminnot,
+  body.tulosta-hahmo .vaihe-otsikko,
+  body.tulosta-hahmo .vaihe-otsikko *,
+  body.tulosta-hahmo h2,
+  body.tulosta-hahmo button,
+  body.tulosta-hahmo .btn {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Kompakti layout A4:lle */
+  body.tulosta-hahmo .vaihe-sisalto {
+    padding: 0.3cm !important;
+    margin: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+    max-height: 25cm !important;
+    overflow: hidden !important;
+  }
+
+  body.tulosta-hahmo .paa-kortti {
+    padding: 0.2rem !important;
+    margin: 0 !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: 1px solid black !important;
+    border-radius: 3px !important;
+    height: auto !important;
+    max-height: 24cm !important;
+    overflow: hidden !important;
+  }
+
+  body.tulosta-hahmo h3 {
+    font-size: 14px !important;
+    margin: 0 0 0.3rem 0 !important;
+    text-align: center !important;
+    color: black !important;
+    text-transform: capitalize !important;
+    font-weight: bold !important;
+  }
+
+  body.tulosta-hahmo h4 {
+    font-size: 11px !important;
+    margin: 0.2rem 0 0.1rem 0 !important;
+    color: black !important;
+    border-bottom: 0.5px solid #999 !important;
+    padding-bottom: 0.05rem !important;
+    font-weight: bold !important;
+  }
+
+  /* Ultra-kompakti sisältö */
+  body.tulosta-hahmo .teksti-osio {
+    margin-bottom: 0.2rem !important;
+    page-break-inside: avoid !important;
+  }
+
+  body.tulosta-hahmo .info-kortti {
+    background: #f5f5f5 !important;
+    border: 0.5px solid #ccc !important;
+    border-radius: 2px !important;
+    padding: 0.2rem !important;
+    margin-bottom: 0.3rem !important;
+    font-style: italic !important;
+  }
+
+  body.tulosta-hahmo .olen-teksti {
+    font-size: 9px !important;
+    margin: 0 !important;
+    line-height: 1.3 !important;
+  }
+
+  /* 3-palstasisältö ominaisuuksille */
+  body.tulosta-hahmo .teksti-osio > div[style*="display: flex"] {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 0.2rem !important;
+    margin: 0 !important;
+  }
+
+  /* Erittäin kompaktit voimat - salli rivitys */
+  body.tulosta-hahmo .voima-item {
+    margin-bottom: 0.2rem !important;
+    padding: 0.1rem !important;
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+  }
+
+  body.tulosta-hahmo .voima-item strong {
+    font-size: 9px !important;
+    display: block !important;
+    margin-bottom: 0.1rem !important;
+    white-space: normal !important;
+  }
+
+  body.tulosta-hahmo .voima-item small {
+    font-size: 7px !important;
+    color: #444 !important;
+    display: block !important;
+    margin: 0.05rem 0 !important;
+    white-space: normal !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Salli br-tagit takaisin voima-itemissä */
+  body.tulosta-hahmo .voima-item br {
+    display: block !important;
+  }
+
+  /* Kehittymislaatikot rivissä - leveämmät */
+  body.tulosta-hahmo div[style*="border: 2px solid black"] {
+    border: 0.5px solid black !important;
+    border-radius: 2px !important;
+    padding: 0.1rem 0.3rem !important;
+    margin: 0.05rem !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    font-size: 7px !important;
+    width: auto !important;
+    height: auto !important;
+    gap: 0.3rem !important;
+  }
+
+  /* Kehittymislaatikoiden sisäiset elementit */
+  body.tulosta-hahmo div[style*="border: 2px solid black"] > div {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    flex: 1 !important;
+    min-width: 2.5rem !important;
+  }
+
+  body.tulosta-hahmo div[style*="border: 2px solid black"] strong {
+    font-size: 8px !important;
+    display: block !important;
+    margin-bottom: 0.05rem !important;
+  }
+
+  body.tulosta-hahmo div[style*="border: 2px solid black"] span {
+    font-size: 9px !important;
+    display: block !important;
+    margin: 0 !important;
+  }
+
+  /* Voimien kehittymis-div horisontaaliseksi - kompaktimpi */
+  body.tulosta-hahmo .teksti-osio div[style*="display: flex"][style*="gap: 1rem"] {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0.2rem !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    margin: 0.1rem 0 !important;
+    width: 100% !important;
+  }
+
+  /* Skaala kompakti - viimeinen elementti */
+  body.tulosta-hahmo .skaala {
+    margin: 0.3rem 0 0 0 !important;
+    border-top: 0.5px solid #999 !important;
+    padding: 0.2rem 0 0 0 !important;
+  }
+
+  body.tulosta-hahmo .skaala h4 {
+    margin: 0 0 0.1rem 0 !important;
+  }
+
+  body.tulosta-hahmo .skaala p {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 8px !important;
+  }
+
+  /* Poista kaikki ylimääräinen sisältö skaalan jälkeen */
+  body.tulosta-hahmo .skaala ~ * {
+    display: none !important;
+  }
+
+  /* Luonteen ja rotu-tiedot kompaktiksi - salli rivitys */
+  body.tulosta-hahmo div[style*="textAlign: center"][style*="marginTop: 1.5rem"] {
+    margin: 0.1rem 0 !important;
+    text-align: left !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+  }
+
+  body.tulosta-hahmo div[style*="textAlign: center"][style*="marginTop: 1.5rem"] .voima-item {
+    white-space: normal !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Rotu ja arkkityyppi -osion tiiviys - salli rivitys */
+  body.tulosta-hahmo .teksti-osio .voima-item[style*="marginTop: 1rem"] {
+    margin-top: 0.1rem !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+  }
+
+  /* Peruskyvyt kompaktiksi */
+  body.tulosta-hahmo .teksti-osio:has(h4:contains("Peruskyvyt")) .voima-item {
+    display: inline-block !important;
+    width: 48% !important;
+    vertical-align: top !important;
+  }
+
+  /* Sivunvaihto-kontrollit - vain yksi sivu */
+  body.tulosta-hahmo .paa-kortti {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  body.tulosta-hahmo * {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Minimaaliset marginaalit - pakota yksi sivu */
+  @page {
+    margin: 0.5cm;
+    size: A4;
+  }
+
+  /* Varmista ettei tule toista sivua */
+  body.tulosta-hahmo {
+    height: 29.7cm !important;
+    max-height: 29.7cm !important;
+    overflow: hidden !important;
+  }
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+/* Spacing utilities */
+.mt-1 { margin-top: 1rem; }
+.mt-2 { margin-top: 2rem; }
+.mb-1 { margin-bottom: 1rem; }
+.mb-2 { margin-bottom: 2rem; }
+.my-1 { margin-top: 1rem; margin-bottom: 1rem; }
+.my-2 { margin-top: 2rem; margin-bottom: 2rem; }
+
+/* Layout utilities */
+.flex { display: flex; }
+.flex-center { 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+}
+.flex-column { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
+.gap-1 { gap: 1rem; }
+.gap-0 { gap: 0; }
+
+/* Text alignment */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+
+/* Layout containers */
+.layout-two-col {
+  display: flex;
+  gap: 0;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.layout-col {
+  text-align: left;
+  flex: 1;
+  max-width: 300px;
+  min-width: 250px;
+}
+
+.layout-center {
+  text-align: center;
+  margin-top: 1.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.layout-flex-center {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.layout-stats {
+  border: 2px solid black;
+  border-radius: var(--border-radius-standard);
+  padding: 1rem;
+  flex: 1;
+  text-align: center;
+  min-width: 150px;
+  background: white;
+  color: var(--text-color);
+}
+
+/* Font size utilities */
+.font-lg { font-size: 1.2em; margin-left: 0.5rem; }
+
+/* Error message */
+.error-text {
+  color: #ff6b6b;
+  margin-top: 0.5rem;
+  display: block;
+  font-size: 0.875rem;
+}
+
+/* Info text */
+.info-text {
+  font-style: italic;
+  color: var(--text-light);
+}
+
+/* Kehittyminen boxes */
+.kehittyminen-boksi {
+  border: solid 1px black;
+  border-radius: var(--border-radius-standard);
+  padding: 0.5rem 0.25rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  min-width: 220px;
+}
+
+.kehittyminen-boksi.ominaisuudet {
+  flex: 2;
+}
+
+.kehittyminen-boksi.voimat {
+  flex: 1;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .adjektiivi-grid,
+  .ammatti-grid,
+  .lomake-grid {
+    padding: 0 1rem;
+  }
+  
+  .luonne-valinnat {
+    grid-template-columns: 1fr;
+  }
+  
+  .hahmo-kortti {
+    margin: 0 1rem 2rem 1rem;
+    padding: 1.5rem;
+  }
+  
+  .valmis-sivu h1 {
+    font-size: 2rem;
+  }
+}
+
+.kapitalisoi::first-letter {
+  text-transform: uppercase;
+}
+
+.wizard-navigation {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
 }

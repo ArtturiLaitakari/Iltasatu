@@ -20,6 +20,24 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   }
   
   const valittuVoima = hahmo.voimat?.valittuVoima;
+  const vapaakuvaus = hahmo.voimat?.vapaakuvaus || '';
+
+  // Tarkista tarvitseeko valittu voimatyyppi vapaakuvauksen
+  const tarvitseeVapaakuvaus = valittuVoimatyyppi === 'elementin hallinta' || valittuVoimatyyppi === 'muodonmuutos';
+  
+  // Määritä kentän otsikko voimatyypin mukaan
+  const haeVapaakuvausOtsikko = () => {
+    if (valittuVoimatyyppi === 'elementin hallinta') return 'Valitse elementti:';
+    if (valittuVoimatyyppi === 'muodonmuutos') return 'Valitse eläimen aisti:';
+    return '';
+  };
+  
+  // Määritä placeholder teksti voimatyypin mukaan
+  const haeVapaakuvausPlaceholder = () => {
+    if (valittuVoimatyyppi === 'elementin hallinta') return 'esim. Tuli, Maa, Ilma, Vesi';
+    if (valittuVoimatyyppi === 'muodonmuutos') return 'esim. Suden hajuaisti, Kotkan näkö';
+    return '';
+  };
 
   if (!valittuVoimatyyppi) {
     return (
@@ -42,9 +60,9 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   // Jos tasojärjestelmä, näytä kaikki kyvyt mutta disable korkeammat tasot
   const peruskyvyt = kaikki_peruskyvyt;
   
-  // Tason 1 kyvyt ovat käytettävissä
+  // Tason 1 kyvyt ovat käytettävissä (kyvyt joilla ei ole tasoa = taso 1)
   const tasonYksiKyvyt = onTasojarasteelma 
-    ? kaikki_peruskyvyt.filter(kyky => kyky.taso === 1)
+    ? kaikki_peruskyvyt.filter(kyky => kyky.taso === 1 || kyky.taso === undefined)
     : kaikki_peruskyvyt;
 
   const valitseVoima = (voima) => {
@@ -57,8 +75,28 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     };
     paivitaHahmo(paivitettyHahmo);
     
-    // Auto-advance aina kun voima valitaan
-    setTimeout(() => seuraavaVaihe(), 100);
+    // Auto-advance vain jos ei tarvita vapaakuvausta
+    if (!tarvitseeVapaakuvaus) {
+      setTimeout(() => seuraavaVaihe(), 100);
+    }
+  };
+  
+  const paivitaVapaakuvaus = (arvo) => {
+    const paivitettyHahmo = {
+      ...hahmo,
+      voimat: {
+        ...hahmo.voimat,
+        vapaakuvaus: arvo
+      }
+    };
+    paivitaHahmo(paivitettyHahmo);
+  };
+  
+  // Tarkista onko kaikki valmis seuraavaa vaihetta varten
+  const onValmisSeuraavaan = () => {
+    if (!valittuVoima) return false;
+    if (tarvitseeVapaakuvaus && (!vapaakuvaus || vapaakuvaus.trim().length < 3)) return false;
+    return true;
   };
 
   const haeTaustaKuva = () => {
@@ -100,7 +138,7 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
           
           {/* Aisti-kyky */}
           {aistiTiedot && (
-            <div style={{ marginBottom: '2rem' }}>
+            <div className="mb-2">
               <p className="adjektiivi-sivu-indikaattori">Automaattinen peruskyky</p>
               <Kortti
                 nimi={aistiTiedot.nimi}
@@ -120,7 +158,7 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
             
             <div className="ammatti-kortit-lista">
               {peruskyvyt.map((voima, index) => {
-                const onKaytettavissa = !onTasojarasteelma || voima.taso === 1;
+                const onKaytettavissa = !onTasojarasteelma || voima.taso === 1 || voima.taso === undefined;
                 
                 return (
                   <Kortti
@@ -139,9 +177,32 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
             </div>
           </div>
           
+          {/* Vapaakuvaus tekstikenttä tietyille voimatyypeille */}
+          {valittuVoima && tarvitseeVapaakuvaus && (
+            <div className="mt-2">
+              <p className="adjektiivi-sivu-indikaattori">{haeVapaakuvausOtsikko()}</p>
+              <div className="kentta">
+                <input
+                  type="text"
+                  value={vapaakuvaus}
+                  onChange={(e) => paivitaVapaakuvaus(e.target.value)}
+                  placeholder={haeVapaakuvausPlaceholder()}
+                  maxLength={100}
+                  required
+                  className="input-custom"
+                />
+                {vapaakuvaus.trim().length > 0 && vapaakuvaus.trim().length < 3 && (
+                  <small className="error-text">
+                    Vähintään 3 merkkiä
+                  </small>
+                )}
+              </div>
+            </div>
+          )}
+          
           {/* Navigation */}
-          <div className="wizard-navigation" style={{ marginTop: '2rem' }}>
-            {((tasonYksiKyvyt.length === 1 && !onTasojarasteelma) || valittuVoima) && (
+          <div className="wizard-navigation">
+            {onValmisSeuraavaan() && (
               <button 
                 onClick={seuraavaVaihe}
                 className="btn btn-primary"

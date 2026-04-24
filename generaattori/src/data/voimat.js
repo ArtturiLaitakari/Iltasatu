@@ -79,7 +79,7 @@ export const voimat = {
     peruskyvyt: [
       {
         nimi: 'Ihmismuodot',
-        kuvaus: 'Hallitse ihoa, kynsiä, lihaksia ja karvoja. Voit ottaa olennon muodon jonka verta tai lihaa olet maistanut. Hiukset ja kynnet käy myös mutta vaikeampi saada muoto siitä.',
+        kuvaus: 'Hallitse ihoa, kynsiä, lihaksia ja karvoja. Voit ottaa humanoidi olennon muodon jonka verta tai lihaa olet maistanut',
         taso: 1
       },
       {

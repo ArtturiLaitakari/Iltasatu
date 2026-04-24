@@ -103,8 +103,7 @@ function HenkilotiedotLomake({ hahmo, paivitaHahmo, seuraavaVaihe }) {
           {onValmis && (
             <button 
               onClick={seuraavaVaihe}
-              className="btn btn-primary"
-              style={{ width: '100%', padding: '0.75rem' }}
+              className="btn btn-primary btn-full"
             >
               Seuraava
             </button>

@@ -98,8 +98,18 @@ function HahmoYhteenveto({ hahmo, paivitaHahmo }) {
     return aliasKaytossa ? adjektiivi.alias : adjektiivi.nimi;
   };
 
-  const haeAmmatinId = (ammattiId) => {
-    return ammattiId || ''; // Käytä id:tä suoraan
+  const haeAmmatinNimi = (ammattiId) => {
+    if (!ammattiId) return '';
+    
+    // Etsi ammatti kaikista kategorioista
+    const kaikki = [
+      ...ammatit.fyysinen,
+      ...ammatit.henkinen,
+      ...ammatit.mystinen
+    ];
+    
+    const ammatti = kaikki.find(a => a.id === ammattiId);
+    return ammatti ? ammatti.nimi : ammattiId;
   };
 
   // Taitotason laskenta ja esitys
@@ -114,7 +124,6 @@ function HahmoYhteenveto({ hahmo, paivitaHahmo }) {
     let esitys = '';
     for (let i = 0; i < maksimi; i++) {
       esitys += i < taso ? '●' : '○';
-      if (i < maksimi - 1) esitys += ' ';
     }
     return esitys;
   };
@@ -153,9 +162,9 @@ Rotu: ${hahmo.rotu?.nimi || ''}
 Arkkityyppi: ${arkkityyppiData?.nimi || ''}
 
 OMINAISUUDET:
-Keho: ${arkkityyppiData?.keho.alkuarvo || 0} - ${haeAdjektiivinNimi(hahmo.adjektiivit.keho)} ${haeAmmatinId(hahmo.ammatit.keho)}
-Mieli: ${arkkityyppiData?.mieli.alkuarvo || 0} - ${haeAdjektiivinNimi(hahmo.adjektiivit.mieli)} ${haeAmmatinId(hahmo.ammatit.mieli)}
-Sielu: ${arkkityyppiData?.sielu.alkuarvo || 0} - ${haeAdjektiivinNimi(hahmo.adjektiivit.sielu)} ${haeAmmatinId(hahmo.ammatit.sielu)}
+Keho: ${arkkityyppiData?.keho.alkuarvo || 0} - ${haeAdjektiivinNimi(hahmo.adjektiivit.keho)} ${haeAmmatinNimi(hahmo.ammatit.keho)}
+Mieli: ${arkkityyppiData?.mieli.alkuarvo || 0} - ${haeAdjektiivinNimi(hahmo.adjektiivit.mieli)} ${haeAmmatinNimi(hahmo.ammatit.mieli)}
+Sielu: ${arkkityyppiData?.sielu.alkuarvo || 0} - ${haeAdjektiivinNimi(hahmo.adjektiivit.sielu)} ${haeAmmatinNimi(hahmo.ammatit.sielu)}
 
 PERSOONALLISUUS:
 Luonne: ${hahmo.henkilotiedot.luonne || ''}
@@ -178,6 +187,19 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
     alert('Hahmo kopioitu leikepöydälle!');
   };
 
+  const tulostahahmo = () => {
+    // Lisää tulostusluokka bodyyn
+    document.body.classList.add('tulosta-hahmo');
+    
+    // Avaa tulostusikkuna
+    window.print();
+    
+    // Poista tulostusluokka tulostuksen jälkeen
+    setTimeout(() => {
+      document.body.classList.remove('tulosta-hahmo');
+    }, 1000);
+  };
+
   return (
     <div className="vaihe-sisalto">
       <div className="vaihe-otsikko">
@@ -191,38 +213,38 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
         {/* Lyhyt yhteenveto */}
         <div className="info-kortti">
           <p className="olen-teksti">
-            Olen {hahmo.kuvaaja?.nimi || 'tuntematon'}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.keho, 0, hahmo.adjektiivit)} {haeAmmatinId(hahmo.ammatit?.keho)}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.mieli, 1, hahmo.adjektiivit)} {haeAmmatinId(hahmo.ammatit?.mieli)} ja {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.sielu, 2, hahmo.adjektiivit)} {haeAmmatinId(hahmo.ammatit?.sielu)}, rotuni on {hahmo.rotu?.nimi || ''}. Luonteeltani olen {hahmo.henkilotiedot?.luonne || ''} ja voimani on {valittuVoimatyyppi || 'ei voimaa'}.
+            Olen {hahmo.kuvaaja?.nimi || 'tuntematon'}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.keho, 0, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.keho)}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.mieli, 1, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.mieli)} ja {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.sielu, 2, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.sielu)}, rotuni on {hahmo.rotu?.nimi || ''}. Luonteeltani olen {hahmo.henkilotiedot?.luonne || ''} ja voimani on {valittuVoimatyyppi || 'ei voimaa'}.
           </p>
         </div>
         
         {/* ominaisuudet*/}
         <div className="teksti-osio">
           <h4>Ominaisuudet</h4>
-          <div style={{display: 'flex', gap: '0', justifyContent: 'center', flexWrap: 'wrap'}}>
-            <div style={{textAlign: 'left', flex: '1', maxWidth: '300px', minWidth: '250px'}}>
+        <div className="layout-two-col">
+          <div className="layout-col">
               <p className="voima-item">
                 <strong>Keho {luoYmpyraEsitys(hahmo.keho, arkkityyppiData?.keho?.maksimi || 3)}</strong> {haeTaitotasonNimi(hahmo.keho || 0)}
                 <br />
                 <small>+ {haeAdjektiivinNimi(hahmo.adjektiivit?.keho)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, false))}</small>
                 <br />
-                <small>+ {haeAmmatinId(hahmo.ammatit?.keho)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, hahmo.ammatit?.keho))}</small>
+                <small>+ {haeAmmatinNimi(hahmo.ammatit?.keho)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, hahmo.ammatit?.keho))}</small>
               </p>
               <p className="voima-item">
                 <strong>Mieli {luoYmpyraEsitys(hahmo.mieli, arkkityyppiData?.mieli?.maksimi || 3)}</strong> {haeTaitotasonNimi(hahmo.mieli || 0)}
                 <br />
                 <small>+ {haeAdjektiivinNimi(hahmo.adjektiivit?.mieli)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, false))}</small>
                 <br />
-                <small>+ {haeAmmatinId(hahmo.ammatit?.mieli)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, hahmo.ammatit?.mieli))}</small>
+                <small>+ {haeAmmatinNimi(hahmo.ammatit?.mieli)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, hahmo.ammatit?.mieli))}</small>
               </p>
               <p className="voima-item">
                 <strong>Sielu {luoYmpyraEsitys(hahmo.sielu, arkkityyppiData?.sielu?.maksimi || 3)}</strong> {haeTaitotasonNimi(hahmo.sielu || 0)}
                 <br />
                 <small>+ {haeAdjektiivinNimi(hahmo.adjektiivit?.sielu)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, false))}</small>
                 <br />
-                <small>+ {haeAmmatinId(hahmo.ammatit?.sielu)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, hahmo.ammatit?.sielu))}</small>
+                <small>+ {haeAmmatinNimi(hahmo.ammatit?.sielu)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, hahmo.ammatit?.sielu))}</small>
               </p>
             </div>
-            <div style={{textAlign: 'left', flex: '1', maxWidth: '300px', minWidth: '250px'}}>
+            <div className="layout-col">
               <p className="voima-item">
                 <strong>{hahmo.kuvaaja?.nimi || 'Ei kuvaajaa valittu'}</strong>
                 <br />
@@ -251,7 +273,7 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
           
           {/* Luonteen tiedot */}
           {haeLuonteenTiedot(hahmo.henkilotiedot?.luonne) && (
-            <div style={{textAlign: 'center', marginTop: '1.5rem', maxWidth: '600px', margin: '1.5rem auto 0'}}>
+            <div className="layout-center">
               <p className="voima-item">
                 <strong>{haeLuonteenTiedot(hahmo.henkilotiedot.luonne).nimi}</strong>
                 <br />
@@ -285,9 +307,10 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
             {hahmo.voimat?.valittuVoima && (
               <p className="voima-item">
                 <strong>{hahmo.voimat.valittuVoima.nimi}:</strong> {hahmo.voimat.valittuVoima.kuvaus}
-                {hahmo.voimat.valittuVoima.lisakuvaus && (
+                {hahmo.voimat.vapaakuvaus && (
                   <>
-                    <bold>kuvaus:</bold> {hahmo.voimat.valittuVoima.kuvaus}
+                    <br />
+                    <strong>{valittuVoimatyyppi === 'elementin hallinta' ? 'Elementti' : valittuVoimatyyppi === 'muodonmuutos' ? 'Eläimen aisti' : 'Kuvaus'}:</strong> {hahmo.voimat.vapaakuvaus}
                   </>
                 )}
               </p>
@@ -317,17 +340,11 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
                   <small><strong>Rajoitus:</strong> {hahmo.rotu.rajoitus}</small>
                 </>
               )}
-              {hahmo.rotu.erikoisominaisuus && (
-                <>
-                  <br />
-                  <small><strong>Erikoisominaisuus:</strong> {hahmo.rotu.erikoisominaisuus}</small>
-                </>
-              )}
             </div>
           )}
           
           {/* Arkkityyppi tiedot */}
-          <div className="voima-item" style={{marginTop: '1rem'}}>
+          <div className="voima-item mt-1">
             <strong></strong>
             <br />
             <small>{arkkityyppiData?.kuvaus || ''}</small>
@@ -337,57 +354,35 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
         <div className="teksti-osio">
           <h4>Kehittyminen</h4>
           
-          {/* Horisontaalinen layout ominaisuuksille ja voimille */}
-          <div style={{display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap'}}>
-            {/* Ominaisuuksien kehittyminen */}
-            <div style={{
-              border: '2px solid black', 
-              borderRadius: '15px', 
-              padding: '0.75rem 1rem', 
-              display: 'flex', 
-              gap: '1.5rem', 
-              alignItems: 'center',
-              color: 'black'
-            }}>
-              <div style={{textAlign: 'center'}}>
-                <strong>Keho</strong> <span style={{fontSize: '1.2em', marginLeft: '0.5rem'}}>{luoYmpyraEsitys(hahmo.keho || 0, arkkityyppiData?.keho?.maksimi || 3)}</span>
-              </div>
-              <div style={{textAlign: 'center'}}>
-                <strong>Mieli</strong> <span style={{fontSize: '1.2em', marginLeft: '0.5rem'}}>{luoYmpyraEsitys(hahmo.mieli || 0, arkkityyppiData?.mieli?.maksimi || 3)}</span>
-              </div>
-              <div style={{textAlign: 'center'}}>
-                <strong>Sielu</strong> <span style={{fontSize: '1.2em', marginLeft: '0.5rem'}}>{luoYmpyraEsitys(hahmo.sielu || 0, arkkityyppiData?.sielu?.maksimi || 3)}</span>
-              </div>
+          {/* Kaksi erillistä boksia ominaisuuksille ja voimille */}
+          <div className="layout-flex-center">
+            {/* Ominaisuudet boksi */}
+            <div className="kehittyminen-boksi ominaisuudet">
+              <strong>Keho</strong> {luoYmpyraEsitys(hahmo.keho || 0, arkkityyppiData?.keho?.maksimi || 3)}
+              {' '}&nbsp;&nbsp;
+              <strong>Mieli</strong> {luoYmpyraEsitys(hahmo.mieli || 0, arkkityyppiData?.mieli?.maksimi || 3)}
+              {' '}&nbsp;&nbsp;
+              <strong>Sielu</strong> {luoYmpyraEsitys(hahmo.sielu || 0, arkkityyppiData?.sielu?.maksimi || 3)}
             </div>
             
-            {/* Voimien kehittyminen */}
-            <div style={{
-              border: '2px solid black', 
-              borderRadius: '15px', 
-              padding: '0.75rem 1rem', 
-              display: 'flex', 
-              alignItems: 'center',
-              color: 'black'
-            }}>
+            {/* Voimat boksi */}
+            <div className="kehittyminen-boksi voimat">
               {(() => {
                 const voimarajat = haeVoimarajat(hahmo.skaala);
                 const voimatyyppi = valittuVoimatyyppi;
-                // Hae aktiivisen voiman taso
                 const voimataso1 = valittuVoimatyyppi && hahmo.voimat ? (hahmo.voimat[valittuVoimatyyppi] || 0) : 0;
                 
                 return (
-                  <div style={{textAlign: 'center'}}>
-                    <strong>Voimat: {voimatyyppi || 'Ei voimaa'}</strong> 
-                    <span style={{fontSize: '1.2em', marginLeft: '0.5rem'}}>
-                      {voimataso1 > 0 ? luoYmpyraEsitys(voimataso1, voimarajat[0]?.max || 3) : '○ ○ ○'}
-                    </span>
-                  </div>
+                  <>
+                    <strong>{voimatyyppi || 'Ei voimaa'} </strong>{' '}
+                    {voimataso1 > 0 ? luoYmpyraEsitys(voimataso1, voimarajat[0]?.max || 3) : '○ ○ ○'}
+                  </>
                 );
               })()}
             </div>
           </div>
           
-          <div style={{textAlign: 'center', marginTop: '1rem', fontStyle: 'italic', color: '#666'}}>
+          <div className="text-center mt-1 info-text">
             * Seuraavan skaalan saavuttamiseksi täytä kyky pisteet maksimiin
           </div>
         </div>
@@ -400,10 +395,13 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
 
       <div className="jakamis-toiminnot">
         <button onClick={luoTekstimuoto} className="btn btn-secondary">
-          📋 Kopioi tekstimuotoon
+          Kopioi tekstimuotoon
+        </button>
+        <button onClick={tulostahahmo} className="btn btn-info">
+          Tulosta hahmo
         </button>
         <button onClick={tallennaJaJaa} className="btn btn-primary">
-          💾 Tallenna hahmo
+          Tallenna hahmo
         </button>
       </div>
     </div>
