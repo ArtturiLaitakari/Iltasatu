@@ -202,11 +202,6 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
 
   return (
     <div className="vaihe-sisalto">
-      <div className="vaihe-otsikko">
-        <h2>Valmis Hahmo</h2>
-        <p>Hahmo on valmis pelattavaksi!</p>
-      </div>
-
       <div className={`paa-kortti ${taustaKuva ? 'taustalla' : ''}`} style={taustaTyyli}>
         <h3 className="kapitalisoi">{hahmo.henkilotiedot.nimi || 'Nimetön'}</h3>
         
@@ -223,21 +218,21 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
         <div className="layout-two-col">
           <div className="layout-col">
               <p className="voima-item">
-                <strong>Keho {luoYmpyraEsitys(hahmo.keho, arkkityyppiData?.keho?.maksimi || 3)}</strong> {haeTaitotasonNimi(hahmo.keho || 0)}
+                <strong>Keho {luoYmpyraEsitys(hahmo.keho, arkkityyppiData?.keho?.maksimi || 3)}</strong>
                 <br />
                 <small>+ {haeAdjektiivinNimi(hahmo.adjektiivit?.keho)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, false))}</small>
                 <br />
                 <small>+ {haeAmmatinNimi(hahmo.ammatit?.keho)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, hahmo.ammatit?.keho))}</small>
               </p>
               <p className="voima-item">
-                <strong>Mieli {luoYmpyraEsitys(hahmo.mieli, arkkityyppiData?.mieli?.maksimi || 3)}</strong> {haeTaitotasonNimi(hahmo.mieli || 0)}
+                <strong>Mieli {luoYmpyraEsitys(hahmo.mieli, arkkityyppiData?.mieli?.maksimi || 3)}</strong>
                 <br />
                 <small>+ {haeAdjektiivinNimi(hahmo.adjektiivit?.mieli)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, false))}</small>
                 <br />
                 <small>+ {haeAmmatinNimi(hahmo.ammatit?.mieli)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, hahmo.ammatit?.mieli))}</small>
               </p>
               <p className="voima-item">
-                <strong>Sielu {luoYmpyraEsitys(hahmo.sielu, arkkityyppiData?.sielu?.maksimi || 3)}</strong> {haeTaitotasonNimi(hahmo.sielu || 0)}
+                <strong>Sielu {luoYmpyraEsitys(hahmo.sielu, arkkityyppiData?.sielu?.maksimi || 3)}</strong>
                 <br />
                 <small>+ {haeAdjektiivinNimi(hahmo.adjektiivit?.sielu)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, false))}</small>
                 <br />

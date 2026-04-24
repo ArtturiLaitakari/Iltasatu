@@ -9,7 +9,7 @@ export const ammatit = {
     { id: 'soturi', nimi: 'Soturi', kuvaus: 'Kurinalainen aseenkäyttäjä ja etulinjan taistelija.' },
     { id: 'munkki', nimi: 'Munkki', kuvaus: 'Kehon hallinta, kamppailutaito ja sisäinen kuri.' },
     { id: 'temppeliritari', nimi: 'Temppeliritari', kuvaus: 'Vannoutunut suojelija, joka yhdistää uskon ja miekan.' },
-    { id: 'paladiini', nimi: 'Paladiini', kuvaus: 'DnD 5e pyhä soturi, joka vannoo valan ja käyttää jumalallista voimaa.' },
+    { id: 'paladiini', nimi: 'Paladiini', kuvaus: 'Pyhä soturi, joka vannoo valan ja käyttää jumalallista voimaa.' },
     { id: 'samooja', nimi: 'Samooja', kuvaus: 'Eränkävijä, jäljittäjä ja luonnossa selviytyjä.' },
     { id: 'ryovari', nimi: 'Ryövari', kuvaus: 'Nopea, tarkka ja varjoissa toimiva ammattilainen.' },
     { id: 'soturimaagi', nimi: 'Soturimaagi', kuvaus: 'Yhdistää taistelutaidon ja taikuuden yhdeksi tyyliksi.' }

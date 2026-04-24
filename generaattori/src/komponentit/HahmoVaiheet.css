@@ -127,6 +127,10 @@
   gap: 0.5rem;
 }
 
+.jakamis-toiminnot {
+  gap: 1rem;
+}
+
 .adjektiivi-btn,
 .ammatti-btn {
   border: 2px solid var(--border-light);
@@ -494,286 +498,7 @@
 }
 
 /* ===== TULOSTUS CSS ===== */
-@media print {
-  /* Perusasetukset tulostukselle */
-  * {
-    -webkit-print-color-adjust: exact !important;
-    color-adjust: exact !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
-
-  body {
-    margin: 0;
-    padding: 0;
-    font-size: 10px;
-    line-height: 1.2;
-    background: white !important;
-    overflow: hidden !important;
-  }
-
-  /* Piilota kaikki muu sisältö tulostuksessa */
-  body:not(.tulosta-hahmo) * {
-    display: none !important;
-  }
-
-  /* Näytä vain hahmon sisältö tulostuksessa - vaihe-otsikko pois */
-  body.tulosta-hahmo .paa-kortti,
-  body.tulosta-hahmo .info-kortti,
-  body.tulosta-hahmo .teksti-osio,
-  body.tulosta-hahmo .voima-item,
-  body.tulosta-hahmo .skaala,
-  body.tulosta-hahmo h1, body.tulosta-hahmo h3, body.tulosta-hahmo h4,
-  body.tulosta-hahmo p, body.tulosta-hahmo small, body.tulosta-hahmo strong,
-  body.tulosta-hahmo div, body.tulosta-hahmo span {
-    display: block !important;
-    color: black !important;
-    background: transparent !important;
-    border: none !important;
-    text-shadow: none !important;
-    box-shadow: none !important;
-  }
-
-  /* Piilota napit ja kaikki vaihe-elementit tulostuksessa */
-  body.tulosta-hahmo .jakamis-toiminnot,
-  body.tulosta-hahmo .vaihe-otsikko,
-  body.tulosta-hahmo .vaihe-otsikko *,
-  body.tulosta-hahmo h2,
-  body.tulosta-hahmo button,
-  body.tulosta-hahmo .btn {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-  }
-
-  /* Kompakti layout A4:lle */
-  body.tulosta-hahmo .vaihe-sisalto {
-    padding: 0.3cm !important;
-    margin: 0 !important;
-    max-width: none !important;
-    width: 100% !important;
-    max-height: 25cm !important;
-    overflow: hidden !important;
-  }
-
-  body.tulosta-hahmo .paa-kortti {
-    padding: 0.2rem !important;
-    margin: 0 !important;
-    background: transparent !important;
-    backdrop-filter: none !important;
-    border: 1px solid black !important;
-    border-radius: 3px !important;
-    height: auto !important;
-    max-height: 24cm !important;
-    overflow: hidden !important;
-  }
-
-  body.tulosta-hahmo h3 {
-    font-size: 14px !important;
-    margin: 0 0 0.3rem 0 !important;
-    text-align: center !important;
-    color: black !important;
-    text-transform: capitalize !important;
-    font-weight: bold !important;
-  }
-
-  body.tulosta-hahmo h4 {
-    font-size: 11px !important;
-    margin: 0.2rem 0 0.1rem 0 !important;
-    color: black !important;
-    border-bottom: 0.5px solid #999 !important;
-    padding-bottom: 0.05rem !important;
-    font-weight: bold !important;
-  }
-
-  /* Ultra-kompakti sisältö */
-  body.tulosta-hahmo .teksti-osio {
-    margin-bottom: 0.2rem !important;
-    page-break-inside: avoid !important;
-  }
-
-  body.tulosta-hahmo .info-kortti {
-    background: #f5f5f5 !important;
-    border: 0.5px solid #ccc !important;
-    border-radius: 2px !important;
-    padding: 0.2rem !important;
-    margin-bottom: 0.3rem !important;
-    font-style: italic !important;
-  }
-
-  body.tulosta-hahmo .olen-teksti {
-    font-size: 9px !important;
-    margin: 0 !important;
-    line-height: 1.3 !important;
-  }
-
-  /* 3-palstasisältö ominaisuuksille */
-  body.tulosta-hahmo .teksti-osio > div[style*="display: flex"] {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr 1fr !important;
-    gap: 0.2rem !important;
-    margin: 0 !important;
-  }
-
-  /* Erittäin kompaktit voimat - salli rivitys */
-  body.tulosta-hahmo .voima-item {
-    margin-bottom: 0.2rem !important;
-    padding: 0.1rem !important;
-    font-size: 8px !important;
-    line-height: 1.2 !important;
-    white-space: normal !important;
-    word-wrap: break-word !important;
-  }
-
-  body.tulosta-hahmo .voima-item strong {
-    font-size: 9px !important;
-    display: block !important;
-    margin-bottom: 0.1rem !important;
-    white-space: normal !important;
-  }
-
-  body.tulosta-hahmo .voima-item small {
-    font-size: 7px !important;
-    color: #444 !important;
-    display: block !important;
-    margin: 0.05rem 0 !important;
-    white-space: normal !important;
-    line-height: 1.3 !important;
-  }
-
-  /* Salli br-tagit takaisin voima-itemissä */
-  body.tulosta-hahmo .voima-item br {
-    display: block !important;
-  }
-
-  /* Kehittymislaatikot rivissä - leveämmät */
-  body.tulosta-hahmo div[style*="border: 2px solid black"] {
-    border: 0.5px solid black !important;
-    border-radius: 2px !important;
-    padding: 0.1rem 0.3rem !important;
-    margin: 0.05rem !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-around !important;
-    font-size: 7px !important;
-    width: auto !important;
-    height: auto !important;
-    gap: 0.3rem !important;
-  }
-
-  /* Kehittymislaatikoiden sisäiset elementit */
-  body.tulosta-hahmo div[style*="border: 2px solid black"] > div {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-    flex: 1 !important;
-    min-width: 2.5rem !important;
-  }
-
-  body.tulosta-hahmo div[style*="border: 2px solid black"] strong {
-    font-size: 8px !important;
-    display: block !important;
-    margin-bottom: 0.05rem !important;
-  }
-
-  body.tulosta-hahmo div[style*="border: 2px solid black"] span {
-    font-size: 9px !important;
-    display: block !important;
-    margin: 0 !important;
-  }
-
-  /* Voimien kehittymis-div horisontaaliseksi - kompaktimpi */
-  body.tulosta-hahmo .teksti-osio div[style*="display: flex"][style*="gap: 1rem"] {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    gap: 0.2rem !important;
-    justify-content: center !important;
-    align-items: flex-start !important;
-    margin: 0.1rem 0 !important;
-    width: 100% !important;
-  }
-
-  /* Skaala kompakti - viimeinen elementti */
-  body.tulosta-hahmo .skaala {
-    margin: 0.3rem 0 0 0 !important;
-    border-top: 0.5px solid #999 !important;
-    padding: 0.2rem 0 0 0 !important;
-  }
-
-  body.tulosta-hahmo .skaala h4 {
-    margin: 0 0 0.1rem 0 !important;
-  }
-
-  body.tulosta-hahmo .skaala p {
-    margin: 0 !important;
-    padding: 0 !important;
-    font-size: 8px !important;
-  }
-
-  /* Poista kaikki ylimääräinen sisältö skaalan jälkeen */
-  body.tulosta-hahmo .skaala ~ * {
-    display: none !important;
-  }
-
-  /* Luonteen ja rotu-tiedot kompaktiksi - salli rivitys */
-  body.tulosta-hahmo div[style*="textAlign: center"][style*="marginTop: 1.5rem"] {
-    margin: 0.1rem 0 !important;
-    text-align: left !important;
-    white-space: normal !important;
-    word-wrap: break-word !important;
-  }
-
-  body.tulosta-hahmo div[style*="textAlign: center"][style*="marginTop: 1.5rem"] .voima-item {
-    white-space: normal !important;
-    line-height: 1.3 !important;
-  }
-
-  /* Rotu ja arkkityyppi -osion tiiviys - salli rivitys */
-  body.tulosta-hahmo .teksti-osio .voima-item[style*="marginTop: 1rem"] {
-    margin-top: 0.1rem !important;
-    white-space: normal !important;
-    word-wrap: break-word !important;
-  }
-
-  /* Peruskyvyt kompaktiksi */
-  body.tulosta-hahmo .teksti-osio:has(h4:contains("Peruskyvyt")) .voima-item {
-    display: inline-block !important;
-    width: 48% !important;
-    vertical-align: top !important;
-  }
-
-  /* Sivunvaihto-kontrollit - vain yksi sivu */
-  body.tulosta-hahmo .paa-kortti {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-    page-break-after: avoid !important;
-    break-after: avoid !important;
-  }
-
-  body.tulosta-hahmo * {
-    page-break-after: avoid !important;
-    break-after: avoid !important;
-  }
-
-  /* Minimaaliset marginaalit - pakota yksi sivu */
-  @page {
-    margin: 0.5cm;
-    size: A4;
-  }
-
-  /* Varmista ettei tule toista sivua */
-  body.tulosta-hahmo {
-    height: 29.7cm !important;
-    max-height: 29.7cm !important;
-    overflow: hidden !important;
-  }
-}
+/* Print CSS poistettu väliaikaisesti - kokeillaan miten näyttää ilman */
 
 /* ===== UTILITY CLASSES ===== */
 
@@ -880,28 +605,6 @@
   flex: 1;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .adjektiivi-grid,
-  .ammatti-grid,
-  .lomake-grid {
-    padding: 0 1rem;
-  }
-  
-  .luonne-valinnat {
-    grid-template-columns: 1fr;
-  }
-  
-  .hahmo-kortti {
-    margin: 0 1rem 2rem 1rem;
-    padding: 1.5rem;
-  }
-  
-  .valmis-sivu h1 {
-    font-size: 2rem;
-  }
-}
-
 .kapitalisoi::first-letter {
   text-transform: uppercase;
 }
@@ -910,4 +613,71 @@
   display: flex;
   justify-content: center;
   margin-top: 2rem;
+}
+
+/* ===== TULOSTUS CSS ===== */
+@media print {
+
+  /* Minimaaliset muutokset tulostukseen */
+  .vaihe-sisalto {
+    padding: 1px !important;
+    margin: 1px !important;
+  }
+  .paa-kortti {
+    padding: 1px !important;
+    margin: 1px !important;
+  }
+  .info-kortti,
+  .teksti-osio {
+    padding: 1px !important;
+    margin: 1px 0 !important;
+  }
+
+  .kehittyminen-boksi {
+    padding: 0.2rem 0.1rem !important;
+    margin: 0.2rem 0 !important;
+    height: 30px !important;
+    min-width: 150px !important;
+    font-size: 0.8rem !important;
+    gap: 0.2rem !important;
+  }
+
+  .layout-flex-center {
+    gap: 0.2rem !important;
+  }
+  
+  /* Piilota skaala-ohjeteksti ja kaikki sen jälkeen */
+  .info-text {
+    display: none !important;
+  }
+  
+  .skaala {
+    display: none !important;
+  }
+  
+  .skaala ~ * {
+    display: none !important;
+  }
+  
+  /* Piilota navigointi ja jakamis-napit */
+  .jakamis-toiminnot {
+    display: none !important;
+  }
+  
+  .wizard-navigation {
+    display: none !important;
+  }
+  
+  .wizard-progress-popup {
+    display: none !important;
+  }
+  
+  .btn {
+    display: none !important;
+  }
+
+  .kehittyminen-boksi.ominaisuudet-osio  {
+    padding: 1px !important;
+    margin: 1px 0 !important;
+  }
 }

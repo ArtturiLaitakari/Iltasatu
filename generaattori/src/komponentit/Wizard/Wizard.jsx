@@ -2,7 +2,15 @@ import { useState, useEffect } from 'react';
 import './Wizard.css';
 
 function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis }) {
-  const [nykyinenVaihe, asetaNykyinenVaihe] = useState(0);
+  const [nykyinenVaihe, asetaNykyinenVaihe] = useState(() => {
+    const tallennettuVaihe = localStorage.getItem('iltasatu-nykyinen-vaihe');
+    return tallennettuVaihe ? parseInt(tallennettuVaihe, 10) : 0;
+  });
+
+  // Tallenna nykyinen vaihe localStorageen
+  useEffect(() => {
+    localStorage.setItem('iltasatu-nykyinen-vaihe', nykyinenVaihe.toString());
+  }, [nykyinenVaihe]);
 
   // Skrollaa sivun yläosaan kun vaihe vaihtuu
   useEffect(() => {
@@ -23,6 +31,10 @@ function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis }) {
     }
   };
 
+  const paasivu = () => {
+    asetaNykyinenVaihe(0);
+  };
+
   const nykyinenVaiheKomponentti = vaiheet[nykyinenVaihe];
   const VaiheKomponentti = nykyinenVaiheKomponentti.komponentti;
 
@@ -31,7 +43,7 @@ function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis }) {
       {nykyinenVaihe === 0 && <h1>Iltasatu Hahmonluonti</h1>}
       <div className="wizard-progress-popup">
         <span className="progress-text">
-          Vaihe {nykyinenVaihe + 1} / {vaiheet.length}: {nykyinenVaiheKomponentti.nimi}
+          <span onClick={paasivu} style={{cursor: 'pointer'}}>🏠</span> 👤 Vaihe {nykyinenVaihe + 1} / {vaiheet.length}: {nykyinenVaiheKomponentti.nimi}
         </span>
       </div>
 
