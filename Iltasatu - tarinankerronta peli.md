@@ -729,7 +729,7 @@ Luo valepersoona ja piilota oma persoona niin, että ottamasi muoto ei edes tied
 
 Siirtele sisäelimiä paikasta toiseen tai luo niitä lisää.
 
-**Elementin hallinta**
+## **Elementin hallinta**
 
 Magiaa on kahta eri tyyppiä, raaka intuitiivinen magia eli elementin hallinta, ja sitten on pitkää vaikeaa koulutusta vaativa Magia.
 
@@ -744,7 +744,7 @@ Tuli aisti on infra puna näkö, maa-aisti mahdollistaa näkemisen kiviseinän l
 * Ohjaa (keskittyminen)
 * Luo (hetki)
 * Muuta (keskittyminen/pysyvä)
-6. Edistynyt magian kyky
+5. Edistynyt magian kyky
 
 Tasolla 4 saa yhden edistyneen kyvyn, tasolla 5 saa 3.
 

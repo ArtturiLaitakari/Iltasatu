@@ -1,121 +1,106 @@
-import { useState } from 'react'
-import reactKuvake from './varat/react.svg'
-import viteKuvake from './varat/vite.svg'
-import sankariKuva from './varat/sankari.png'
-import './Sovellus.css'
+import { useState } from 'react';
+import Wizard from './komponentit/Wizard/Wizard.jsx';
+import GenreValinta from './komponentit/Wizard/GenreValinta.jsx';
+import ArkkityyppiValinta from './komponentit/Wizard/ArkkityyppiValinta.jsx';
+import OlenValinta from './komponentit/Wizard/OlenValinta.jsx';
+import AdjektiiviValinta from './komponentit/Wizard/AdjektiiviValinta.jsx';
+import AmmattiValinta from './komponentit/Wizard/AmmattiValinta.jsx';
+import SieluVoimaValinta from './komponentit/Wizard/SieluVoimaValinta.jsx';
+import HenkilotiedotLomake from './komponentit/Wizard/HenkilotiedotLomake.jsx';
+import RotuValinta from './komponentit/Wizard/RotuValinta.jsx';
+import HahmoYhteenveto from './komponentit/Wizard/HahmoYhteenveto.jsx';
+import { luoTyhjaHahmo } from './utils/hahmoLogiikka.js';
+import './Sovellus.css';
 
 function Sovellus() {
-  const [laskuri, asetaLaskuri] = useState(0)
+  const [hahmo, asetaHahmo] = useState(luoTyhjaHahmo);
+  const [wizardValmis, asetaWizardValmis] = useState(false);
+
+  const wizardVaiheet = [
+    {
+      nimi: 'Genre',
+      komponentti: GenreValinta
+    },
+    {
+      nimi: 'Arkkityyppi',
+      komponentti: ArkkityyppiValinta
+    },
+    {
+      nimi: 'Olen...',
+      komponentti: OlenValinta
+    },
+    {
+      nimi: 'Keho Adjektiivi',
+      komponentti: (props) => <AdjektiiviValinta {...props} kategoria="keho" />
+    },
+    {
+      nimi: 'Fyysinen Ammatti',
+      komponentti: (props) => <AmmattiValinta {...props} kategoria="keho" />
+    },
+    {
+      nimi: 'Mieli Adjektiivi',
+      komponentti: (props) => <AdjektiiviValinta {...props} kategoria="mieli" />
+    },
+    {
+      nimi: 'Henkinen Ammatti',
+      komponentti: (props) => <AmmattiValinta {...props} kategoria="mieli" />
+    },
+    {
+      nimi: 'Sielu Adjektiivi',
+      komponentti: (props) => <AdjektiiviValinta {...props} kategoria="sielu" />
+    },
+    {
+      nimi: 'Mystinen Koulutus',
+      komponentti: (props) => <AmmattiValinta {...props} kategoria="sielu" />
+    },
+    {
+      nimi: 'Mystinen Voima',
+      komponentti: SieluVoimaValinta
+    },
+    {
+      nimi: 'Henkilötiedot',
+      komponentti: HenkilotiedotLomake
+    },
+    {
+      nimi: 'Rotu',
+      komponentti: RotuValinta
+    },
+    {
+      nimi: 'Yhteenveto',
+      komponentti: HahmoYhteenveto
+    }
+  ];
+
+  const aloitaUudelleen = () => {
+    asetaHahmo(luoTyhjaHahmo());
+    asetaWizardValmis(false);
+  };
+
+  if (wizardValmis) {
+    return (
+      <div className="sovellus">
+        <div className="valmis-sivu">
+          <h1>Hahmo luotu onnistuneesti! 🎉</h1>
+          <div className="toiminto-napit">
+            <button onClick={aloitaUudelleen} className="btn btn-primary">
+              Luo uusi hahmo
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={sankariKuva} className="base" width="170" height="179" alt="" />
-          <img src={reactKuvake} className="framework" alt="React logo" />
-          <img src={viteKuvake} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/Sovellus.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => asetaLaskuri((laskuri) => laskuri + 1)}
-        >
-          Count is {laskuri}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteKuvake} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactKuvake} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    <div className="sovellus">
+      <Wizard 
+        vaiheet={wizardVaiheet}
+        hahmo={hahmo}
+        paivitaHahmo={asetaHahmo}
+        onValmis={() => asetaWizardValmis(true)}
+      />
+    </div>
+  );
 }
 
-export default Sovellus
+export default Sovellus;

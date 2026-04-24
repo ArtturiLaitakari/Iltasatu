@@ -1,0 +1,507 @@
+.vaihe-sisalto {
+  padding: 0;
+}
+
+.vaihe-otsikko {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.vaihe-otsikko h2 {
+  color: #ffffff;
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.vaihe-otsikko p {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Adjektiivi-valinta */
+.adjektiivi-grid {
+  display: grid;
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.adjektiivi-kategoria {
+  text-align: center;
+}
+
+.adjektiivi-kategoria-otsikko {
+  color: #ffffff;
+  font-size: 1.3rem;
+  margin: 0 0 1rem 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.adjektiivi-sivu-indikaattori {
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 1rem 0;
+  font-size: 0.95rem;
+}
+
+.adjektiivi-valinnat {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.adjektiivi-btn {
+  padding: 0.5rem 1rem;
+  border: 2px solid #e1e1e1;
+  border-radius: 25px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.adjektiivi-btn:hover {
+  border-color: #3498db;
+  transform: translateY(-2px);
+}
+
+.adjektiivi-btn.valittu {
+  background: #3498db;
+  border-color: #3498db;
+  color: white;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+/* Ammatti-valinta */
+.ammatti-grid {
+  display: grid;
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.ammatti-kategoria {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+}
+
+.ammatti-kategoria h3 {
+  color: #2c3e50;
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+.ammatti-kategoria.ammatti-kategoria-taustalla {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.ammatti-kategoria.ammatti-kategoria-taustalla h3,
+.ammatti-kategoria.ammatti-kategoria-taustalla .adjektiivi-sivu-indikaattori {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.ammatti-valinnat {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.ammatti-kortit-lista {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.ammatti-btn {
+  padding: 0.6rem 1.2rem;
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.ammatti-btn:hover {
+  border-color: #3498db;
+  transform: translateY(-2px);
+}
+
+.ammatti-btn.valittu {
+  background: #3498db;
+  border-color: #3498db;
+  color: white;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+/* Henkilötiedot-lomake */
+.lomake-grid {
+  max-width: 600px;
+  margin: 0 auto;
+  display: grid;
+  gap: 2rem;
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+}
+
+.lomake-grid.lomake-grid-taustalla {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.lomake-grid.lomake-grid-taustalla .kentta label {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.kentta label {
+  display: block;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.kentta input,
+.kentta textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+  background: white;
+  color: #2c3e50;
+  box-sizing: border-box;
+}
+
+.kentta input:focus,
+.kentta textarea:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.luonne-valinnat {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.luonne-kortti {
+  padding: 1rem;
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.luonne-kortti h4 {
+  margin: 0 0 0.5rem 0;
+  color: #2c3e50;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.luonne-kortti p {
+  margin: 0;
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+.luonne-kortti:hover {
+  border-color: #3498db;
+  transform: translateY(-2px);
+}
+
+.luonne-kortti.valittu {
+  background: #3498db;
+  border-color: #3498db;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.luonne-kortti.valittu h4 {
+  color: white;
+}
+
+.luonne-kortti.valittu p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Esimerkit sielu-voimalle */
+.esimerkit-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.esimerkki-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 20px;
+  background: #ecf0f1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+  color: #2c3e50;
+}
+
+.esimerkki-btn:hover {
+  background: #d5dbdb;
+  border-color: #95a5a6;
+  transform: translateY(-1px);
+}
+
+/* Hahmo yhteenveto */
+.paa-kortti {
+  background: white;
+  border: 2px solid #e1e1e1;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto 2rem auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.paa-kortti.taustalla {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.paa-kortti.taustalla h3,
+.paa-kortti.taustalla h4,
+.paa-kortti.taustalla h5 {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.paa-kortti.taustalla .olen-teksti,
+.paa-kortti.taustalla .tiedot-osio,
+.paa-kortti.taustalla p {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.paa-kortti.taustalla .info-kortti {
+  background: rgba(248, 249, 250, 0.9);
+  color: #2c3e50;
+}
+
+.paa-kortti.taustalla .info-kortti .olen-teksti {
+  color: #2c3e50;
+  text-shadow: none;
+}
+
+.paa-kortti h3 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+}
+
+.tiedot-osio {
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+  margin: 0 0 2rem 0;
+  font-style: italic;
+}
+
+.info-kortti {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.olen-teksti {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #2c3e50;
+  margin: 0;
+  font-style: italic;
+  text-align: center;
+}
+
+.teksti-osio {
+  margin: 1.5rem 0 2rem 0;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.teksti-osio h4 {
+  color: #2c3e50;
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  border-bottom: 2px solid #e1e1e1;
+  padding-bottom: 0.5rem;
+}
+
+.paa-kortti.taustalla .teksti-osio {
+  background: rgba(248, 249, 250, 0.9);
+}
+
+.paa-kortti.taustalla .teksti-osio h4 {
+  color: #2c3e50;
+  text-shadow: none;
+}
+
+.paa-kortti.taustalla .teksti-osio .voima-item {
+  color: #2c3e50;
+  text-shadow: none;
+}
+
+.ominaisuudet,
+.persoonallisuus,
+.sielu-voima,
+.skaala {
+  margin-bottom: 2rem;
+}
+
+.ominaisuudet h4,
+.persoonallisuus h4,
+.sielu-voima h4,
+.skaala h4 {
+  color: #2c3e50;
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  border-bottom: 2px solid #e1e1e1;
+  padding-bottom: 0.5rem;
+}
+
+.ominaisuus {
+  margin: 0.75rem 0;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.persoonallisuus p,
+.sielu-voima p,
+.skaala p {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.jakamis-toiminnot {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.vaihe-navigation {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.vaihe-navigation .btn {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.vaihe-navigation .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.vaihe-navigation .btn-primary {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+}
+
+.vaihe-navigation .btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+/* Olen-sivu taustakuvalla */
+.olen-sivu {
+  padding: 2rem;
+}
+
+.olen-sivu .vaihe-otsikko h2,
+.olen-sivu .vaihe-otsikko p {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+.olen-sivu .kortti {
+  backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.valmis-sivu {
+  text-align: center;
+  padding: 4rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.valmis-sivu h1 {
+  color: #27ae60;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+}
+
+.sovellus {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+@media (max-width: 768px) {
+  .adjektiivi-grid,
+  .ammatti-grid,
+  .lomake-grid {
+    padding: 0 1rem;
+  }
+  
+  .luonne-valinnat {
+    grid-template-columns: 1fr;
+  }
+  
+  .hahmo-kortti {
+    margin: 0 1rem 2rem 1rem;
+    padding: 1.5rem;
+  }
+  
+  .valmis-sivu h1 {
+    font-size: 2rem;
+  }
+}
+
+.kapitalisoi::first-letter {
+  text-transform: uppercase;
+}

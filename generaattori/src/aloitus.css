@@ -1,4 +1,7 @@
 :root {
+  --teema-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --font-runko: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  --font-otsikko: Georgia, 'Times New Roman', serif;
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
@@ -11,8 +14,8 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: var(--font-runko);
+  --heading: var(--font-otsikko);
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
@@ -52,14 +55,13 @@
 
 body {
   margin: 0;
+  font-family: var(--font-runko);
+  background: var(--teema-gradient);
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
+  width: 100%;
   text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;

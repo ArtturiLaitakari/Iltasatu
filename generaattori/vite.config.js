@@ -6,10 +6,5 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 1974
-  },
-  build: {
-    rollupOptions: {
-      input: './aloitus.html'
-    }
   }
 })
