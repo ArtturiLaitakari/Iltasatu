@@ -45,6 +45,19 @@ function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis, onHahmoLista }) {
   return (
     <div className="wizard">
       {nykyinenVaihe === 0 && <h1>Iltasatu Hahmonluonti</h1>}
+      
+      {/* Edellinen-nappi vasempaan yläkulmaan */}
+      {nykyinenVaihe > 0 && (
+        <div className="wizard-back-button">
+          <button 
+            onClick={edellinenVaihe}
+            className="btn-back"
+          >
+            ← Edellinen
+          </button>
+        </div>
+      )}
+      
       <div className="wizard-progress-popup">
         <span className="progress-text">
           <span onClick={paasivu} style={{cursor: 'pointer'}}>🏠</span> <span onClick={hahmoLista} style={{cursor: 'pointer'}}>👤</span> Vaihe {nykyinenVaihe + 1} / {vaiheet.length}: {nykyinenVaiheKomponentti.nimi}
@@ -56,17 +69,8 @@ function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis, onHahmoLista }) {
           hahmo={hahmo}
           paivitaHahmo={paivitaHahmo}
           seuraavaVaihe={seuraavaVaihe}
+          onHahmoLista={hahmoLista}
         />
-      </div>
-
-      <div className="wizard-navigation">
-        <button 
-          onClick={edellinenVaihe}
-          disabled={nykyinenVaihe === 0}
-          className="btn btn-secondary"
-        >
-          ← Edellinen
-        </button>
       </div>
     </div>
   );

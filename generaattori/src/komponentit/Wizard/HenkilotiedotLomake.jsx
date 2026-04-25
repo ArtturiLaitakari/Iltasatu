@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { luonteet } from '../../data/muutData.js';
 import '../HahmoVaiheet.css';
 
@@ -7,6 +8,8 @@ const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
 });
 
 function HenkilotiedotLomake({ hahmo, paivitaHahmo, seuraavaVaihe }) {
+  const [hoverLuonne, setHoverLuonne] = useState(null);
+
   const paivitaKentta = (kentta, arvo) => {
     const uudetHenkilotiedot = {
       ...hahmo.henkilotiedot,
@@ -57,7 +60,7 @@ function HenkilotiedotLomake({ hahmo, paivitaHahmo, seuraavaVaihe }) {
         <p>Anna hahmolle nimi ja persoonallisuus</p>
       </div>
 
-      <div className={`lomake-grid ${taustaKuva ? 'lomake-grid-taustalla' : ''}`} style={taustaTyyli}>
+      <div className={`levea-grid sailio-kapea lomake-kortti ${taustaKuva ? 'lomake-kortti-taustalla' : ''}`} style={taustaTyyli}>
         <div className="kentta">
           <label htmlFor="nimi">Nimi</label>
           <input
@@ -78,12 +81,21 @@ function HenkilotiedotLomake({ hahmo, paivitaHahmo, seuraavaVaihe }) {
                 key={luonne.nimi}
                 className={`luonne-kortti ${hahmo.henkilotiedot.luonne === luonne.nimi ? 'valittu' : ''}`}
                 onClick={() => paivitaKentta('luonne', luonne.nimi)}
+                onMouseEnter={() => setHoverLuonne(luonne)}
+                onMouseLeave={() => setHoverLuonne(null)}
+                style={{ position: 'relative' }}
               >
                 <h4>{luonne.nimi}</h4>
                 <p>{luonne.kuvaus}</p>
               </div>
             ))}
           </div>
+          {/* Popup siirretty tänne pois kortin sisältä */}
+          {hoverLuonne && hoverLuonne.hover && (
+            <div className="luonne-hover-popup">
+              {hoverLuonne.hover}
+            </div>
+          )}
         </div>
 
         <div className="kentta">

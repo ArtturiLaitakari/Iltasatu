@@ -4,9 +4,40 @@ import HahmoKortti from './HahmoKortti.jsx';
 import HahmoYhteenveto from './Wizard/HahmoYhteenveto.jsx';
 import './HahmoVaiheet.css';
 
+const taustaKuvat = import.meta.glob('../kuvat/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+  import: 'default'
+});
+
 function HahmoLista({ onTakaisin }) {
   const [hahmot, asetaHahmot] = useState({});
   const [valittuHahmo, asetaValittuHahmo] = useState(null);
+  
+  const haeTaustaKuva = () => {
+    const tiedostoVaihtoehdot = [
+      'hahmot_taustakuva.jpg',
+      'hahmot_taustakuva.jpeg', 
+      'hahmot_taustakuva.png',
+      'hahmot_taustakuva.webp'
+    ];
+
+    for (const tiedostoNimi of tiedostoVaihtoehdot) {
+      const osuma = Object.entries(taustaKuvat).find(([polku]) => polku.endsWith(`/${tiedostoNimi}`));
+      if (osuma) {
+        return osuma[1];
+      }
+    }
+    return null;
+  };
+
+  const taustaKuva = haeTaustaKuva();
+  const taustaTyyli = taustaKuva
+    ? {
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${taustaKuva})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }
+    : undefined;
   
   useEffect(() => {
     const tallennetutHahmot = haeHahmot();
@@ -51,7 +82,7 @@ function HahmoLista({ onTakaisin }) {
 
   // Päälistausnäkymä
   return (
-    <div className="sovellus">
+    <div className="sovellus" style={taustaTyyli}>
       <div className="hahmolista-header">
         <h1>Tallennetut Hahmot</h1>
         <button onClick={onTakaisin} className="btn btn-primary">

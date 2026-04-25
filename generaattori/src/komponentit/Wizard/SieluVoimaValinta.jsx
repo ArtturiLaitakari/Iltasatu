@@ -118,35 +118,30 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   };
 
   const taustaKuva = haeTaustaKuva();
-  const taustaTyyli = taustaKuva
-    ? {
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${taustaKuva})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
-      }
-    : undefined;
 
   return (
-    <div className="vaihe-sisalto">
+    <div className={`vaihe-sisalto ${taustaKuva ? 'voima-sivu' : ''}`}>
       <div className="vaihe-otsikko">
         <h2>Voima</h2>
         <p>Mystisen voiman perustiedot ja ensimmäinen kyky</p>
       </div>
 
-      <div className="ammatti-grid">
-        <div className={`ammatti-kategoria ${taustaKuva ? 'ammatti-kategoria-taustalla' : ''}`} style={taustaTyyli}>
+      <div className="levea-grid">
+        <div className={`ammatti-kategoria ${taustaKuva ? 'ammatti-kategoria-taustalla' : ''}`}>
           
           {/* Aisti-kyky */}
           {aistiTiedot && (
             <div className="mb-2">
               <p className="adjektiivi-sivu-indikaattori">Automaattinen peruskyky</p>
-              <Kortti
-                nimi={aistiTiedot.nimi}
-                kuvaus={aistiTiedot.kuvaus}
-                korttiKoko="pieni"
-                otsikkoVari="#4a90e2"
-                onClick={() => {}}
-              />
+              <div className="ammatti-kortit-lista kapea">
+                <Kortti
+                  nimi={aistiTiedot.nimi}
+                  kuvaus={aistiTiedot.kuvaus}
+                  korttiKoko="pieni"
+                  otsikkoVari="#4a90e2"
+                  onClick={() => {}}
+                />
+              </div>
             </div>
           )}
           
@@ -156,7 +151,7 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
               {tasonYksiKyvyt.length === 1 ? 'Automaattinen 1. tason kyky' : 'Valitse kyky'}
             </p>
             
-            <div className="ammatti-kortit-lista">
+            <div className="ammatti-kortit-lista kapea">
               {peruskyvyt.map((voima, index) => {
                 const onKaytettavissa = !onTasojarasteelma || voima.taso === 1 || voima.taso === undefined;
                 
@@ -212,8 +207,17 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
             )}
           </div>
         </div>
-      </div>
-    </div>
+      </div>        
+      {/* Taustakuva koko sivulle */}
+      {taustaKuva && (
+        <style>{`
+          .sovellus {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${taustaKuva}) !important;
+            background-size: cover !important;
+            background-position: center !important;
+          }
+        `}</style>
+      )}    </div>
   );
 }
 

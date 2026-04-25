@@ -27,7 +27,7 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
     };
 
     const aktiivinenKategoria = kategoriaData[kategoria];
-    const ammatit = haeKategorianAmmatit(aktiivinenKategoria.ammattiKategoria);
+    const ammatit = haeKategorianAmmatit(aktiivinenKategoria.ammattiKategoria, hahmo.genre || 'fantasia');
     
     const haeTaustaKuva = () => {
       const tiedostoVaihtoehdot = [
@@ -91,16 +91,15 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
       : undefined;
 
     return (
-      <div className="vaihe-sisalto">
+      <div className={`vaihe-sisalto ${taustaKuva ? 'ammatti-sivu' : ''}`}>
         <div className="vaihe-otsikko">
           <h2>{aktiivinenKategoria.nimi} Ammatti</h2>
           <p>Valitse {aktiivinenKategoria.nimi.toLowerCase()} ammatti hahmollesi</p>
         </div>
 
-        <div className="ammatti-grid">
-          <div className={`ammatti-kategoria ${taustaKuva ? 'ammatti-kategoria-taustalla' : ''}`} style={taustaTyyli}>
-            <h3>{aktiivinenKategoria.nimi} Ammatti</h3>
-            <div className="ammatti-kortit-lista">
+        <div className="levea-grid">
+          <div className={`ammatti-kategoria ${taustaKuva ? 'ammatti-kategoria-taustalla' : ''}`}>
+            <div className={`ammatti-kortit-lista ${aktiivinenKategoria.avain === 'sielu' ? 'kapea' : ''}`}>
               {ammatit.map((ammatti) => (
                 <Kortti
                   key={ammatti.nimi}
@@ -115,6 +114,17 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
             </div>
           </div>
         </div>
+        
+        {/* Taustakuva koko sivulle */}
+        {taustaKuva && (
+          <style>{`
+            .sovellus {
+              background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${taustaKuva}) !important;
+              background-size: cover !important;
+              background-position: center !important;
+            }
+          `}</style>
+        )}
       </div>
     );
   }
@@ -241,7 +251,7 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
   };
 
   const ammattiKategoria = haeAmmattiKategoria(aktiivinenVaihe.avain);
-  const ammatit = haeKategorianAmmatit(ammattiKategoria);
+  const ammatit = haeKategorianAmmatit(ammattiKategoria, hahmo.genre || 'fantasia');
   const taustaKuva = haeTaustaKuva(aktiivinenVaihe.avain);
   const taustaTyyli = taustaKuva
     ? {
@@ -258,7 +268,7 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
         <p>Valitse ammatti, koulutus ja harrastus kullekin ominaisuudelle</p>
       </div>
 
-      <div className="ammatti-grid">
+      <div className="levea-grid">
         <div className={`ammatti-kategoria ${taustaKuva ? 'ammatti-kategoria-taustalla' : ''}`} style={taustaTyyli}>
           <h3>{aktiivinenVaihe.nimi} {aktiivinenVaihe.otsikko}</h3>
           <p className="adjektiivi-sivu-indikaattori">{nykyinenSivu + 1} / {ammattiVaiheet.length}</p>

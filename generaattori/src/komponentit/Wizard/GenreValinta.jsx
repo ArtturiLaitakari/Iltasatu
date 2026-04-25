@@ -10,7 +10,7 @@ function GenreValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   };
 
   return (
-    <div className="vaihe-sisalto">
+    <div className="vaihe-sisalto genre-sivu">
       <div className="vaihe-otsikko">
         <h2>Valitse Genre</h2>
         <p>Valitse maailma, jossa hahmo seikkailuu</p>

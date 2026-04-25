@@ -2,22 +2,26 @@ export const luonteet = [
   {
     nimi: 'Seikkailija',
     kuvaus: 'Janoaa uusia kokemuksia ja ärsykkeitä, spontaani ja energinen',
-    stuntti: 'Voit uusintaa epäonnistuneen heiton kun kohtaat uuden ja jännittävän tilanteen'
+    stuntti: 'Voit uusintaa epäonnistuneen heiton kun kohtaat uuden ja jännittävän tilanteen',
+    hover: 'Seikkailijat ilmentävät dopamiinijärjestelmään kytkeytyviä piirteitä. He ovat yleensä uteliaita, luovia, spontaaneja, energisiä, rohkeita, riskinottajia, henkisesti joustavia, innostuneita ja itsenäisiä. He rakastavat uutuutta ja seikkailua, ajattelevat laatikon ulkopuolelta ja inspiroivat muita. Heistä tulee hyviä yrittäjiä, taiteilijoita ja viihdyttäjiä sekä karismaattisia johtajia.'
   },
   {
     nimi: 'Rakentaja',
     kuvaus: 'Arvostaa perinteitä ja turvallisuutta, järjestelmällinen ja vastuuntuntoinen',
-    stuntti: 'Saat +2 bonuksen kun noudatat suunnitelmaa tai käytät aikaisempaa kokemustasi'
+    stuntti: 'Saat +2 bonuksen kun toimintosi perustuu huolellisesti laadittuun suunnitelmaan',
+    hover: 'Rakentajat ilmentävät serotonijärjestelmään kytkeytyviä piirteitä. He ovat yleensä perinteisiä, tavanomaisia ja varovaisia (muttei pelokkaita); he noudattavat sosiaalisia normeja. He noudattavat sääntöjä, kunnioittavat auktoriteettia, nauttivat suunnitelmien ja aikataulujen tekemisestä, ja ovat tunnollisia ja riskinkarttajia. He ovat konkreettisia ja logistisia ajattelijoita, jotka keskittyvät yksityiskohtiin ja prosessiin; he ovat vakauttajia. Heistä tulee erinomaisia johtajia ja sotilaita.'
   },
   {
     nimi: 'Johtaja',
     kuvaus: 'Analyyttinen ja looginen ajattelija, kilpailuhenkinen ja päättäväinen',
-    stuntti: 'Voit ottaa komentovallan kriisitilanteessa ja antaa liittolaisille +1 bonuksen'
+    stuntti: 'Voit ottaa komentovallan kriisitilanteessa ja antaa liittolaisille +1 bonuksen',
+    hover: 'Johtajat ilmentävät testosteronijärjestelmään kytkeytyviä piirteitä. He ovat yleensä analyyttisiä, loogisia, suoria, päättäväisiä, skeptisiä, kovia, tunteellisesti hillittyjä, hierarkiahakuisia ja kilpailuhenkisiä. He ovat myös kokeiluhaluisia ja erinomaisia ymmärtämään sääntöpohjaisia järjestelmiä – kuten insinöörityötä, matematiikkaa, tietokoneita, mekaniikkaa ja musiikkia. He ovat strategisia ajattelijoita ja komentavia johtajia.'
   },
   {
     nimi: 'Neuvottelija',
     kuvaus: 'Empaattinen ja intuitiivinen, diplomaattinen ja yhteistyökykyinen',
-    stuntti: 'Saat +2 bonuksen sosiaalisissa tilanteissa kun ymmärrät toisten tunteita'
+    stuntti: 'Saat +2 bonuksen sosiaalisissa tilanteissa kun ymmärrät toisten tunteita',
+    hover: 'Neuvottelijat ilmentävät estrogeenijärjestelmään kytkeytyviä piirteitä. He ovat synteettisiä, kokonaisvaltaisia, kontekstuaalisia, pitkäjänteisiä ja mielikuvituksellisia ajattelijoita. He ovat hyviä lukemaan ryhtiä, eleitä, kasvojen ilmeitä ja äänensävyä. He ovat erinomaisia ihmissuhdetaidoissa – intuitiivisia, oivaltavia, luottavaisia, empaattisia ja hoivaavia. Heistä tulee erinomaisia kouluttajia, terveydenhuoltotyöntekijöitä ja myyjiä. He ovat diplomaattisia johtajia, joilla on kyky luoda yksimielisyyttä.'
   }
 ];
 
@@ -111,7 +115,7 @@ export const kuvaukset = [
         "haitta": "Kun noudattaisit sääntöjä oman etusi vastaisesti, voit saada fate-pisteen kunniasi pakottamana tekemään tyhmän tai jaloin ratkaisun."
     },
     {
-        "nimi": "Hiivisklevä",
+        "nimi": "Hiiviskelevä",
         "kuvaus": "Olet tottunut liikkumaan varjoissa ja pysymään näkymättömänä. Kukaan ei näe sinua, ellet itse halua.",
         "etu": "Kerran per kohtaus, voit kutsua tätä aspektia saadaksesi +2 hiipimiseen tai varjostamiseen.",
         "haitta": "Kun huomion keskipisteenä oleminen olisi tarpeen, voit saada fate-pisteen vetäytymällä varjoihin tai kieltäytymällä puhumasta julkisesti."

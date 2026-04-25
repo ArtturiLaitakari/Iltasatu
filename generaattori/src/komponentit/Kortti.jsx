@@ -24,7 +24,7 @@ function Kortti({
 
   return (
     <div 
-      className={`kortti ${valittu ? 'valittu' : ''} ${disabled ? 'disabled' : ''} ${kuva ? 'kortti-taustakuvalla' : ''} ${korttiKoko === 'pieni' ? 'kortti-pieni' : ''}`}
+      className={`kortti ${valittu ? 'valittu' : ''} ${disabled ? 'disabled' : ''} ${kuva ? 'kortti-taustakuvalla' : ''} ${korttiKoko === 'pieni' ? 'kortti-pieni' : ''} ${korttiKoko === 'tiivis' ? 'kortti-tiivis' : ''}`}
       style={taustaTyyli}
       onClick={disabled ? undefined : onClick}
     >

@@ -18,14 +18,29 @@
   justify-self: center;
 }
 
+.kortti-tiivis {
+  min-height: 120px;
+  padding: 1rem;
+}
+
 .kortti-pieni .kortti-nimi {
   font-size: 0.9rem;
   margin-bottom: 0.2rem;
 }
 
+.kortti-tiivis .kortti-nimi {
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+
 .kortti-pieni .kortti-kuvaus {
   font-size: 0.72rem;
   line-height: 1.2;
+}
+
+.kortti-tiivis .kortti-kuvaus {
+  font-size: 0.85rem;
+  line-height: 1.3;
 }
 
 .kortti:hover:not(.disabled) {
@@ -97,6 +112,12 @@
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.1rem;
   margin: 2rem 0;
+}
+
+/* Genre-sivu kortit max-width */
+.genre-sivu .kortti {
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {

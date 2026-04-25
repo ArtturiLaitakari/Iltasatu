@@ -5,6 +5,16 @@ function HahmoKortti({ hahmo, onKlikkaus, onPoista }) {
   const arkkityyppiData = arkkityypit[hahmo.arkkityyppi];
   const luontiAika = new Date(hahmo.luotu);
   
+  // Etsi aktiivinen voima
+  let aktiivinenVoima = 'Ei voimaa';
+  if (hahmo.voimat && typeof hahmo.voimat === 'object') {
+    const voimaEntries = Object.entries(hahmo.voimat);
+    const voimaLoyto = voimaEntries.find(([avain, taso]) => avain !== 'valitut' && taso > 0);
+    if (voimaLoyto) {
+      aktiivinenVoima = voimaLoyto[0];
+    }
+  }
+  
   const formatoiPaiva = (paiva) => {
     const paivat = ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'];
     const kuukaudet = ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu', 'Kesäkuu', 
@@ -36,11 +46,12 @@ function HahmoKortti({ hahmo, onKlikkaus, onPoista }) {
       <div className="hahmo-kortti-info">
         <p><strong>Arkkityyppi:</strong> {arkkityyppiData?.nimi || 'Tuntematon'}</p>
         <p><strong>Rotu:</strong> {hahmo.rotu?.nimi || 'Ei valittu'}</p>
+        <p><strong>Voima:</strong> {aktiivinenVoima}</p>
         <p><strong>Luonne:</strong> {hahmo.henkilotiedot?.luonne || 'Ei määritetty'}</p>
       </div>
       
       <div className="hahmo-kortti-aika">
-        <small>Luotu: {formatoiPaiva(luontiAika)}</small>
+        <small style={{fontSize: '0.7rem', opacity: '0.8'}}>Luotu: {formatoiPaiva(luontiAika)}</small>
       </div>
     </div>
   );

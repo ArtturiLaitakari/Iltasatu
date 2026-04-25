@@ -11,12 +11,14 @@ const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
   import: 'default'
 });
 
-function HahmoYhteenveto({ hahmo, paivitaHahmo }) {
+function HahmoYhteenveto({ hahmo, paivitaHahmo, onHahmoLista }) {
   const arkkityyppiData = arkkityypit[hahmo.arkkityyppi];
   const hahmonSkaala = skaala.find(s => s.taso === hahmo.skaala);
   
   // Hae peruskyvyt hahmon valitun voiman tyypin perusteella
-  const mystisetAmmatit = ammatit.mystinen.map((ammatti) => ammatti.nimi);
+  const genre = hahmo.genre || 'fantasia';
+  const genreAmmatit = ammatit[genre] || {};
+  const mystisetAmmatit = (genreAmmatit.mystinen || []).map((ammatti) => ammatti.nimi);
   const onMystinen = hahmo.ammatit?.sielu && mystisetAmmatit.includes(hahmo.ammatit.sielu);
   
   // Etsi mikä voima on tasolla 1 (aktiivinen voima)
@@ -102,10 +104,12 @@ function HahmoYhteenveto({ hahmo, paivitaHahmo }) {
     if (!ammattiId) return '';
     
     // Etsi ammatti kaikista kategorioista
+    const genre = hahmo.genre || 'fantasia';
+    const genreAmmatit = ammatit[genre] || {};
     const kaikki = [
-      ...ammatit.fyysinen,
-      ...ammatit.henkinen,
-      ...ammatit.mystinen
+      ...(genreAmmatit.fyysinen || []),
+      ...(genreAmmatit.henkinen || []),
+      ...(genreAmmatit.mystinen || [])
     ];
     
     const ammatti = kaikki.find(a => a.id === ammattiId);
@@ -150,7 +154,8 @@ function HahmoYhteenveto({ hahmo, paivitaHahmo }) {
   const tallennaJaJaa = () => {
     const hahmoId = tallennaHahmo(hahmo);
     console.log('Hahmo tallennettu:', hahmoId);
-    // TODO: Näytä jakamisvaihtoehdot
+    // Siirry hahmolistaussivulle tallennuksen jälkeen
+    onHahmoLista && onHahmoLista();
   };
 
   const luoTekstimuoto = () => {
@@ -220,23 +225,23 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
               <p className="voima-item">
                 <strong>Keho {luoYmpyraEsitys(hahmo.keho, arkkityyppiData?.keho?.maksimi || 3)}</strong>
                 <br />
-                <small>+ {haeAdjektiivinNimi(hahmo.adjektiivit?.keho)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, false))}</small>
+                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, false, hahmo.ammatit?.keho))} {haeAmmatinNimi(hahmo.ammatit?.keho)}</small>
                 <br />
-                <small>+ {haeAmmatinNimi(hahmo.ammatit?.keho)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, hahmo.ammatit?.keho))}</small>
+                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, hahmo.ammatit?.keho))} {haeAdjektiivinNimi(hahmo.adjektiivit?.keho).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.keho).toLowerCase()}.</small>
               </p>
               <p className="voima-item">
                 <strong>Mieli {luoYmpyraEsitys(hahmo.mieli, arkkityyppiData?.mieli?.maksimi || 3)}</strong>
                 <br />
-                <small>+ {haeAdjektiivinNimi(hahmo.adjektiivit?.mieli)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, false))}</small>
+                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, false, hahmo.ammatit?.mieli))} {haeAmmatinNimi(hahmo.ammatit?.mieli)}</small>
                 <br />
-                <small>+ {haeAmmatinNimi(hahmo.ammatit?.mieli)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, hahmo.ammatit?.mieli))}</small>
+                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, hahmo.ammatit?.mieli))} {haeAdjektiivinNimi(hahmo.adjektiivit?.mieli).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.mieli).toLowerCase()}.</small>
               </p>
               <p className="voima-item">
                 <strong>Sielu {luoYmpyraEsitys(hahmo.sielu, arkkityyppiData?.sielu?.maksimi || 3)}</strong>
                 <br />
-                <small>+ {haeAdjektiivinNimi(hahmo.adjektiivit?.sielu)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, false))}</small>
+                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, false, hahmo.ammatit?.sielu))} {haeAmmatinNimi(hahmo.ammatit?.sielu)}</small>
                 <br />
-                <small>+ {haeAmmatinNimi(hahmo.ammatit?.sielu)} = {haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, hahmo.ammatit?.sielu))}</small>
+                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, hahmo.ammatit?.sielu))} {haeAdjektiivinNimi(hahmo.adjektiivit?.sielu).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.sielu).toLowerCase()}.</small>
               </p>
             </div>
             <div className="layout-col">

@@ -56,9 +56,8 @@ function AdjektiiviValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = nul
           <p>Valitse adjektiivi, joka kuvaa hahmosi {aktiivinenKategoria.nimi.toLowerCase()}-ominaisuutta</p>
         </div>
 
-        <div className="adjektiivi-grid">
+        <div className="levea-grid sailio-keskikoko">
           <div className="adjektiivi-kategoria">
-            <h3 className="adjektiivi-kategoria-otsikko">{aktiivinenKategoria.nimi}</h3>
             <div className="kortit-grid">
               {adjektiivit.map((adj) => (
                 <Kortti
@@ -108,7 +107,7 @@ function AdjektiiviValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = nul
         <p>Valitse yksi adjektiivi kullekin ominaisuudelle vaiheittain</p>
       </div>
 
-      <div className="adjektiivi-grid">
+      <div className="levea-grid sailio-keskikoko">
         <div className="adjektiivi-kategoria">
           <h3 className="adjektiivi-kategoria-otsikko">{aktiivinenVaihe.nimi}</h3>
           <p className="adjektiivi-sivu-indikaattori">

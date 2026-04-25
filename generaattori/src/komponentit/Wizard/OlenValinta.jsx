@@ -48,24 +48,22 @@ function OlenValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     : undefined;
 
   return (
-    <div className="vaihe-sisalto">
+    <div className={`vaihe-sisalto ${taustaKuva ? 'olen-sivu' : ''}`}>
       <div className="vaihe-otsikko">
         <h2>Olen...</h2>
         <p>Valitse kuvaaja, joka parhaiten kuvaa hahmosi luonnetta</p>
       </div>
 
-      <div className="ammatti-grid">
-        <div className={`ammatti-kategoria ${taustaKuva ? 'ammatti-kategoria-taustalla' : ''}`} style={taustaTyyli}>
-          <h3>Kuvaaja</h3>
-          <p className="adjektiivi-sivu-indikaattori">Valitse yksi kuvaaja</p>
-          <div className="ammatti-kortit-lista">
+      <div className="kuvaaja-grid">
+        <div className={`kuvaaja-kategoria ${taustaKuva ? 'kuvaaja-kategoria-taustalla' : ''}`}>
+          <div className="kuvaaja-kortit-lista">
             {kuvaajatArray.map((kuvaaja) => (
               <Kortti
                 key={kuvaaja.nimi}
                 nimi={kuvaaja.nimi}
                 kuvaus={kuvaaja.selite}
                 extraInfo={`Kyky: ${kuvaaja.kyky}`}
-                korttiKoko="pieni"
+                korttiKoko="tiivis"
                 otsikkoVari="#000000"
                 valittu={hahmo.kuvaaja?.nimi === kuvaaja.nimi}
                 onClick={() => valitseKuvaaja(kuvaaja)}
@@ -74,6 +72,17 @@ function OlenValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
           </div>
         </div>
       </div>
+      
+      {/* Piilota taustakuvan data sovellus-tasolle */}
+      {taustaKuva && (
+        <style>{`
+          .sovellus {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${taustaKuva}) !important;
+            background-size: cover !important;
+            background-position: center !important;
+          }
+        `}</style>
+      )}
     </div>
   );
 }

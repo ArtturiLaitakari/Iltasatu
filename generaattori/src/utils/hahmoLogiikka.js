@@ -7,8 +7,8 @@ export function haeAmmattiKategoria(arkkityyppi) {
   return tyyppi.paaKategoria;
 }
 
-export function haeKategorianAmmatit(kategoria) {
-  return ammatit[kategoria] || [];
+export function haeKategorianAmmatit(kategoria, genre = 'fantasia') {
+  return ammatit[genre]?.[kategoria] || [];
 }
 
 export function luoTyhjaHahmo() {

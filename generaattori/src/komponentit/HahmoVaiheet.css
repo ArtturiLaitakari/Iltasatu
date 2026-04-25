@@ -37,13 +37,28 @@
   margin: 0;
 }
 
+/* Yhteinen grid-pohja */
+.levea-grid {
+  display: grid;
+  gap: 2rem;
+  margin: 0 auto;
+}
+
 /* Adjektiivi-valinta */
-.adjektiivi-grid {
+.sailio-keskikoko {
   max-width: 900px;
 }
 
 .adjektiivi-kategoria {
   text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.adjektiivi-kategoria.adjektiivi-kategoria-taustalla {
+  border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .adjektiivi-kategoria-otsikko {
@@ -51,6 +66,12 @@
   font-size: 1.3rem;
   margin: 0 0 1rem 0;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.adjektiivi-kategoria.adjektiivi-kategoria-taustalla .adjektiivi-kategoria-otsikko,
+.adjektiivi-kategoria.adjektiivi-kategoria-taustalla .adjektiivi-sivu-indikaattori {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .adjektiivi-sivu-indikaattori {
@@ -63,11 +84,6 @@
   padding: 0.5rem 1rem;
   border-radius: var(--border-radius-pill);
   font-size: 0.9rem;
-}
-
-/* Ammatti-valinta */
-.ammatti-grid {
-  max-width: 800px;
 }
 
 .ammatti-kategoria {
@@ -94,11 +110,67 @@
 }
 
 .ammatti-kortit-lista {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  max-width: 760px;
-  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 2rem 0;
+}
+
+.ammatti-kortit-lista > .kortti {
+  flex: 1 1 300px;
+  min-width: 280px;
+  max-width: 400px;
+}
+
+/* Kapea asettelu - kortit allekkain */
+.ammatti-kortit-lista.kapea {
+  max-width: 500px;
+  margin: 2rem auto;
+}
+
+.ammatti-kortit-lista.kapea > .kortti {
+  flex: 1 1 100%;
+  min-width: auto;
+  max-width: none;
+}
+
+/* Kuvaaja-kategoria - sama rakenne kuin ammatti */
+.kuvaaja-kategoria {
+  background: var(--background-light);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-lighter);
+}
+
+.kuvaaja-kategoria.kuvaaja-kategoria-taustalla {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.kuvaaja-kortit-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 2rem 0;
+}
+
+.kuvaaja-kortit-lista > .kortti {
+  flex: 1 1 300px;
+  min-width: 280px;
+  max-width: 400px;
+}
+
+/* Kapea asettelu kuvaajille - kortit allekkain */
+.kuvaaja-kortit-lista.kapea {
+  max-width: 500px;
+  margin: 2rem auto;
+}
+
+.kuvaaja-kortit-lista.kapea > .kortti {
+  flex: 1 1 100%;
+  min-width: auto;
+  max-width: none;
 }
 
 .ammatti-btn {
@@ -107,12 +179,6 @@
 }
 
 /* Apply base classes to specific elements */
-.adjektiivi-grid,
-.ammatti-grid {
-  display: grid;
-  gap: 2rem;
-  margin: 0 auto;
-}
 
 .adjektiivi-valinnat,
 .ammatti-valinnat,
@@ -120,6 +186,33 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+/* Kortit-grid - adjektiiville */
+.kortit-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 2rem 0;
+}
+
+.kortit-grid > .kortti {
+  flex: 1 1 300px;
+  min-width: 280px;
+  max-width: 400px;
+}
+
+/* Kapea asettelu adjektiiveille - kortit allekkain */
+.kortit-grid.kapea {
+  max-width: 500px;
+  margin: 2rem auto;
+}
+
+.kortit-grid.kapea > .kortti {
+  flex: 1 1 100%;
+  min-width: auto;
+  max-width: none;
 }
 
 .adjektiivi-valinnat,
@@ -155,23 +248,25 @@
   box-shadow: var(--shadow-primary);
 }
 
-/* Henkilötiedot-lomake */
-.lomake-grid {
+/* Container sizes */
+.sailio-kapea {
   max-width: 600px;
-  margin: 0 auto;
-  display: grid;
-  gap: 2rem;
+}
+
+/* Form card styling */
+.lomake-kortti {
   background: var(--background-light);
   padding: 1.5rem;
   border-radius: 12px;
   border: 1px solid var(--border-lighter);
+  overflow: visible;
 }
 
-.lomake-grid.lomake-grid-taustalla {
+.lomake-kortti.lomake-kortti-taustalla {
   border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
-.lomake-grid.lomake-grid-taustalla .kentta label {
+.lomake-kortti.lomake-kortti-taustalla .kentta label {
   color: #ffffff;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
@@ -182,6 +277,11 @@
   color: #2c3e50;
   margin-bottom: 0.5rem;
   font-size: 1rem;
+}
+
+.kentta {
+  overflow: visible;
+  position: relative;
 }
 
 .kentta input,
@@ -210,6 +310,8 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
   margin-top: 0.5rem;
+  position: relative;
+  z-index: 1;
 }
 
 /* Base card style for all interactive cards */
@@ -222,6 +324,7 @@
   cursor: pointer;
   transition: var(--transition-standard);
   text-align: center;
+  position: relative;
 }
 
 .luonne-kortti h4 {
@@ -256,6 +359,36 @@
 
 .luonne-kortti.valittu p {
   color: var(--white-transparent);
+}
+
+/* Hover popup for luonne cards */
+.luonne-hover-popup {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.95);
+  color: white;
+  padding: 1rem;
+  border-radius: var(--border-radius-standard);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  z-index: 9999;
+  width: 320px;
+  max-width: 90vw;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: fadeInRight 0.3s ease;
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* Esimerkit sielu-voimalle */
@@ -454,6 +587,164 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
+.olen-sivu .ammatti-kategoria {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.olen-sivu .kuvaaja-kategoria {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.olen-sivu .adjektiivi-kategoria {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.olen-sivu .ammatti-kategoria h3,
+.olen-sivu .ammatti-kategoria .adjektiivi-sivu-indikaattori,
+.olen-sivu .adjektiivi-kategoria h3,
+.olen-sivu .adjektiivi-kategoria .adjektiivi-sivu-indikaattori,
+.olen-sivu .adjektiivi-kategoria .adjektiivi-kategoria-otsikko {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Ammatti-sivu taustakuvalla - samat tyylit kuin olen-sivu */
+.ammatti-sivu {
+  padding: 2rem;
+}
+
+.ammatti-sivu .vaihe-otsikko h2,
+.ammatti-sivu .vaihe-otsikko p {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+.ammatti-sivu .kortti {
+  backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.ammatti-sivu .kortti .kortti-nimi,
+.ammatti-sivu .kortti .kortti-kuvaus,
+.ammatti-sivu .kortti .kortti-extra {
+  color: #333333 !important;
+  text-shadow: none !important;
+}
+
+.ammatti-sivu .ammatti-kategoria {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.ammatti-sivu .adjektiivi-kategoria {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.ammatti-sivu .ammatti-kategoria h3,
+.ammatti-sivu .ammatti-kategoria .adjektiivi-sivu-indikaattori,
+.ammatti-sivu .adjektiivi-kategoria h3,
+.ammatti-sivu .adjektiivi-kategoria .adjektiivi-sivu-indikaattori,
+.ammatti-sivu .adjektiivi-kategoria .adjektiivi-kategoria-otsikko {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Arkkityyppi-sivu taustakuvalla - säilyttää korttikuvat */
+.arkkityyppi-sivu {
+  padding: 2rem;
+}
+
+.arkkityyppi-sivu .vaihe-otsikko h2,
+.arkkityyppi-sivu .vaihe-otsikko p {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+.arkkityyppi-sivu .kuvaaja-kategoria {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+/* Voima-sivu taustakuvalla - samat tyylit kuin ammatti-sivu */
+.voima-sivu {
+  padding: 2rem;
+}
+
+.voima-sivu .vaihe-otsikko h2,
+.voima-sivu .vaihe-otsikko p {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+.voima-sivu .kortti {
+  backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.voima-sivu .kortti .kortti-nimi,
+.voima-sivu .kortti .kortti-kuvaus,
+.voima-sivu .kortti .kortti-extra {
+  color: #333333 !important;
+  text-shadow: none !important;
+}
+
+.voima-sivu .ammatti-kategoria {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.voima-sivu .ammatti-kategoria h3,
+.voima-sivu .ammatti-kategoria .adjektiivi-sivu-indikaattori,
+.voima-sivu .ammatti-kategoria p {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Rotu-sivu taustakuvalla - samat tyylit kuin ammatti-sivu */
+.rotu-sivu {
+  padding: 2rem;
+}
+
+.rotu-sivu .vaihe-otsikko h2,
+.rotu-sivu .vaihe-otsikko p {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+.rotu-sivu .kortti {
+  backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.rotu-sivu .kortti .kortti-nimi,
+.rotu-sivu .kortti .kortti-kuvaus,
+.rotu-sivu .kortti .kortti-extra {
+  color: #333333 !important;
+  text-shadow: none !important;
+}
+
+.rotu-sivu .ammatti-kategoria {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.rotu-sivu .ammatti-kategoria h3,
+.rotu-sivu .ammatti-kategoria .adjektiivi-sivu-indikaattori,
+.rotu-sivu .ammatti-kategoria p {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
 .valmis-sivu {
   text-align: center;
   padding: 4rem 2rem;
@@ -473,9 +764,8 @@
 }
 
 @media (max-width: 768px) {
-  .adjektiivi-grid,
-  .ammatti-grid,
-  .lomake-grid {
+  .levea-grid,
+  .lomake-kortti {
     padding: 0 1rem;
   }
   
@@ -485,7 +775,7 @@
   
   .hahmo-kortti {
     margin: 0 1rem 2rem 1rem;
-    padding: 1.5rem;
+    padding: 8px;
   }
   
   .valmis-sivu h1 {
@@ -699,6 +989,13 @@
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+/* Taustakuvan kanssa */
+.sovellus[style*="background-image"] .hahmolista-header h1,
+.sovellus[style*="background-image"] .hahmolista-tilastot {
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
 .hahmo-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -708,11 +1005,33 @@
   margin: 0 auto;
 }
 
+.arkkityyppi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 0 2rem;
+  margin: 2rem 0;
+}
+
+.kuvaaja-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 2rem 0;
+}
+
+.kuvaaja-grid > .kortti {
+  flex: 1 1 300px;
+  min-width: 280px;
+  max-width: 400px;
+}
+
 .hahmo-kortti {
   background: white;
   border: 2px solid var(--border-light);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 8px;
   cursor: pointer;
   transition: var(--transition-standard);
   box-shadow: var(--shadow-card);
@@ -736,6 +1055,8 @@
   color: var(--text-color);
   margin: 0;
   font-size: 1.2rem;
+  text-align: center;
+  flex: 1;
 }
 
 .btn-poista {
@@ -811,6 +1132,38 @@
   .hahmo-grid {
     grid-template-columns: 1fr;
     padding: 0 1rem;
+  }
+  
+  .arkkityyppi-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+  }
+  
+  .kuvaaja-grid {
+    flex-direction: column;
+    padding: 0;
+  }
+  
+  .kuvaaja-grid > .kortti {
+    max-width: none;
+  }
+  
+  .ammatti-kortit-lista {
+    flex-direction: column;
+    padding: 0;
+  }
+  
+  .ammatti-kortit-lista > .kortti {
+    max-width: none;
+  }
+  
+  .kuvaaja-kortit-lista {
+    flex-direction: column;
+    padding: 0;
+  }
+  
+  .kuvaaja-kortit-lista > .kortti {
+    max-width: none;
   }
   
   .hahmo-yksityiskohdat-header {
