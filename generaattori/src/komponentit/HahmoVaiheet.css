@@ -69,12 +69,12 @@
 }
 
 .adjektiivi-kategoria.adjektiivi-kategoria-taustalla .adjektiivi-kategoria-otsikko,
-.adjektiivi-kategoria.adjektiivi-kategoria-taustalla .adjektiivi-sivu-indikaattori {
+.adjektiivi-kategoria.adjektiivi-kategoria-taustalla .vaihe-indikaattori {
   color: #ffffff;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-.adjektiivi-sivu-indikaattori {
+.vaihe-indikaattori {
   color: var(--white-transparent);
   margin: 0 0 1rem 0;
   font-size: 0.95rem;
@@ -104,7 +104,7 @@
 }
 
 .ammatti-kategoria.ammatti-kategoria-taustalla h3,
-.ammatti-kategoria.ammatti-kategoria-taustalla .adjektiivi-sivu-indikaattori {
+.ammatti-kategoria.ammatti-kategoria-taustalla .vaihe-indikaattori {
   color: #ffffff;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
@@ -569,190 +569,49 @@
   border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Olen-sivu taustakuvalla */
-.olen-sivu {
+/* Sivut taustakuvalla */
+.taustakuvalla {
   padding: 2rem;
 }
 
-.olen-sivu .vaihe-otsikko h2,
-.olen-sivu .vaihe-otsikko p {
+.taustakuvalla .vaihe-otsikko h2,
+.taustakuvalla .vaihe-otsikko p {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   color: white;
 }
 
-.olen-sivu .kortti {
+.taustakuvalla .kortti:not(.kortti-taustakuvalla) {
   backdrop-filter: blur(5px);
   background: rgba(255, 255, 255, 0.95) !important;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.olen-sivu .ammatti-kategoria {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-}
-
-.olen-sivu .kuvaaja-kategoria {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-}
-
-.olen-sivu .adjektiivi-kategoria {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-}
-
-.olen-sivu .ammatti-kategoria h3,
-.olen-sivu .ammatti-kategoria .adjektiivi-sivu-indikaattori,
-.olen-sivu .adjektiivi-kategoria h3,
-.olen-sivu .adjektiivi-kategoria .adjektiivi-sivu-indikaattori,
-.olen-sivu .adjektiivi-kategoria .adjektiivi-kategoria-otsikko {
-  color: #ffffff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-}
-
-/* Ammatti-sivu taustakuvalla - samat tyylit kuin olen-sivu */
-.ammatti-sivu {
-  padding: 2rem;
-}
-
-.ammatti-sivu .vaihe-otsikko h2,
-.ammatti-sivu .vaihe-otsikko p {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  color: white;
-}
-
-.ammatti-sivu .kortti {
-  backdrop-filter: blur(5px);
-  background: rgba(255, 255, 255, 0.95) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.ammatti-sivu .kortti .kortti-nimi,
-.ammatti-sivu .kortti .kortti-kuvaus,
-.ammatti-sivu .kortti .kortti-extra {
+.taustakuvalla .kortti:not(.kortti-taustakuvalla) .kortti-nimi,
+.taustakuvalla .kortti:not(.kortti-taustakuvalla) .kortti-kuvaus,
+.taustakuvalla .kortti:not(.kortti-taustakuvalla) .kortti-extra {
   color: #333333 !important;
   text-shadow: none !important;
 }
 
-.ammatti-sivu .ammatti-kategoria {
+.taustakuvalla .ammatti-kategoria,
+.taustakuvalla .kuvaaja-kategoria,
+.taustakuvalla .adjektiivi-kategoria {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
-.ammatti-sivu .adjektiivi-kategoria {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-}
-
-.ammatti-sivu .ammatti-kategoria h3,
-.ammatti-sivu .ammatti-kategoria .adjektiivi-sivu-indikaattori,
-.ammatti-sivu .adjektiivi-kategoria h3,
-.ammatti-sivu .adjektiivi-kategoria .adjektiivi-sivu-indikaattori,
-.ammatti-sivu .adjektiivi-kategoria .adjektiivi-kategoria-otsikko {
+.taustakuvalla .ammatti-kategoria h3,
+.taustakuvalla .ammatti-kategoria .vaihe-indikaattori,
+.taustakuvalla .ammatti-kategoria p,
+.taustakuvalla .adjektiivi-kategoria h3,
+.taustakuvalla .adjektiivi-kategoria .vaihe-indikaattori,
+.taustakuvalla .adjektiivi-kategoria .adjektiivi-kategoria-otsikko {
   color: #ffffff;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-/* Arkkityyppi-sivu taustakuvalla - säilyttää korttikuvat */
-.arkkityyppi-sivu {
-  padding: 2rem;
-}
-
-.arkkityyppi-sivu .vaihe-otsikko h2,
-.arkkityyppi-sivu .vaihe-otsikko p {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  color: white;
-}
-
-.arkkityyppi-sivu .kuvaaja-kategoria {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-}
-
-/* Voima-sivu taustakuvalla - samat tyylit kuin ammatti-sivu */
-.voima-sivu {
-  padding: 2rem;
-}
-
-.voima-sivu .vaihe-otsikko h2,
-.voima-sivu .vaihe-otsikko p {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  color: white;
-}
-
-.voima-sivu .kortti {
-  backdrop-filter: blur(5px);
-  background: rgba(255, 255, 255, 0.95) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.voima-sivu .kortti .kortti-nimi,
-.voima-sivu .kortti .kortti-kuvaus,
-.voima-sivu .kortti .kortti-extra {
-  color: #333333 !important;
-  text-shadow: none !important;
-}
-
-.voima-sivu .ammatti-kategoria {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-}
-
-.voima-sivu .ammatti-kategoria h3,
-.voima-sivu .ammatti-kategoria .adjektiivi-sivu-indikaattori,
-.voima-sivu .ammatti-kategoria p {
-  color: #ffffff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-}
-
-/* Rotu-sivu taustakuvalla - samat tyylit kuin ammatti-sivu */
-.rotu-sivu {
-  padding: 2rem;
-}
-
-.rotu-sivu .vaihe-otsikko h2,
-.rotu-sivu .vaihe-otsikko p {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  color: white;
-}
-
-.rotu-sivu .kortti {
-  backdrop-filter: blur(5px);
-  background: rgba(255, 255, 255, 0.95) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.rotu-sivu .kortti .kortti-nimi,
-.rotu-sivu .kortti .kortti-kuvaus,
-.rotu-sivu .kortti .kortti-extra {
-  color: #333333 !important;
-  text-shadow: none !important;
-}
-
-.rotu-sivu .ammatti-kategoria {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-}
-
-.rotu-sivu .ammatti-kategoria h3,
-.rotu-sivu .ammatti-kategoria .adjektiivi-sivu-indikaattori,
-.rotu-sivu .ammatti-kategoria p {
-  color: #ffffff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-}
-
-.valmis-sivu {
-  text-align: center;
-  padding: 4rem 2rem;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.valmis-sivu h1 {
+.keskitetty-nakyma h1 {
   color: #27ae60;
   margin-bottom: 2rem;
   font-size: 2.5rem;
@@ -778,7 +637,7 @@
     padding: 8px;
   }
   
-  .valmis-sivu h1 {
+  .keskitetty-nakyma h1 {
     font-size: 2rem;
   }
 }

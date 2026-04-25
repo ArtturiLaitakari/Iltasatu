@@ -48,7 +48,7 @@ function OlenValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     : undefined;
 
   return (
-    <div className={`vaihe-sisalto ${taustaKuva ? 'olen-sivu' : ''}`}>
+    <div className={`vaihe-sisalto ${taustaKuva ? 'taustakuvalla' : ''}`}>
       <div className="vaihe-otsikko">
         <h2>Olen...</h2>
         <p>Valitse kuvaaja, joka parhaiten kuvaa hahmosi luonnetta</p>

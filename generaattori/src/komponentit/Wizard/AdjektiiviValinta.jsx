@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { adjektiivit } from '../../data/adjektiivit.js';
 import Kortti from '../Kortti.jsx';
+import { KORTTI_DEFAULTS } from '../../constants';
 import '../HahmoVaiheet.css';
+import adjektiiviTausta from '../../kuvat/hahmot_taustakuva.jpg';
 
 const adjektiiviVaiheet = [
   { avain: 'keho', nimi: 'Keho' },
@@ -50,21 +52,22 @@ function AdjektiiviValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = nul
     };
 
     return (
-      <div className="vaihe-sisalto">
+      <div className={`vaihe-sisalto ${adjektiiviTausta ? 'taustakuvalla' : ''}`}>
         <div className="vaihe-otsikko">
           <h2>{aktiivinenKategoria.nimi} Adjektiivi</h2>
           <p>Valitse adjektiivi, joka kuvaa hahmosi {aktiivinenKategoria.nimi.toLowerCase()}-ominaisuutta</p>
         </div>
 
-        <div className="levea-grid sailio-keskikoko">
-          <div className="adjektiivi-kategoria">
-            <div className="kortit-grid">
+        <div className="levea-grid">
+          <div className={`kuvaaja-kategoria ${adjektiiviTausta ? 'kuvaaja-kategoria-taustalla' : ''}`}>
+            <div className="kuvaaja-kortit-lista">
               {adjektiivit.map((adj) => (
                 <Kortti
                   key={adj.id}
                   nimi={adj.nimi}
                   kuvaus={adj.kuvaus}
                   kuva={adj.kuva ? new URL(`../../kuvat/${adj.kuva}`, import.meta.url).href : null}
+                  korttiKorkeus={KORTTI_DEFAULTS.KORKEUS}
                   valittu={hahmo.adjektiivit?.[aktiivinenKategoria.avain] === adj.id}
                   onClick={() => valitseAdjektiivi(adj.id)}
                 />
@@ -72,6 +75,16 @@ function AdjektiiviValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = nul
             </div>
           </div>
         </div>
+
+        {adjektiiviTausta && (
+          <style>{`
+            .sovellus {
+              background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${adjektiiviTausta}) !important;
+              background-size: cover !important;
+              background-position: center !important;
+            }
+          `}</style>
+        )}
       </div>
     );
   }
@@ -101,25 +114,26 @@ function AdjektiiviValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = nul
   const aktiivinenVaihe = adjektiiviVaiheet[nykyinenSivu];
 
   return (
-    <div className="vaihe-sisalto">
+    <div className={`vaihe-sisalto ${adjektiiviTausta ? 'adjektiivi-sivu' : ''}`}>
       <div className="vaihe-otsikko">
         <h2>Valitse Adjektiivit</h2>
         <p>Valitse yksi adjektiivi kullekin ominaisuudelle vaiheittain</p>
       </div>
 
-      <div className="levea-grid sailio-keskikoko">
-        <div className="adjektiivi-kategoria">
+      <div className="levea-grid">
+        <div className={`kuvaaja-kategoria ${adjektiiviTausta ? 'kuvaaja-kategoria-taustalla' : ''}`}>
           <h3 className="adjektiivi-kategoria-otsikko">{aktiivinenVaihe.nimi}</h3>
-          <p className="adjektiivi-sivu-indikaattori">
+          <p className="vaihe-indikaattori">
             {nykyinenSivu + 1} / {adjektiiviVaiheet.length}
           </p>
-          <div className="kortit-grid">
+          <div className="kuvaaja-kortit-lista">
             {adjektiivit.map((adj) => (
               <Kortti
                 key={adj.id}
                 nimi={adj.nimi}
                 kuvaus={adj.kuvaus}
                 kuva={adj.kuva ? new URL(`../../kuvat/${adj.kuva}`, import.meta.url).href : null}
+                korttiKorkeus={KORTTI_DEFAULTS.KORKEUS}
                 valittu={hahmo.adjektiivit[aktiivinenVaihe.avain] === adj.id}
                 onClick={() => valitseAdjektiivi(aktiivinenVaihe.avain, adj.id)}
               />
@@ -127,6 +141,16 @@ function AdjektiiviValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = nul
           </div>
         </div>
       </div>
+      
+      {adjektiiviTausta && (
+        <style>{`
+          .sovellus {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${adjektiiviTausta}) !important;
+            background-size: cover !important;
+            background-position: center !important;
+          }
+        `}</style>
+      )}
     </div>
   );
 }

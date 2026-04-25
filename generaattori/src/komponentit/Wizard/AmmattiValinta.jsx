@@ -91,7 +91,7 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
       : undefined;
 
     return (
-      <div className={`vaihe-sisalto ${taustaKuva ? 'ammatti-sivu' : ''}`}>
+      <div className={`vaihe-sisalto ${taustaKuva ? 'taustakuvalla' : ''}`}>
         <div className="vaihe-otsikko">
           <h2>{aktiivinenKategoria.nimi} Ammatti</h2>
           <p>Valitse {aktiivinenKategoria.nimi.toLowerCase()} ammatti hahmollesi</p>
@@ -271,7 +271,7 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
       <div className="levea-grid">
         <div className={`ammatti-kategoria ${taustaKuva ? 'ammatti-kategoria-taustalla' : ''}`} style={taustaTyyli}>
           <h3>{aktiivinenVaihe.nimi} {aktiivinenVaihe.otsikko}</h3>
-          <p className="adjektiivi-sivu-indikaattori">{nykyinenSivu + 1} / {ammattiVaiheet.length}</p>
+          <p className="vaihe-indikaattori">{nykyinenSivu + 1} / {ammattiVaiheet.length}</p>
           <div className="ammatti-kortit-lista">
             {ammatit.map((ammatti) => (
               <Kortti

@@ -1,4 +1,5 @@
 import Kortti from '../Kortti.jsx';
+import { KORTTI_DEFAULTS } from '../../constants';
 import '../HahmoVaiheet.css';
 import { arkkityypit } from '../../data/arkkityypit.js';
 import soturiKuva from '../../kuvat/Soturi.jpeg';
@@ -7,33 +8,10 @@ import bardiKuva from '../../kuvat/Bardi.jpg';
 import tietajaKuva from '../../kuvat/Tietaja.jpg';
 import maagiKuva from '../../kuvat/Maagi.jpg';
 import soturimaagiKuva from '../../kuvat/Soturimaagi.jpg';
-
-const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
-  eager: true,
-  import: 'default'
-});
+import kehoAmmattiTausta from '../../kuvat/keho_ammatti.jpg';
 
 function ArkkityyppiValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
-  const haeTaustaKuva = () => {
-    const tiedostoVaihtoehdot = [
-      'keho_ammatti.jpg',
-      'keho_tausta.jpg',
-      'keho_tausta.jpeg',
-      'keho_tausta.png',
-      'keho_tausta.webp'
-    ];
-
-    for (const tiedostoNimi of tiedostoVaihtoehdot) {
-      const osuma = Object.entries(taustaKuvat).find(([polku]) => polku.endsWith(`/${tiedostoNimi}`));
-      if (osuma) {
-        return osuma[1];
-      }
-    }
-
-    return null;
-  };
-
-  const taustaKuva = haeTaustaKuva();
+  const taustaKuva = kehoAmmattiTausta;
   
   const arkkityyppiKuvat = {
     soturi: soturiKuva,
@@ -42,13 +20,6 @@ function ArkkityyppiValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     tietaja: tietajaKuva,
     maagi: maagiKuva,
     soturimaagi: soturimaagiKuva
-  };
-
-  const arkkityyppiTaustaSijainnit = {
-    soturi: 'top',
-    temppeliritari: 'top',
-    bardi: 'top',
-    soturimaagi: 'top'
   };
 
   const valitseArkkityyppi = (arkkityyppiId) => {
@@ -76,7 +47,7 @@ function ArkkityyppiValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   };
 
   return (
-    <div className={`vaihe-sisalto ${taustaKuva ? 'arkkityyppi-sivu' : ''}`}>
+    <div className={`vaihe-sisalto ${taustaKuva ? 'taustakuvalla' : ''}`}>
       <div className="vaihe-otsikko">
         <h2>Valitse Arkkityyppi</h2>
         <p>Arkkityyppi määrää hahmon perusominaisuudet ja kehityssuunnan</p>
@@ -91,7 +62,7 @@ function ArkkityyppiValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
                 nimi={arkkityyppi.nimi}
                 kuvaus={arkkityyppi.kuvaus}
                 kuva={arkkityyppiKuvat[id]}
-                taustaSijainti={arkkityyppiTaustaSijainnit[id] || 'center'}
+                korttiKorkeus={KORTTI_DEFAULTS.KORKEUS}
                 valittu={hahmo.arkkityyppi === id}
                 onClick={() => valitseArkkityyppi(id)}
                 extraInfo={luoStatsKuvaus(arkkityyppi)}

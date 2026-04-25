@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
+import { UI_CONSTANTS } from '../../constants';
+import WizardErrorBoundary from './WizardErrorBoundary.jsx';
 import './Wizard.css';
 
 function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis, onHahmoLista }) {
   const [nykyinenVaihe, asetaNykyinenVaihe] = useState(() => {
-    const tallennettuVaihe = localStorage.getItem('iltasatu-nykyinen-vaihe');
+    const tallennettuVaihe = localStorage.getItem(UI_CONSTANTS.LOCAL_STORAGE_KEYS.CURRENT_STEP);
     return tallennettuVaihe ? parseInt(tallennettuVaihe, 10) : 0;
   });
 
   // Tallenna nykyinen vaihe localStorageen
   useEffect(() => {
-    localStorage.setItem('iltasatu-nykyinen-vaihe', nykyinenVaihe.toString());
+    localStorage.setItem(UI_CONSTANTS.LOCAL_STORAGE_KEYS.CURRENT_STEP, nykyinenVaihe.toString());
   }, [nykyinenVaihe]);
 
   // Skrollaa sivun yläosaan kun vaihe vaihtuu
@@ -44,7 +46,7 @@ function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis, onHahmoLista }) {
 
   return (
     <div className="wizard">
-      {nykyinenVaihe === 0 && <h1>Iltasatu Hahmonluonti</h1>}
+      {nykyinenVaihe === 0 && <h1>{UI_CONSTANTS.APP_TITLE}</h1>}
       
       {/* Edellinen-nappi vasempaan yläkulmaan */}
       {nykyinenVaihe > 0 && (
@@ -65,12 +67,14 @@ function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis, onHahmoLista }) {
       </div>
 
       <div className="wizard-content">
-        <VaiheKomponentti 
-          hahmo={hahmo}
-          paivitaHahmo={paivitaHahmo}
-          seuraavaVaihe={seuraavaVaihe}
-          onHahmoLista={hahmoLista}
-        />
+        <WizardErrorBoundary onReset={() => asetaNykyinenVaihe(0)}>
+          <VaiheKomponentti 
+            hahmo={hahmo}
+            paivitaHahmo={paivitaHahmo}
+            seuraavaVaihe={seuraavaVaihe}
+            onHahmoLista={hahmoLista}
+          />
+        </WizardErrorBoundary>
       </div>
     </div>
   );

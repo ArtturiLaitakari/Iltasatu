@@ -46,7 +46,7 @@ function RotuValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const taustaKuva = haeTaustaKuva();
 
   return (
-    <div className={`vaihe-sisalto ${taustaKuva ? 'rotu-sivu' : ''}`}>
+    <div className={`vaihe-sisalto ${taustaKuva ? 'taustakuvalla' : ''}`}>
       <div className="vaihe-otsikko">
         <h2>Valitse Rotu</h2>
         <p>Valitse hahmon rotu</p>

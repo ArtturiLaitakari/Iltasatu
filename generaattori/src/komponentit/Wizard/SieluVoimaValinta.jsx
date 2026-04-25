@@ -120,7 +120,7 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const taustaKuva = haeTaustaKuva();
 
   return (
-    <div className={`vaihe-sisalto ${taustaKuva ? 'voima-sivu' : ''}`}>
+    <div className={`vaihe-sisalto ${taustaKuva ? 'taustakuvalla' : ''}`}>
       <div className="vaihe-otsikko">
         <h2>Voima</h2>
         <p>Mystisen voiman perustiedot ja ensimmäinen kyky</p>
@@ -132,7 +132,7 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
           {/* Aisti-kyky */}
           {aistiTiedot && (
             <div className="mb-2">
-              <p className="adjektiivi-sivu-indikaattori">Automaattinen peruskyky</p>
+              <p className="vaihe-indikaattori">Automaattinen peruskyky</p>
               <div className="ammatti-kortit-lista kapea">
                 <Kortti
                   nimi={aistiTiedot.nimi}
@@ -147,7 +147,7 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
           
           {/* Voimakyvyt */}
           <div>
-            <p className="adjektiivi-sivu-indikaattori">
+            <p className="vaihe-indikaattori">
               {tasonYksiKyvyt.length === 1 ? 'Automaattinen 1. tason kyky' : 'Valitse kyky'}
             </p>
             
@@ -175,7 +175,7 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
           {/* Vapaakuvaus tekstikenttä tietyille voimatyypeille */}
           {valittuVoima && tarvitseeVapaakuvaus && (
             <div className="mt-2">
-              <p className="adjektiivi-sivu-indikaattori">{haeVapaakuvausOtsikko()}</p>
+              <p className="vaihe-indikaattori">{haeVapaakuvausOtsikko()}</p>
               <div className="kentta">
                 <input
                   type="text"
