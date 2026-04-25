@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Wizard from './komponentit/Wizard/Wizard.jsx';
+import HahmoLista from './komponentit/HahmoLista.jsx';
 import GenreValinta from './komponentit/Wizard/GenreValinta.jsx';
 import ArkkityyppiValinta from './komponentit/Wizard/ArkkityyppiValinta.jsx';
 import OlenValinta from './komponentit/Wizard/OlenValinta.jsx';
@@ -15,6 +16,7 @@ import './Sovellus.css';
 function Sovellus() {
   const [hahmo, asetaHahmo] = useState(luoTyhjaHahmo);
   const [wizardValmis, asetaWizardValmis] = useState(false);
+  const [nakyma, asetaNakyma] = useState('wizard'); // 'wizard', 'hahmolista', 'valmis'
 
   const wizardVaiheet = [
     {
@@ -74,9 +76,18 @@ function Sovellus() {
   const aloitaUudelleen = () => {
     asetaHahmo(luoTyhjaHahmo());
     asetaWizardValmis(false);
+    asetaNakyma('wizard');
   };
 
-  if (wizardValmis) {
+  const vieHahmoListaan = () => {
+    asetaNakyma('hahmolista');
+  };
+
+  const takaisinWizardiin = () => {
+    asetaNakyma('wizard');
+  };
+
+  if (wizardValmis || nakyma === 'valmis') {
     return (
       <div className="sovellus">
         <div className="valmis-sivu">
@@ -91,6 +102,12 @@ function Sovellus() {
     );
   }
 
+  if (nakyma === 'hahmolista') {
+    return (
+      <HahmoLista onTakaisin={takaisinWizardiin} />
+    );
+  }
+
   return (
     <div className="sovellus">
       <Wizard 
@@ -98,6 +115,7 @@ function Sovellus() {
         hahmo={hahmo}
         paivitaHahmo={asetaHahmo}
         onValmis={() => asetaWizardValmis(true)}
+        onHahmoLista={vieHahmoListaan}
       />
     </div>
   );

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './Wizard.css';
 
-function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis }) {
+function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis, onHahmoLista }) {
   const [nykyinenVaihe, asetaNykyinenVaihe] = useState(() => {
     const tallennettuVaihe = localStorage.getItem('iltasatu-nykyinen-vaihe');
     return tallennettuVaihe ? parseInt(tallennettuVaihe, 10) : 0;
@@ -35,6 +35,10 @@ function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis }) {
     asetaNykyinenVaihe(0);
   };
 
+  const hahmoLista = () => {
+    onHahmoLista && onHahmoLista();
+  };
+
   const nykyinenVaiheKomponentti = vaiheet[nykyinenVaihe];
   const VaiheKomponentti = nykyinenVaiheKomponentti.komponentti;
 
@@ -43,7 +47,7 @@ function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis }) {
       {nykyinenVaihe === 0 && <h1>Iltasatu Hahmonluonti</h1>}
       <div className="wizard-progress-popup">
         <span className="progress-text">
-          <span onClick={paasivu} style={{cursor: 'pointer'}}>🏠</span> 👤 Vaihe {nykyinenVaihe + 1} / {vaiheet.length}: {nykyinenVaiheKomponentti.nimi}
+          <span onClick={paasivu} style={{cursor: 'pointer'}}>🏠</span> <span onClick={hahmoLista} style={{cursor: 'pointer'}}>👤</span> Vaihe {nykyinenVaihe + 1} / {vaiheet.length}: {nykyinenVaiheKomponentti.nimi}
         </span>
       </div>
 

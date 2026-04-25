@@ -681,3 +681,139 @@
     margin: 1px 0 !important;
   }
 }
+
+/* ===== HAHMOLISTAUS TYYLIT ===== */
+
+.hahmolista-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hahmolista-header h1 {
+  color: var(--text-color);
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hahmo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 0 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hahmo-kortti {
+  background: white;
+  border: 2px solid var(--border-light);
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: var(--transition-standard);
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+
+.hahmo-kortti:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: var(--primary-color);
+}
+
+.hahmo-kortti-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.hahmo-kortti-header h3 {
+  color: var(--text-color);
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.btn-poista {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: var(--transition-standard);
+}
+
+.btn-poista:hover {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.hahmo-kortti-info {
+  margin-bottom: 1rem;
+}
+
+.hahmo-kortti-info p {
+  margin: 0.25rem 0;
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+.hahmo-kortti-aika {
+  border-top: 1px solid var(--border-lighter);
+  padding-top: 0.75rem;
+  margin-top: 1rem;
+}
+
+.hahmo-kortti-aika small {
+  color: var(--text-light);
+  font-size: 0.8rem;
+}
+
+.tyhja-lista {
+  padding: 4rem 2rem;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hahmolista-tilastot {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-light);
+}
+
+.hahmo-yksityiskohdat-header {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .hahmolista-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .hahmo-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+  }
+  
+  .hahmo-yksityiskohdat-header {
+    flex-direction: column;
+  }
+}
