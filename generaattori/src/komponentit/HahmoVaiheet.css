@@ -721,6 +721,50 @@
 .text-left { text-align: left; }
 
 /* Layout containers */
+.layout-flex-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.layout-flex-grid .voima-item {
+  flex: 1 1 240px;
+  min-width: 220px;
+  max-width: 320px;
+  padding: 1rem;
+  background: var(--background-light);
+  border: 1px solid var(--border-lighter);
+  border-radius: var(--border-radius-standard);
+  margin-bottom: 0;
+}
+
+.layout-flex-grid .voima-item.voima-item-upgradeable {
+  border: 2px solid #2f80ed;
+  box-shadow: 0 0 0 2px rgba(47, 128, 237, 0.18);
+  cursor: pointer;
+}
+
+.layout-flex-grid .voima-item.voima-item-upgradeable:hover {
+  transform: translateY(-1px);
+}
+
+.voima-item-inline-upgradeable {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border: 2px solid #2f80ed;
+  border-radius: 8px;
+  box-shadow: 0 0 0 2px rgba(47, 128, 237, 0.18);
+  cursor: pointer;
+}
+
+.layout-flex-grid .voima-item-wide {
+  flex: 1 1 500px;
+  min-width: 440px;
+  max-width: 640px;
+}
+
 .layout-two-col {
   display: flex;
   gap: 0;
@@ -920,6 +964,34 @@
 /* ===== TULOSTUS CSS ===== */
 @media print {
 
+  /* Leveys tulostuksessa 100% */
+  .form-container-centered {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  
+  .form-card-fullwidth,
+  .paa-kortti {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .teksti-osio,
+  .info-kortti {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .table-flex-container {
+    width: 100% !important;
+  }
+  
+  .bordered-table,
+  .varusteet-taulukko,
+  .taistelu-taulukko {
+    width: 100% !important;
+  }
+
   /* Minimaaliset muutokset tulostukseen */
   .vaihe-sisalto {
     padding: 1px !important;
@@ -998,6 +1070,106 @@
 .hahmolista-header h1 {
   color: var(--text-color);
   margin: 0;
+}
+
+/* ===== FORM AND TABLE STYLING ===== */
+
+/* Form containers */
+.form-container-centered {
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.form-card-fullwidth {
+  width: 100%;
+  max-width: none;
+}
+
+/* Table layouts */
+.table-flex-container {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.table-column-flex {
+  flex: 1;
+}
+
+/* Bordered table styling */
+.bordered-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+}
+
+.table-header-row {
+  background-color: #f5f5f5;
+}
+
+.table-cell-bordered {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.table-cell-center {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.table-cell-left {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+/* Column sizing */
+.table-column-narrow {
+  width: 25%;
+}
+
+.table-column-auto {
+  width: auto;
+}
+
+.table-column-small {
+  width: 20%;
+}
+
+.table-column-4ch {
+  width: 4ch;
+}
+
+/* Development and equipment section with page break for print */
+.development-equipment-section {
+  page-break-before: always;
+}
+
+@media print {
+  .development-equipment-section {
+    page-break-before: always;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* Piilota navigointi- ja toimintonapit tulostuksessa */
+  .wizard-back-button,
+  .wizard-floating-actions,
+  .wizard-progress-popup {
+    display: none !important;
+  }
+}
+
+/* Info text styling */
+.small-info-text {
+  display: block;
+  margin-top: 10px;
+  color: #666;
+  font-style: italic;
+}
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -1069,6 +1241,46 @@
   font-size: 1.2rem;
   text-align: center;
   flex: 1;
+}
+
+.xp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.xp-modal {
+  width: min(92vw, 420px);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  padding: 1rem 1.25rem;
+}
+
+.xp-modal-title {
+  margin: 0;
+  color: #fff;
+  font-size: 1.05rem;
+  text-align: center;
+}
+
+.xp-modal-actions {
+  margin-top: 0.9rem;
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+.xp-modal-actions .btn {
+  min-width: 90px;
+  padding: 0.55rem 1rem;
 }
 
 .btn-poista {

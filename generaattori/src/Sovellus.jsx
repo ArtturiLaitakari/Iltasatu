@@ -9,7 +9,6 @@ import {
   SieluVoimaValinta,
   HenkilotiedotLomake,
   RotuValinta,
-  HahmoYhteenveto,
   HahmoLomake,
   WizardErrorBoundary
 } from './komponentit/Wizard';
@@ -89,6 +88,8 @@ function Sovellus() {
   };
 
   const takaisinWizardiin = () => {
+    asetaHahmo(luoTyhjaHahmo());
+    localStorage.removeItem(UI_CONSTANTS.LOCAL_STORAGE_KEYS.CURRENT_STEP);
     asetaNakyma('wizard');
   };
 

@@ -25,6 +25,9 @@ function haeAloitusSivu(hahmo) {
 }
 
 function AdjektiiviValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }) {
+  // useState pitää kutsua aina komponentin alussa
+  const [nykyinenSivu, asetaNykyinenSivu] = useState(() => haeAloitusSivu(hahmo));
+
   // Jos kategoria on määritelty, käsitellään vain sitä
   if (kategoria) {
     const kategoriaData = {
@@ -90,8 +93,6 @@ function AdjektiiviValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = nul
   }
 
   // Alkuperäinen monivaihe-logiikka jos kategoria ei ole määritelty
-  const [nykyinenSivu, asetaNykyinenSivu] = useState(() => haeAloitusSivu(hahmo));
-
   const valitseAdjektiivi = (kategoria, adjektiiviId) => {
     paivitaHahmo({
       ...hahmo,

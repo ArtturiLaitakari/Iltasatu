@@ -1,6 +1,6 @@
 import { arkkityypit } from '../../data/arkkityypit.js';
 import { skaala, taitotasoSanallisesti, luonteet } from '../../data/muutData.js';
-import { voimat, aistit } from '../../data/voimat.js';
+import { aistit, voimat } from '../../data/voimat.js';
 import { ammatit } from '../../data/ammatit.js';
 import { adjektiivit } from '../../data/adjektiivit.js';
 import { tallennaHahmo } from '../../utils/hahmoLogiikka.js';
@@ -12,15 +12,9 @@ const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
   import: 'default'
 });
 
-function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKopioiFunktio, setTulostaFunktio, setTallennaFunktio }) {
+function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKopioiFunktio, setTulostaFunktio, setTallennaFunktio, siirryVoimanKykyyn }) {
   const arkkityyppiData = arkkityypit[hahmo.arkkityyppi];
   const hahmonSkaala = skaala.find(s => s.taso === hahmo.skaala);
-  
-  // Hae peruskyvyt hahmon valitun voiman tyypin perusteella
-  const genre = hahmo.genre || 'fantasia';
-  const genreAmmatit = ammatit[genre] || {};
-  const mystisetAmmatit = (genreAmmatit.mystinen || []).map((ammatti) => ammatti.nimi);
-  const onMystinen = hahmo.ammatit?.sielu && mystisetAmmatit.includes(hahmo.ammatit.sielu);
   
   // Etsi mikä voima on tasolla 1 (aktiivinen voima)
   let valittuVoimatyyppi = null;
@@ -31,11 +25,6 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
       valittuVoimatyyppi = aktiivinenVoima[0];
     }
   }
-  
-  const peruskyvyt = onMystinen && valittuVoimatyyppi ? (voimat[valittuVoimatyyppi]?.peruskyvyt || []) : [];
-  
-  // Hae valitut edistyneet kyvyt
-  const valitutEdistyneet = Array.isArray(hahmo.voimat?.valitut) ? hahmo.voimat.valitut : [];
 
   const haeTaustaKuva = () => {
     const tiedostoVaihtoehdot = [
@@ -153,6 +142,10 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
   };
 
   const luoTekstimuoto = () => {
+    // Luo teksti-muotoinen yhteenveto hahmosta
+    const teksti = `${hahmo.henkilotiedot.nimi || 'Anonyymi'} - ${hahmo.kuvaaja?.nimi || 'Tuntematon'}
+Keho: ${hahmo.keho}, Mieli: ${hahmo.mieli}, Sielu: ${hahmo.sielu}
+Rotu: ${hahmo.rotu?.nimi || 'Ei rotua'}, Luonne: ${hahmo.henkilotiedot?.luonne || 'Ei luonnetta'}`;
     navigator.clipboard.writeText(teksti);
   };
 
@@ -170,19 +163,93 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
   };
 
   const tallennaJaJaa = () => {
-    aloitaUudelleen && aloitaUudelleen();
+    tallennaHahmo(hahmo);
+    if (onHahmoLista) {
+      onHahmoLista();
+    } else if (aloitaUudelleen) {
+      aloitaUudelleen();
+    }
   };
+
+  const hahmopisteetYhteensa = Math.max(0, hahmo.hp || 0);
+  const kayttamattomatHahmopisteet = Math.max(0, hahmo.kayttamattomatHahmopisteet || 0);
+
+  const voikoNostaaOminaisuutta = (avain, maksimi) => {
+    if (!paivitaHahmo) return false;
+    if (kayttamattomatHahmopisteet <= 0) return false;
+    return (hahmo[avain] || 0) < maksimi;
+  };
+
+  const nostaOminaisuutta = (avain, maksimi) => {
+    if (!voikoNostaaOminaisuutta(avain, maksimi)) return;
+    paivitaHahmo({
+      ...hahmo,
+      [avain]: (hahmo[avain] || 0) + 1,
+      kayttamattomatHahmopisteet: kayttamattomatHahmopisteet - 1
+    });
+  };
+
+  const voimanMaksimi = haeVoimarajat(hahmo.skaala)[0]?.max || 3;
+  const nykyinenVoimataso = valittuVoimatyyppi && hahmo.voimat ? (hahmo.voimat[valittuVoimatyyppi] || 0) : 0;
+  const ominaisuudetMaksimissa =
+    (hahmo.keho || 0) >= (arkkityyppiData?.keho?.maksimi) &&
+    (hahmo.mieli || 0) >= (arkkityyppiData?.mieli?.maksimi ) &&
+    (hahmo.sielu || 0) >= (arkkityyppiData?.sielu?.maksimi );
+  const voimaMaksimissa = valittuVoimatyyppi ? nykyinenVoimataso >= voimanMaksimi : false;
+  const kaikkiOstettavatMaksimissa = ominaisuudetMaksimissa && voimaMaksimissa;
+  const valitutVoimakyvyt = (() => {
+    if (!valittuVoimatyyppi) return [];
+    const kaikkiKyvyt = voimat[valittuVoimatyyppi]?.peruskyvyt || [];
+    const valitutNimet = Array.isArray(hahmo.voimat?.valitut) ? [...hahmo.voimat.valitut] : [];
+    if (hahmo.voimat?.valittuVoima?.nimi && !valitutNimet.includes(hahmo.voimat.valittuVoima.nimi)) {
+      valitutNimet.push(hahmo.voimat.valittuVoima.nimi);
+    }
+    return valitutNimet
+      .map((nimi) => kaikkiKyvyt.find((kyky) => kyky.nimi === nimi))
+      .filter(Boolean);
+  })();
+
+  const voikoNostaaVoimaa = () => {
+    if (!paivitaHahmo) return false;
+    if (!siirryVoimanKykyyn) return false;
+    if (!valittuVoimatyyppi) return false;
+    if (kayttamattomatHahmopisteet <= 0) return false;
+    return nykyinenVoimataso < voimanMaksimi;
+  };
+
+  const nostaVoimaa = () => {
+    if (!voikoNostaaVoimaa()) return;
+    paivitaHahmo({
+      ...hahmo,
+      voimat: {
+        ...hahmo.voimat,
+        [valittuVoimatyyppi]: nykyinenVoimataso + 1,
+        valittuVoima: null
+      },
+      kayttamattomatHahmopisteet: kayttamattomatHahmopisteet - 1
+    });
+    if (siirryVoimanKykyyn) {
+      siirryVoimanKykyyn();
+    }
+  };
+
+  React.useEffect(() => {
+    if (!paivitaHahmo) return;
+    if ((hahmo.onkoRajamurto || false) === kaikkiOstettavatMaksimissa) return;
+    paivitaHahmo({ ...hahmo, onkoRajamurto: kaikkiOstettavatMaksimissa });
+  }, [hahmo, paivitaHahmo, kaikkiOstettavatMaksimissa]);
 
   // Välitä funktiot Wizard komponenttiin
   React.useEffect(() => {
     if (setKopioiFunktio) setKopioiFunktio(() => luoTekstimuoto);
     if (setTulostaFunktio) setTulostaFunktio(() => tulostahahmo);
     if (setTallennaFunktio) setTallennaFunktio(() => tallennaJaJaa);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="vaihe-sisalto" style={{ maxWidth: '80%', margin: '0 auto' }}>
-      <div className={`paa-kortti ${taustaKuva ? 'taustalla' : ''}`} style={{ ...taustaTyyli, width: '100%', maxWidth: 'none' }}>
+    <div className="vaihe-sisalto form-container-centered">
+      <div className={`paa-kortti form-card-fullwidth ${taustaKuva ? 'taustalla' : ''}`} style={{ ...taustaTyyli }}>
         <h3 className="kapitalisoi">
           {hahmo.henkilotiedot.nimi || 'Anonyymi'}, {hahmo.henkilotiedot.ika || '??'} vuotta, {hahmo.henkilotiedot.sukupuoli === 'M' ? 'Mies' : hahmo.henkilotiedot.sukupuoli === 'N' ? 'Nainen' : 'Sukupuoli ei määritelty'}
         </h3>
@@ -190,38 +257,51 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
         {/* Lyhyt yhteenveto */}
         <div className="info-kortti">
           <p className="olen-teksti">
-            Olen {hahmo.kuvaaja?.nimi || 'tuntematon'}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.keho, 0, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.keho)}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.mieli, 1, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.mieli)} ja {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.sielu, 2, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.sielu)}, rotuni on {hahmo.rotu?.nimi || ''}. Luonteeltani olen {hahmo.henkilotiedot?.luonne || ''} ja voimani on {valittuVoimatyyppi || 'ei voimaa'}.
+            Olen {hahmo.kuvaaja?.nimi || 'tuntematon'}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.keho, 0, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.keho)}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.mieli, 1, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.mieli)} ja {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.sielu, 2, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.sielu)}, rotuni on {hahmo.rotu?.nimi || ''}. Luonteeltani olen {hahmo.henkilotiedot?.luonne || ''} ja voimani on{' '}
+            <span
+              className={voikoNostaaVoimaa() ? 'voima-item-inline-upgradeable' : ''}
+              onClick={nostaVoimaa}
+            >
+              {valittuVoimatyyppi || 'ei voimaa'}{valittuVoimatyyppi ? ` ${luoYmpyraEsitys(nykyinenVoimataso, voimanMaksimi)}` : ''}
+            </span>
+            . {hahmo.onkoRajamurto ? 'Ääriraja murtuma.' : ''}
           </p>
         </div>
         
         {/* ominaisuudet*/}
         <div className="teksti-osio">
           <h4>Ominaisuudet</h4>
-        <div className="layout-two-col">
-          <div className="layout-col">
-              <p className="voima-item">
+        <div className="layout-flex-grid">
+              <p
+                className={`voima-item ${voikoNostaaOminaisuutta('keho', arkkityyppiData?.keho?.maksimi || 3) ? 'voima-item-upgradeable' : ''}`}
+                onClick={() => nostaOminaisuutta('keho', arkkityyppiData?.keho?.maksimi || 3)}
+              >
                 <strong>Keho {luoYmpyraEsitys(hahmo.keho, arkkityyppiData?.keho?.maksimi || 3)}</strong>
                 <br />
                 <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, false, hahmo.ammatit?.keho))} {haeAmmatinNimi(hahmo.ammatit?.keho)}</small>
                 <br />
                 <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, hahmo.ammatit?.keho))} {haeAdjektiivinNimi(hahmo.adjektiivit?.keho).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.keho).toLowerCase()}.</small>
               </p>
-              <p className="voima-item">
+              <p
+                className={`voima-item ${voikoNostaaOminaisuutta('mieli', arkkityyppiData?.mieli?.maksimi || 3) ? 'voima-item-upgradeable' : ''}`}
+                onClick={() => nostaOminaisuutta('mieli', arkkityyppiData?.mieli?.maksimi || 3)}
+              >
                 <strong>Mieli {luoYmpyraEsitys(hahmo.mieli, arkkityyppiData?.mieli?.maksimi || 3)}</strong>
                 <br />
                 <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, false, hahmo.ammatit?.mieli))} {haeAmmatinNimi(hahmo.ammatit?.mieli)}</small>
                 <br />
                 <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, hahmo.ammatit?.mieli))} {haeAdjektiivinNimi(hahmo.adjektiivit?.mieli).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.mieli).toLowerCase()}.</small>
               </p>
-              <p className="voima-item">
+              <p
+                className={`voima-item ${voikoNostaaOminaisuutta('sielu', arkkityyppiData?.sielu?.maksimi || 3) ? 'voima-item-upgradeable' : ''}`}
+                onClick={() => nostaOminaisuutta('sielu', arkkityyppiData?.sielu?.maksimi || 3)}
+              >
                 <strong>Sielu {luoYmpyraEsitys(hahmo.sielu, arkkityyppiData?.sielu?.maksimi || 3)}</strong>
                 <br />
                 <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, false, hahmo.ammatit?.sielu))} {haeAmmatinNimi(hahmo.ammatit?.sielu)}</small>
                 <br />
                 <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, hahmo.ammatit?.sielu))} {haeAdjektiivinNimi(hahmo.adjektiivit?.sielu).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.sielu).toLowerCase()}.</small>
               </p>
-            </div>
-            <div className="layout-col">
               <p className="voima-item">
                 <strong>{hahmo.kuvaaja?.nimi || 'Ei kuvaajaa valittu'}</strong>
                 <br />
@@ -236,90 +316,78 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
                   <>
                     <br />
                     <small><strong>Heikkous:</strong> {hahmo.kuvaaja.heikkous}</small>
+                  </>
+                )}
                 {hahmo.henkilotiedot?.sidos && (
                   <>
                     <br />
                     <small><strong>Sidos:</strong> {hahmo.henkilotiedot.sidos}</small>
                   </>
                 )}
-                  </>
-                )}
               </p>
-            </div>
-          </div>
-          
-          {/* Luonteen tiedot */}
-          {haeLuonteenTiedot(hahmo.henkilotiedot?.luonne) && (
-            <div className="layout-center">
-              <p className="voima-item">
-                <strong>{haeLuonteenTiedot(hahmo.henkilotiedot.luonne).nimi}</strong>
-                <br />
-                <small>{haeLuonteenTiedot(hahmo.henkilotiedot.luonne).kuvaus}</small>
-                <br />
-                <small><strong>Stuntti:</strong> {haeLuonteenTiedot(hahmo.henkilotiedot.luonne).stuntti}</small>
-              </p>
-            </div>
-          )}
+              {/* Luonteen tiedot */}
+              {haeLuonteenTiedot(hahmo.henkilotiedot?.luonne) && (
+                <p className="voima-item">
+                  <strong>{haeLuonteenTiedot(hahmo.henkilotiedot.luonne).nimi}</strong>
+                  <br />
+                  <small>{haeLuonteenTiedot(hahmo.henkilotiedot.luonne).kuvaus}</small>
+                  <br />
+                  <small><strong>Stuntti:</strong> {haeLuonteenTiedot(hahmo.henkilotiedot.luonne).stuntti}</small>
+                </p>
+              )}
+        </div>
         </div>
 
         {/* Peruskyvyt ja rotu */}
-        {(peruskyvyt.length > 0 || valittuVoimatyyppi || hahmo.rotu) && (
-          <div className="teksti-osio text-left">
-            <h4 className="text-center">
-              {hahmo.rotu?.nimi || 'Kyvyt'} {valittuVoimatyyppi ? `• ${valittuVoimatyyppi}` : ''} {arkkityyppiData?.nimi ? `• ${arkkityyppiData.nimi}` : ''}
-            </h4>
-            
-            {/* Aisti-kyky */}
-            {valittuVoimatyyppi && aistit[valittuVoimatyyppi] && (
-              <p className="voima-item">
-                <strong>{aistit[valittuVoimatyyppi].nimi}:</strong> {aistit[valittuVoimatyyppi].kuvaus}
-                {aistit[valittuVoimatyyppi].lisakuvaus && (
-                  <>
-                    <br />
-                    <strong>Kuvaus:</strong> {aistit[valittuVoimatyyppi].lisakuvaus}
-                  </>
-                )}
-              </p>
-            )}
-            
-            {/* Valittu peruskyky */}
-            {hahmo.voimat?.valittuVoima && (
-              <p className="voima-item">
-                <strong>{hahmo.voimat.valittuVoima.nimi}:</strong> {hahmo.voimat.valittuVoima.kuvaus}
-                {hahmo.voimat.vapaakuvaus && (
-                  <>
-                    <br />
-                    <strong>{valittuVoimatyyppi === 'elementin hallinta' ? 'Elementti' : valittuVoimatyyppi === 'muodonmuutos' ? 'Eläimen aisti' : 'Kuvaus'}:</strong> {hahmo.voimat.vapaakuvaus}
-                  </>
-                )}
-              </p>
-            )}
-            
-            {/* Rotu tiedot */}
-            {hahmo.rotu && (
-              <div className="voima-item">
-                <strong>Rotukyvyt:</strong> {hahmo.rotu?.kuvaus || ''}
-                {hahmo.rotu.stuntti && (
-                  <>
-                    <br />
-                    <small><strong>Stuntti:</strong> {hahmo.rotu.stuntti}</small>
-                  </>
-                )}
-                {hahmo.rotu.rajoitus && (
-                  <>
-                    <br />
-                    <small><strong>Rajoitus:</strong> {hahmo.rotu.rajoitus}</small>
-                  </>
-                )}
-              </div>
-            )}
-            
-            {/* Arkkityyppi tiedot */}
-            {arkkityyppiData && (
-              <div className="voima-item">
-                <strong>Arkkityyppi:</strong> {arkkityyppiData?.kuvaus || ''}
-              </div>
-            )}
+        {(valittuVoimatyyppi || hahmo.rotu) && (
+          <div className="teksti-osio">
+            <h4>Kyvyt</h4>
+            <div className="layout-flex-grid">
+              {/* Aistikyky */}
+              {valittuVoimatyyppi && aistit[valittuVoimatyyppi] && (
+                <p className="voima-item voima-item-wide">
+                  <strong>{aistit[valittuVoimatyyppi].nimi}:</strong> {aistit[valittuVoimatyyppi].kuvaus}
+                  {aistit[valittuVoimatyyppi].lisakuvaus && (
+                    <>
+                      <br />
+                      <strong>Kuvaus:</strong> {aistit[valittuVoimatyyppi].lisakuvaus}
+                    </>
+                  )}
+                </p>
+              )}
+
+              {/* Valitut voimakyvyt */}
+              {valitutVoimakyvyt.map((kyky) => (
+                <p key={kyky.nimi} className="voima-item voima-item-wide">
+                  <strong>{kyky.nimi}:</strong> {kyky.kuvaus}
+                  {hahmo.voimat?.valittuVoima?.nimi === kyky.nimi && hahmo.voimat.vapaakuvaus && (
+                    <>
+                      <br />
+                      <strong>{valittuVoimatyyppi === 'elementin hallinta' ? 'Elementti' : valittuVoimatyyppi === 'muodonmuutos' ? 'Eläimen aisti' : 'Kuvaus'}:</strong> {hahmo.voimat.vapaakuvaus}
+                    </>
+                  )}
+                </p>
+              ))}
+
+              {/* Rotu tiedot */}
+              {hahmo.rotu && (
+                <div className="voima-item voima-item-wide">
+                  <strong>Rotukyvyt:</strong> {hahmo.rotu?.kuvaus || ''}
+                  {hahmo.rotu.stuntti && (
+                    <>
+                      <br />
+                      <small><strong>Stuntti:</strong> {hahmo.rotu.stuntti}</small>
+                    </>
+                  )}
+                  {hahmo.rotu.rajoitus && (
+                    <>
+                      <br />
+                      <small><strong>Rajoitus:</strong> {hahmo.rotu.rajoitus}</small>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         )}
 
@@ -330,16 +398,20 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
               {' '}&nbsp;&nbsp;
               <strong>Tahdonvoima:</strong> {luoYmpyraEsitys(0, (hahmo.mieli || 0) + 2 + (hahmo.skaala || 1))}
               {' '}&nbsp;&nbsp;
-              <strong>Mana:</strong> {luoYmpyraEsitys(0, (hahmo.sielu || 0) + 2 + (hahmo.skaala || 1))}
+              <strong>Mana:</strong> {luoYmpyraEsitys(0, (hahmo.sielu || 0) + 2 + (hahmo.skaala || 0))}
               {' '}&nbsp;&nbsp;
               <strong>Fate-pisteet:</strong> ○ ○ ○ ○ ○
+              {' '}&nbsp;&nbsp;
+              <strong>Hahmopisteet:</strong> {hahmopisteetYhteensa} <span>&nbsp;</span><strong>Käyttämätön:</strong> {kayttamattomatHahmopisteet} <span>&nbsp;</span><strong> XP:</strong> {hahmo.xp || 0}
+              {' '}&nbsp;&nbsp;
+              <strong>Skaala:</strong> {hahmonSkaala?.nimi } +{hahmonSkaala?.taso }
             </div>
           </div>
           
           <div className="layout-flex-center">
-            <div style={{ display: 'flex', gap: '16px', width: '100%', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-              <div className="fate-seuraukset-taulukko" style={{ flex: 1 }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ccc' }}>
+            <div className="table-flex-container">
+              <div className="fate-seuraukset-taulukko table-column-flex">
+                <table className="bordered-table">
                   <colgroup>
                     <col className="fate-col-arvo" />
                     <col className="fate-col-taso" />
@@ -347,111 +419,90 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
                     <col className="fate-col-aika" />
                   </colgroup>
                   <thead>
-                    <tr style={{ backgroundColor: '#f5f5f5' }}>
-                      <th colSpan={2} style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Fyysinen</th>
-                      <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Seuraus</th>
-                      <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Aika</th>
+                    <tr className="table-header-row">
+                      <th colSpan={2} className="table-cell-left">Fyysinen</th>
+                      <th className="table-cell-left">Seuraus</th>
+                      <th className="table-cell-center">Aika</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>1</td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Lievä</td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px' }}></td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Päivä</td>
+                      <td className="table-cell-center">1</td>
+                      <td className="table-cell-left">Lievä</td>
+                      <td className="table-cell-bordered"></td>
+                      <td className="table-cell-center">Päivä</td>
                     </tr>
                     <tr>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>2</td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Vakava</td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px' }}></td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Viikko</td>
+                      <td className="table-cell-center">2</td>
+                      <td className="table-cell-left">Vakava</td>
+                      <td className="table-cell-bordered"></td>
+                      <td className="table-cell-center">Viikko</td>
                     </tr>
                     <tr>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>3</td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Kuolettava</td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px' }}></td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Kuukausi</td>
+                      <td className="table-cell-center">3</td>
+                      <td className="table-cell-left">Kuolettava</td>
+                      <td className="table-cell-bordered"></td>
+                      <td className="table-cell-center">Kuukausi</td>
                     </tr>
                     <tr>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>4</td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Pysyvä</td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px' }}></td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Pysyvä</td>
+                      <td className="table-cell-center">4</td>
+                      <td className="table-cell-left">Pysyvä</td>
+                      <td className="table-cell-bordered"></td>
+                      <td className="table-cell-center">Pysyvä</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
 
-              <div className="fate-seuraukset-taulukko" style={{ flex: 1 }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ccc' }}>
+              <div className="fate-seuraukset-taulukko table-column-flex">
+                <table className="bordered-table">
                   <colgroup>
-                    <col style={{ width: '25%' }} />
-                    <col style={{ width: 'auto' }} />
-                    <col style={{ width: '20%' }} />
+                    <col className="table-column-narrow" />
+                    <col className="table-column-auto" />
+                    <col className="table-column-small" />
                   </colgroup>
                   <thead>
-                    <tr style={{ backgroundColor: '#f5f5f5' }}>
-                      <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Henkinen</th>
-                      <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Seuraus</th>
-                      <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Aika</th>
+                    <tr className="table-header-row">
+                      <th className="table-cell-left">Henkinen</th>
+                      <th className="table-cell-left">Seuraus</th>
+                      <th className="table-cell-center">Aika</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Lievä</td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px' }}></td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Päivä</td>
+                      <td className="table-cell-left">Lievä</td>
+                      <td className="table-cell-bordered"></td>
+                      <td className="table-cell-center">Päivä</td>
                     </tr>
                     <tr>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Vakava</td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px' }}></td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Viikko</td>
+                      <td className="table-cell-left">Vakava</td>
+                      <td className="table-cell-bordered"></td>
+                      <td className="table-cell-center">Viikko</td>
                     </tr>
                     <tr>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Kuolettava</td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px' }}></td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Kuukausi</td>
+                      <td className="table-cell-left">Kuolettava</td>
+                      <td className="table-cell-bordered"></td>
+                      <td className="table-cell-center">Kuukausi</td>
                     </tr>
                     <tr>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Pysyvä</td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px' }}></td>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Pysyvä</td>
+                      <td className="table-cell-left">Pysyvä</td>
+                      <td className="table-cell-bordered"></td>
+                      <td className="table-cell-center">Pysyvä</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-            <small style={{ display: 'block', marginTop: '10px', color: '#666', fontStyle: 'italic' }}>
+            <small className="small-info-text">
               Tappava vaurio paranee tason vain jos hoitaja onnistuu lääkäri testissä. Pinnallinen vaurio paranee tason automaattisesti.
             </small>
           </div>
         </div>
 
-        <div className="teksti-osio">
+        <div className="teksti-osio development-equipment-section">
           {/* Kehittyminen ja varusteet rinnakkain */}
           <div className="layout-flex-center">
             <div className="kehittyminen-vasen">
-              <div className="kehittyminen-boksi kehittyminen-yhteinen">
-                <strong>Keho</strong> {luoYmpyraEsitys(hahmo.keho || 0, arkkityyppiData?.keho?.maksimi || 3)}
-                {' '}&nbsp;&nbsp;
-                <strong>Mieli</strong> {luoYmpyraEsitys(hahmo.mieli || 0, arkkityyppiData?.mieli?.maksimi || 3)}
-                {' '}&nbsp;&nbsp;
-                <strong>Sielu</strong> {luoYmpyraEsitys(hahmo.sielu || 0, arkkityyppiData?.sielu?.maksimi || 3)}
-                {(() => {
-                  const voimarajat = haeVoimarajat(hahmo.skaala);
-                  const voimatyyppi = valittuVoimatyyppi;
-                  const voimataso1 = valittuVoimatyyppi && hahmo.voimat ? (hahmo.voimat[valittuVoimatyyppi] || 0) : 0;
-                  
-                  return (
-                    <>
-                      {' '}&nbsp;&nbsp;
-                      <strong>{voimatyyppi || 'Ei voimaa'} </strong>{' '}
-                      {voimataso1 > 0 ? luoYmpyraEsitys(voimataso1, voimarajat[0]?.max || 3) : '○ ○ ○'}
-                    </>
-                  );
-                })()}
-              </div>
-
               <table className="taistelu-taulukko">
                 <tbody>
                   <tr><td>ETU +1</td><td>KESTO</td><td>Mana</td></tr>
@@ -480,11 +531,52 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
               </table>
             </div>
           </div>
-        </div>
 
-        <div className="skaala">
-          <h4>Skaala</h4>
-          <p>{hahmonSkaala?.nimi} - {hahmonSkaala?.kuvaus}</p>
+          <div className="layout-flex-center">
+            <div className="kehittyminen-boksi varusteet-laatikko">
+              <h4>Opitut asiat</h4>
+              <div className="table-flex-container">
+                <table className="bordered-table table-column-flex">
+                  <colgroup>
+                    <col className="table-column-small" />
+                    <col className="table-column-auto" />
+                  </colgroup>
+                  <thead>
+                    <tr className="table-header-row">
+                      <th className="table-cell-left">&nbsp;</th>
+                      <th className="table-cell-left">&nbsp;</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td className="table-cell-bordered">&nbsp;</td><td className="table-cell-bordered">&nbsp;</td></tr>
+                    <tr><td className="table-cell-bordered">&nbsp;</td><td className="table-cell-bordered">&nbsp;</td></tr>
+                    <tr><td className="table-cell-bordered">&nbsp;</td><td className="table-cell-bordered">&nbsp;</td></tr>
+                    <tr><td className="table-cell-bordered">&nbsp;</td><td className="table-cell-bordered">&nbsp;</td></tr>
+                    <tr><td className="table-cell-bordered">&nbsp;</td><td className="table-cell-bordered">&nbsp;</td></tr>
+                  </tbody>
+                </table>
+                <table className="bordered-table table-column-flex">
+                  <colgroup>
+                    <col className="table-column-small" />
+                    <col className="table-column-auto" />
+                  </colgroup>
+                  <thead>
+                    <tr className="table-header-row">
+                      <th className="table-cell-left">&nbsp;</th>
+                      <th className="table-cell-left">&nbsp;</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td className="table-cell-bordered">&nbsp;</td><td className="table-cell-bordered">&nbsp;</td></tr>
+                    <tr><td className="table-cell-bordered">&nbsp;</td><td className="table-cell-bordered">&nbsp;</td></tr>
+                    <tr><td className="table-cell-bordered">&nbsp;</td><td className="table-cell-bordered">&nbsp;</td></tr>
+                    <tr><td className="table-cell-bordered">&nbsp;</td><td className="table-cell-bordered">&nbsp;</td></tr>
+                    <tr><td className="table-cell-bordered">&nbsp;</td><td className="table-cell-bordered">&nbsp;</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

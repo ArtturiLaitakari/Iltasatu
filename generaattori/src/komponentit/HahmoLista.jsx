@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { haeHahmot, poistaHahmo } from '../utils/hahmoLogiikka.js';
+import { laskeHahmopisteet } from '../data/muutData.js';
 import HahmoKortti from './HahmoKortti.jsx';
-import HahmoYhteenveto from './Wizard/HahmoYhteenveto.jsx';
+import HahmoLomake from './Wizard/HahmoLomake.jsx';
 import './HahmoVaiheet.css';
 
 const taustaKuvat = import.meta.glob('../kuvat/*.{jpg,jpeg,png,webp}', {
@@ -10,8 +11,9 @@ const taustaKuvat = import.meta.glob('../kuvat/*.{jpg,jpeg,png,webp}', {
 });
 
 function HahmoLista({ onTakaisin }) {
-  const [hahmot, asetaHahmot] = useState({});
+  const [hahmot, asetaHahmot] = useState(() => haeHahmot());
   const [valittuHahmo, asetaValittuHahmo] = useState(null);
+  const [naytaXpModaali, setNaytaXpModaali] = useState(false);
   
   const haeTaustaKuva = () => {
     const tiedostoVaihtoehdot = [
@@ -39,10 +41,7 @@ function HahmoLista({ onTakaisin }) {
       }
     : undefined;
   
-  useEffect(() => {
-    const tallennetutHahmot = haeHahmot();
-    asetaHahmot(tallennetutHahmot);
-  }, []);
+
 
   const hahmoLista = Object.values(hahmot);
   
@@ -60,6 +59,52 @@ function HahmoLista({ onTakaisin }) {
     asetaValittuHahmo(null);
   };
 
+  const paivitaValittuaHahmoa = (paivitettyHahmo) => {
+    asetaValittuHahmo(paivitettyHahmo);
+    if (paivitettyHahmo?.id) {
+      const paivitetytHahmot = { ...hahmot, [paivitettyHahmo.id]: paivitettyHahmo };
+      asetaHahmot(paivitetytHahmot);
+      localStorage.setItem('iltasatu_hahmot', JSON.stringify(paivitetytHahmot));
+    }
+  };
+
+  const lisaaXpPopupista = () => {
+    setNaytaXpModaali(true);
+  };
+
+  const vahvistaXp = () => {
+    if (!valittuHahmo) return;
+
+    const vanhaXp = valittuHahmo.xp || 0;
+    const uusiXp = vanhaXp + 1;
+    const vanhaRaja = laskeHahmopisteet(vanhaXp);
+    const uusiRaja = laskeHahmopisteet(uusiXp);
+    const saadutPisteet = Math.max(0, uusiRaja - vanhaRaja);
+
+    const paivitetty = {
+      ...valittuHahmo,
+      xp: uusiXp,
+      hp: Math.max(0, valittuHahmo.hp || 0) + saadutPisteet,
+      kayttamattomatHahmopisteet: Math.max(0, valittuHahmo.kayttamattomatHahmopisteet || 0) + saadutPisteet
+    };
+    asetaValittuHahmo(paivitetty);
+    if (paivitetty.id) {
+      const paivitetytHahmot = { ...hahmot, [paivitetty.id]: paivitetty };
+      asetaHahmot(paivitetytHahmot);
+      localStorage.setItem('iltasatu_hahmot', JSON.stringify(paivitetytHahmot));
+    }
+    setNaytaXpModaali(false);
+  };
+
+  const peruXp = () => {
+    setNaytaXpModaali(false);
+  };
+
+  // Tallenna toimintofunktiot HahmoLomakkeesta
+  const [kopioiFunktio, setKopioiFunktio] = useState(null);
+  const [tulostaFunktio, setTulostaFunktio] = useState(null);
+  const [tallennaFunktio, setTallennaFunktio] = useState(null);
+
   // Jos hahmo on valittu, näytä yksityiskohtainen näkymä
   if (valittuHahmo) {
     return (
@@ -71,10 +116,42 @@ function HahmoLista({ onTakaisin }) {
           <button onClick={onTakaisin} className="btn btn-secondary">
             🏠 Pääsivu
           </button>
+          <div className="wizard-floating-actions">
+            <span onClick={kopioiFunktio} title="Kopioi tekstimuotoon" className="wizard-action-icon">
+              📋
+            </span>
+            <span onClick={tulostaFunktio} title="Tulosta hahmo" className="wizard-action-icon">
+              🖨️
+            </span>
+            <span onClick={tallennaFunktio} title="Tallenna hahmo" className="wizard-action-icon">
+              💾
+            </span>
+            <span onClick={lisaaXpPopupista} title="Lisää XP" className="wizard-action-icon">
+              ➕
+            </span>
+          </div>
         </div>
-        <HahmoYhteenveto 
-          hahmo={valittuHahmo} 
-          paivitaHahmo={() => {}} // Ei muokkausta tässä vaiheessa
+
+        {naytaXpModaali && (
+          <div className="xp-modal-overlay" onClick={peruXp}>
+            <div className="xp-modal" onClick={(e) => e.stopPropagation()}>
+              <h3 className="xp-modal-title">Ansaitsitko kokemuspisteen?</h3>
+              <div className="xp-modal-actions">
+                <button onClick={vahvistaXp} className="btn btn-primary">Kyllä</button>
+                <button onClick={peruXp} className="btn btn-secondary">Ei</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <HahmoLomake 
+          hahmo={valittuHahmo}
+          paivitaHahmo={paivitaValittuaHahmoa}
+          onHahmoLista={takaisinListaan}
+          aloitaUudelleen={takaisinListaan}
+          setKopioiFunktio={setKopioiFunktio}
+          setTulostaFunktio={setTulostaFunktio}
+          setTallennaFunktio={setTallennaFunktio}
         />
       </div>
     );
@@ -84,7 +161,7 @@ function HahmoLista({ onTakaisin }) {
   return (
     <div className="sovellus" style={taustaTyyli}>
       <div className="hahmolista-header">
-        <h1>Tallennetut Hahmot</h1>
+        <h1 style={{ color: '#fff' }}>Tallennetut Hahmot</h1>
         <button onClick={onTakaisin} className="btn btn-primary">
           ← Takaisin hahmonluontiin
         </button>

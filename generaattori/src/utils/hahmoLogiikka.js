@@ -35,6 +35,10 @@ export function luoTyhjaHahmo() {
     },
     rotu: null,
     skaala: 0,
+    hp: 0,
+    kayttamattomatHahmopisteet: 0,
+    onkoRajamurto: false,
+    xp: 0,
     voimaTaso: 1,
     voimat: {
       'magia': 0,

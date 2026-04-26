@@ -39,13 +39,6 @@ function OlenValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   };
 
   const taustaKuva = haeTaustaKuva();
-  const taustaTyyli = taustaKuva
-    ? {
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${taustaKuva})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
-      }
-    : undefined;
 
   return (
     <div className={`vaihe-sisalto ${taustaKuva ? 'taustakuvalla' : ''}`}>

@@ -161,3 +161,11 @@ export const taitotasoSanallisesti = [
   { taso: 10, nimi: 'Avatar' }
 ];
 
+
+
+// Laske hahmopisteet kolmiolukukaavalla T_n = n(n+1)/2, missä n = XP
+export function laskeHahmopisteet(xp) {
+  const arvo = Math.max(0, xp || 0);
+  // Käänteinen kolmioluku: suurin n, jolla n(n+1)/2 <= XP
+  return Math.floor((Math.sqrt(1 + 8 * arvo) - 1) / 2);
+}

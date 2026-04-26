@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { haeKategorianAmmatit } from '../../utils/hahmoLogiikka.js';
 import { arkkityypit } from '../../data/arkkityypit.js';
 import Kortti from '../Kortti.jsx';
@@ -10,6 +10,9 @@ const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
 });
 
 function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }) {
+  // useState pitää kutsua aina komponentin alussa - resetoidaan kun arkkityyppi muuttuu
+  const [nykyinenSivu, asetaNykyinenSivu] = useState(() => hahmo.arkkityyppi ? 0 : 0);
+
   if (!hahmo.arkkityyppi) {
     return (
       <div className="vaihe-sisalto">
@@ -28,8 +31,9 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
 
     const aktiivinenKategoria = kategoriaData[kategoria];
     const ammatit = haeKategorianAmmatit(aktiivinenKategoria.ammattiKategoria, hahmo.genre || 'fantasia');
-    
-    const haeTaustaKuva = () => {
+
+    // Hae taustakuva kategorian mukaan
+    const haeKategoriaTaustaKuva = () => {
       const tiedostoVaihtoehdot = [
         `${aktiivinenKategoria.avain}_tausta.jpg`,
         `${aktiivinenKategoria.avain}_tausta.jpeg`,
@@ -38,15 +42,13 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
         `${aktiivinenKategoria.avain}_ammatti.jpg`,
         `${aktiivinenKategoria.avain}_ammatit.jpg`
       ];
-
       for (const tiedostoNimi of tiedostoVaihtoehdot) {
         const osuma = Object.entries(taustaKuvat).find(([polku]) => polku.endsWith(`/${tiedostoNimi}`));
-        if (osuma) {
-          return osuma[1];
-        }
+        if (osuma) return osuma[1];
       }
       return null;
     };
+    const taustaKuva = haeKategoriaTaustaKuva();
 
     const valitseAmmatti = (ammatti) => {
       const uudetAmmatit = {
@@ -81,14 +83,6 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
       }
     };
 
-    const taustaKuva = haeTaustaKuva();
-    const taustaTyyli = taustaKuva
-      ? {
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${taustaKuva})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }
-      : undefined;
 
     return (
       <div className={`vaihe-sisalto ${taustaKuva ? 'taustakuvalla' : ''}`}>
@@ -132,7 +126,6 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
   // Alkuperäinen monivaihe-logiikka jos kategoria ei ole määritelty
 
   const arkkityyppiData = arkkityypit[hahmo.arkkityyppi];
-  const [nykyinenSivu, asetaNykyinenSivu] = useState(0);
 
   // Järjestä otsikot arkkityypin mukaan, mutta säilytä vakio järjestys keho, mieli, sielu
   const jarjestaAmmattiVaiheet = () => {
@@ -166,10 +159,6 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
 
   const ammattiVaiheet = jarjestaAmmattiVaiheet();
   const aktiivinenVaihe = ammattiVaiheet[nykyinenSivu];
-
-  useEffect(() => {
-    asetaNykyinenSivu(0);
-  }, [hahmo.arkkityyppi]);
 
   const haeAmmattiKategoria = (kategoria) => {
     // Yksinkertainen kartoitus ominaisuus -> ammattiryhmä

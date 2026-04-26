@@ -1,6 +1,5 @@
 import '../HahmoVaiheet.css';
 import { voimat, aistit } from '../../data/voimat.js';
-import { ammatit } from '../../data/ammatit.js';
 import Kortti from '../Kortti.jsx';
 
 const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
@@ -21,6 +20,7 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   
   const valittuVoima = hahmo.voimat?.valittuVoima;
   const vapaakuvaus = hahmo.voimat?.vapaakuvaus || '';
+  const valitutKyvyt = hahmo.voimat?.valitut || [];
 
   // Tarkista tarvitseeko valittu voimatyyppi vapaakuvauksen
   const tarvitseeVapaakuvaus = valittuVoimatyyppi === 'elementin hallinta' || valittuVoimatyyppi === 'muodonmuutos';
@@ -66,11 +66,14 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     : kaikki_peruskyvyt;
 
   const valitseVoima = (voima) => {
+    if (valitutKyvyt.includes(voima.nimi)) return;
+
     const paivitettyHahmo = {
       ...hahmo,
       voimat: {
         ...hahmo.voimat,
-        valittuVoima: voima
+        valittuVoima: voima,
+        valitut: [...valitutKyvyt, voima.nimi]
       }
     };
     paivitaHahmo(paivitettyHahmo);
@@ -153,7 +156,7 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
             
             <div className="ammatti-kortit-lista kapea">
               {peruskyvyt.map((voima, index) => {
-                const onKaytettavissa = !onTasojarasteelma || voima.taso === 1 || voima.taso === undefined;
+                const onKaytettavissa = (!onTasojarasteelma || voima.taso === 1 || voima.taso === undefined) && !valitutKyvyt.includes(voima.nimi);
                 
                 return (
                   <Kortti
@@ -162,10 +165,10 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
                     kuvaus={voima.kuvaus}
                     korttiKoko="pieni"
                     otsikkoVari={valittuVoima?.nimi === voima.nimi ? "#2e7d32" : "#000000"}
-                    extraInfo={tasonYksiKyvyt.length === 1 && !onTasojarasteelma ? "Automaattinen" : undefined}
+                    extraInfo={valitutKyvyt.includes(voima.nimi) ? 'Valittu aiemmin' : (tasonYksiKyvyt.length === 1 && !onTasojarasteelma ? 'Automaattinen' : undefined)}
                     valittu={valittuVoima?.nimi === voima.nimi}
                     onClick={() => onKaytettavissa ? valitseVoima(voima) : null}
-                    disabled={!onKaytettavissa || (tasonYksiKyvyt.length === 1 && !onTasojarasteelma)}
+                    disabled={!onKaytettavissa}
                   />
                 );
               })}
