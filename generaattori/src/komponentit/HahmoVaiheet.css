@@ -314,6 +314,51 @@
   z-index: 1;
 }
 
+.sukupuoli-valinnat {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.radio-valinta,
+.checkbox-valinta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--border-light);
+  border-radius: var(--border-radius-standard);
+  background: transparent;
+  cursor: pointer;
+  transition: var(--transition-standard);
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.radio-valinta:hover,
+.checkbox-valinta:hover {
+  border-color: var(--primary-color);
+  background: rgba(52, 152, 219, 0.05);
+}
+
+.radio-valinta input[type="radio"],
+.radio-valinta input[type="checkbox"],
+.checkbox-valinta input[type="radio"],
+.checkbox-valinta input[type="checkbox"] {
+  margin: 0;
+  width: auto;
+  height: auto;
+}
+
+.radio-valinta input[type="radio"]:checked + span,
+.radio-valinta:has(input[type="radio"]:checked),
+.checkbox-valinta input[type="checkbox"]:checked + span,
+.checkbox-valinta:has(input[type="checkbox"]:checked) {
+  border-color: var(--primary-color);
+  background: rgba(52, 152, 219, 0.1);
+  color: var(--primary-color);
+}
+
 /* Base card style for all interactive cards */
 .luonne-kortti,
 .esimerkki-btn {
@@ -716,6 +761,38 @@
   color: var(--text-color);
 }
 
+.fate-seuraukset-taulukko table {
+  table-layout: auto;
+}
+
+.fate-seuraukset-taulukko table col.fate-col-arvo {
+  width: 8px;
+}
+
+.fate-seuraukset-taulukko table col.fate-col-taso {
+  width: 1%;
+}
+
+.fate-seuraukset-taulukko table col.fate-col-kuvaus {
+  width: auto;
+}
+
+.fate-seuraukset-taulukko table col.fate-col-aika {
+  width: 20%;
+}
+
+.fate-seuraukset-taulukko table tbody td:nth-child(1) {
+  max-width: 12px;
+  padding: 2px !important;
+  white-space: nowrap;
+}
+
+.fate-seuraukset-taulukko table tbody td:nth-child(2) {
+  white-space: nowrap;
+  padding-left: 6px !important;
+  padding-right: 6px !important;
+}
+
 /* Font size utilities */
 .font-lg { font-size: 1.2em; margin-left: 0.5rem; }
 
@@ -742,7 +819,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 60px;
+  height: 30px;
   min-width: 220px;
 }
 
@@ -752,6 +829,82 @@
 
 .kehittyminen-boksi.voimat {
   flex: 1;
+}
+
+.kehittyminen-boksi.kestotasot {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+.kehittyminen-vasen {
+  flex: 0 0 auto;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.kehittyminen-boksi.kehittyminen-yhteinen {
+  width: 100%;
+  min-width: 0;
+  justify-content: flex-start;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.taistelu-taulukko {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #000;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.taistelu-taulukko td {
+  padding: 4px 6px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.taistelu-taulukko td:nth-child(1) {
+  width: 50%;
+}
+
+.taistelu-taulukko td:nth-child(2) {
+  width: 30%;
+}
+
+.taistelu-taulukko td:nth-child(3) {
+  width: 20%;
+}
+
+.kehittyminen-boksi.varusteet-laatikko {
+  flex: 1 1 0;
+  min-width: 220px;
+  display: block;
+  padding: 0;
+  height: auto;
+  min-height: 30px;
+  border: none;
+  align-self: flex-start;
+}
+
+.varusteet-taulukko {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.varusteet-taulukko th,
+.varusteet-taulukko td {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+  padding: 6px 4px;
 }
 
 .kapitalisoi::first-letter {

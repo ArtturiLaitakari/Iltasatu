@@ -30,10 +30,11 @@ export function luoTyhjaHahmo() {
       nimi: '',
       luonne: null,
       yksillioivaKuvaaja: '',
-      heikous: ''
+      heikous: '',
+      sidos: ''
     },
     rotu: null,
-    skaala: 1,
+    skaala: 0,
     voimaTaso: 1,
     voimat: {
       'magia': 0,

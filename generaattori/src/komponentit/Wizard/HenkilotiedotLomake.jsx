@@ -62,15 +62,64 @@ function HenkilotiedotLomake({ hahmo, paivitaHahmo, seuraavaVaihe }) {
 
       <div className={`levea-grid sailio-kapea lomake-kortti ${taustaKuva ? 'lomake-kortti-taustalla' : ''}`} style={taustaTyyli}>
         <div className="kentta">
-          <label htmlFor="nimi">Nimi</label>
-          <input
-            type="text"
-            id="nimi"
-            value={hahmo.henkilotiedot.nimi}
-            onChange={(e) => paivitaKentta('nimi', e.target.value)}
-            placeholder="Anna hahmon nimi..."
-            required
-          />
+          <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 10px' }}>
+            <tbody>
+              <tr>
+                <td style={{ width: '70%', paddingRight: '10px' }}>
+                  <label htmlFor="nimi">Nimi</label>
+                  <input
+                    type="text"
+                    id="nimi"
+                    value={hahmo.henkilotiedot.nimi}
+                    onChange={(e) => paivitaKentta('nimi', e.target.value)}
+                    placeholder="Anna hahmon nimi..."
+                    required
+                  />
+                </td>
+                <td style={{ width: '30%' }}>
+                  <label htmlFor="ika">Ikä</label>
+                  <input
+                    type="number"
+                    id="ika"
+                    value={hahmo.henkilotiedot.ika || ''}
+                    onChange={(e) => paivitaKentta('ika', e.target.value)}
+                    placeholder="Ikä..."
+                    min="1"
+                    max="999"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td style={{ paddingRight: '10px' }}>
+                  <label>Sukupuoli</label>
+                </td>
+                <td>
+                  <div style={{ display: 'flex', gap: '1rem' }}>
+                    <label className="radio-valinta">
+                      <input
+                        type="radio"
+                        name="sukupuoli"
+                        value="M"
+                        checked={hahmo.henkilotiedot.sukupuoli === 'M'}
+                        onChange={(e) => paivitaKentta('sukupuoli', e.target.value)}
+                      />
+                      M
+                    </label>
+                    <label className="radio-valinta">
+                      <input
+                        type="radio"
+                        name="sukupuoli"
+                        value="N"
+                        checked={hahmo.henkilotiedot.sukupuoli === 'N'}
+                        onChange={(e) => paivitaKentta('sukupuoli', e.target.value)}
+                      />
+                      N
+                    </label>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <div className="kentta">

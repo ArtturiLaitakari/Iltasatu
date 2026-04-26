@@ -27,29 +27,29 @@ export const luonteet = [
 
 export const skaala = [
   {
-    taso: 1,
+    taso: 0,
     nimi: 'Tavallinen',
     kuvaus: 'Normaalin maailman toimija'
   },
   {
+    taso: 1,
+    nimi: 'Erinomainen',
+    kuvaus: '1 automaattinen onnistuminen'
+  },
+  {
     taso: 2,
-    nimi: 'Yliluonnollinen',
-    kuvaus: 'Tavallista suurempia kykyjä'
+    nimi: 'Uskomaton',
+    kuvaus: '2 automaattista onnistumista'
   },
   {
     taso: 3,
-    nimi: 'Legendaarinen',
-    kuvaus: 'Tarinoiden sankari'
+    nimi: 'Eeppinen',
+    kuvaus: '3 automaattista onnistumista'
   },
   {
     taso: 4,
-    nimi: 'Eeppinen',
-    kuvaus: 'Jumalten suosikki'
-  },
-  {
-    taso: 5,
-    nimi: 'Tarumainen',
-    kuvaus: 'Mytologinen olento'
+    nimi: 'Jumalainen',
+    kuvaus: '4 automaattista onnistumista'
   }
 ];
 
@@ -147,9 +147,10 @@ export const kuvaukset = [
 ];
 
 export const taitotasoSanallisesti = [
-  { taso: 0, nimi: 'Surkea' },
-  { taso: 1, nimi: 'Huono' },
-  { taso: 2, nimi: 'Tavallinen' },
+  { taso: -1, nimi: 'Surkea' },
+  { taso: 0, nimi: 'Huono' },
+  { taso: 1, nimi: 'Tavallinen' },
+  { taso: 2, nimi: 'Hyvä' },
   { taso: 3, nimi: 'Erinomainen' },
   { taso: 4, nimi: 'Loistava' },
   { taso: 5, nimi: 'Uskomaton' },

@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
-import { UI_CONSTANTS } from '../../constants';
+import { UI_CONSTANTS } from '../../constants/index.js';
 import WizardErrorBoundary from './WizardErrorBoundary.jsx';
 import './Wizard.css';
 
-function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis, onHahmoLista }) {
+function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis, onHahmoLista, aloitaUudelleen }) {
   const [nykyinenVaihe, asetaNykyinenVaihe] = useState(() => {
     const tallennettuVaihe = localStorage.getItem(UI_CONSTANTS.LOCAL_STORAGE_KEYS.CURRENT_STEP);
     return tallennettuVaihe ? parseInt(tallennettuVaihe, 10) : 0;
   });
+
+  // Hahmolomakkeen toiminnot
+  const [kopioiFunktio, setKopioiFunktio] = useState(null);
+  const [tulostaFunktio, setTulostaFunktio] = useState(null);
+  const [tallennaFunktio, setTallennaFunktio] = useState(null);
 
   // Tallenna nykyinen vaihe localStorageen
   useEffect(() => {
@@ -66,6 +71,21 @@ function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis, onHahmoLista }) {
         </span>
       </div>
 
+      {/* Hahmolomakkeen toimintonapit - näkyvät vain vaiheessa 13 */}
+      {nykyinenVaihe === vaiheet.length - 1 && (
+        <div className="wizard-floating-actions">
+          <span onClick={kopioiFunktio} title="Kopioi tekstimuotoon" className="wizard-action-icon">
+            📋
+          </span>
+          <span onClick={tulostaFunktio} title="Tulosta hahmo" className="wizard-action-icon">
+            🖨️
+          </span>
+          <span onClick={tallennaFunktio} title="Tallenna hahmo" className="wizard-action-icon">
+            💾
+          </span>
+        </div>
+      )}
+
       <div className="wizard-content">
         <WizardErrorBoundary onReset={() => asetaNykyinenVaihe(0)}>
           <VaiheKomponentti 
@@ -73,6 +93,10 @@ function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis, onHahmoLista }) {
             paivitaHahmo={paivitaHahmo}
             seuraavaVaihe={seuraavaVaihe}
             onHahmoLista={hahmoLista}
+            aloitaUudelleen={aloitaUudelleen}
+            setKopioiFunktio={setKopioiFunktio}
+            setTulostaFunktio={setTulostaFunktio}
+            setTallennaFunktio={setTallennaFunktio}
           />
         </WizardErrorBoundary>
       </div>

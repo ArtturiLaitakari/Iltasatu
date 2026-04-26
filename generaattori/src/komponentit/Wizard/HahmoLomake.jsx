@@ -4,6 +4,7 @@ import { voimat, aistit } from '../../data/voimat.js';
 import { ammatit } from '../../data/ammatit.js';
 import { adjektiivit } from '../../data/adjektiivit.js';
 import { tallennaHahmo } from '../../utils/hahmoLogiikka.js';
+import React from 'react';
 import '../HahmoVaiheet.css';
 
 const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
@@ -11,7 +12,7 @@ const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
   import: 'default'
 });
 
-function HahmoYhteenveto({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen }) {
+function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKopioiFunktio, setTulostaFunktio, setTallennaFunktio }) {
   const arkkityyppiData = arkkityypit[hahmo.arkkityyppi];
   const hahmonSkaala = skaala.find(s => s.taso === hahmo.skaala);
   
@@ -151,45 +152,8 @@ function HahmoYhteenveto({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen })
     return [{ max: 3 }]; // Oletusarvo
   };
 
-  const tallennaJaJaa = () => {
-    const hahmoId = tallennaHahmo(hahmo);
-    console.log('Hahmo tallennettu:', hahmoId);
-    // Alusta hahmo tyhjäksi uutta hahmoa varten
-    aloitaUudelleen && aloitaUudelleen();
-  };
-
   const luoTekstimuoto = () => {
-    const teksti = `
-ILTASATU HAHMO
-
-Nimi: ${hahmo.henkilotiedot.nimi || 'Nimetön'}
-Rotu: ${hahmo.rotu?.nimi || ''}
-Arkkityyppi: ${arkkityyppiData?.nimi || ''}
-
-OMINAISUUDET:
-Keho: ${arkkityyppiData?.keho.alkuarvo || 0} - ${haeAdjektiivinNimi(hahmo.adjektiivit.keho)} ${haeAmmatinNimi(hahmo.ammatit.keho)}
-Mieli: ${arkkityyppiData?.mieli.alkuarvo || 0} - ${haeAdjektiivinNimi(hahmo.adjektiivit.mieli)} ${haeAmmatinNimi(hahmo.ammatit.mieli)}
-Sielu: ${arkkityyppiData?.sielu.alkuarvo || 0} - ${haeAdjektiivinNimi(hahmo.adjektiivit.sielu)} ${haeAmmatinNimi(hahmo.ammatit.sielu)}
-
-PERSOONALLISUUS:
-Luonne: ${hahmo.henkilotiedot.luonne || ''}
-Yksilöivä kuvaaja: ${hahmo.henkilotiedot.yksillioivaKuvaaja || ''}
-Sidos: ${hahmo.henkilotiedot.sidos || ''}
-
-${(peruskyvyt.length > 0 || valitutEdistyneet.length > 0) ? `SIELU-VOIMAT:
-Voiman tyyppi: ${valittuVoimatyyppi || 'Ei valittu'}
-
-Peruskyvyt:
-${peruskyvyt.map((voima) => `• ${voima.nimi}${voima.elementti ? ` - ${voima.elementti}` : ''}: ${voima.kuvaus}`).join('\n')}
-
-Edistyneet kyvyt:
-${valitutEdistyneet.map((voima) => `• ${voima.nimi}${voima.elementti ? ` - ${voima.elementti}` : ''}: ${voima.kuvaus}`).join('\n')}
-` : ''}
-Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
-    `.trim();
-    
     navigator.clipboard.writeText(teksti);
-    alert('Hahmo kopioitu leikepöydälle!');
   };
 
   const tulostahahmo = () => {
@@ -205,10 +169,23 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
     }, 1000);
   };
 
+  const tallennaJaJaa = () => {
+    aloitaUudelleen && aloitaUudelleen();
+  };
+
+  // Välitä funktiot Wizard komponenttiin
+  React.useEffect(() => {
+    if (setKopioiFunktio) setKopioiFunktio(() => luoTekstimuoto);
+    if (setTulostaFunktio) setTulostaFunktio(() => tulostahahmo);
+    if (setTallennaFunktio) setTallennaFunktio(() => tallennaJaJaa);
+  }, []);
+
   return (
     <div className="vaihe-sisalto" style={{ maxWidth: '80%', margin: '0 auto' }}>
       <div className={`paa-kortti ${taustaKuva ? 'taustalla' : ''}`} style={{ ...taustaTyyli, width: '100%', maxWidth: 'none' }}>
-        <h3 className="kapitalisoi">{hahmo.henkilotiedot.nimi || 'Nimetön'}</h3>
+        <h3 className="kapitalisoi">
+          {hahmo.henkilotiedot.nimi || 'Anonyymi'}, {hahmo.henkilotiedot.ika || '??'} vuotta, {hahmo.henkilotiedot.sukupuoli === 'M' ? 'Mies' : hahmo.henkilotiedot.sukupuoli === 'N' ? 'Nainen' : 'Sukupuoli ei määritelty'}
+        </h3>
         
         {/* Lyhyt yhteenveto */}
         <div className="info-kortti">
@@ -347,7 +324,6 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
         )}
 
         <div className="teksti-osio">
-          <h4>Kestotasot</h4>
           <div className="layout-flex-center">
             <div className="kehittyminen-boksi kestotasot">
               <strong>Kesto:</strong> {luoYmpyraEsitys(0, (hahmo.keho || 0) + 2 + (hahmo.skaala || 1))}
@@ -355,6 +331,8 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
               <strong>Tahdonvoima:</strong> {luoYmpyraEsitys(0, (hahmo.mieli || 0) + 2 + (hahmo.skaala || 1))}
               {' '}&nbsp;&nbsp;
               <strong>Mana:</strong> {luoYmpyraEsitys(0, (hahmo.sielu || 0) + 2 + (hahmo.skaala || 1))}
+              {' '}&nbsp;&nbsp;
+              <strong>Fate-pisteet:</strong> ○ ○ ○ ○ ○
             </div>
           </div>
           
@@ -370,8 +348,8 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
                   </colgroup>
                   <thead>
                     <tr style={{ backgroundColor: '#f5f5f5' }}>
-                      <th colSpan={2} style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Fyysinen vaurio</th>
-                      <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Kuvaus</th>
+                      <th colSpan={2} style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Fyysinen</th>
+                      <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Seuraus</th>
                       <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Aika</th>
                     </tr>
                   </thead>
@@ -407,39 +385,34 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
               <div className="fate-seuraukset-taulukko" style={{ flex: 1 }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ccc' }}>
                   <colgroup>
-                    <col className="fate-col-arvo" />
-                    <col className="fate-col-taso" />
-                    <col className="fate-col-kuvaus" />
-                    <col className="fate-col-aika" />
+                    <col style={{ width: '25%' }} />
+                    <col style={{ width: 'auto' }} />
+                    <col style={{ width: '20%' }} />
                   </colgroup>
                   <thead>
                     <tr style={{ backgroundColor: '#f5f5f5' }}>
-                      <th colSpan={2} style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Henkinen vaurio</th>
-                      <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Kuvaus</th>
+                      <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Henkinen</th>
+                      <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Seuraus</th>
                       <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Aika</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>1</td>
                       <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Lievä</td>
                       <td style={{ border: '1px solid #ccc', padding: '8px' }}></td>
                       <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Päivä</td>
                     </tr>
                     <tr>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>2</td>
                       <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Vakava</td>
                       <td style={{ border: '1px solid #ccc', padding: '8px' }}></td>
                       <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Viikko</td>
                     </tr>
                     <tr>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>3</td>
                       <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Kuolettava</td>
                       <td style={{ border: '1px solid #ccc', padding: '8px' }}></td>
                       <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Kuukausi</td>
                     </tr>
                     <tr>
-                      <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>4</td>
                       <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Pysyvä</td>
                       <td style={{ border: '1px solid #ccc', padding: '8px' }}></td>
                       <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>Pysyvä</td>
@@ -448,6 +421,9 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
                 </table>
               </div>
             </div>
+            <small style={{ display: 'block', marginTop: '10px', color: '#666', fontStyle: 'italic' }}>
+              Tappava vaurio paranee tason vain jos hoitaja onnistuu lääkäri testissä. Pinnallinen vaurio paranee tason automaattisesti.
+            </small>
           </div>
         </div>
 
@@ -478,10 +454,11 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
 
               <table className="taistelu-taulukko">
                 <tbody>
-                  <tr><td>ETU +1</td><td>KESTO</td><td>S</td></tr>
+                  <tr><td>ETU +1</td><td>KESTO</td><td>Mana</td></tr>
                   <tr><td>Varuste</td><td>Kierros, keskit.</td><td>0</td></tr>
                   <tr><td>Ympäristö</td><td>Kohtaus</td><td>1</td></tr>
                   <tr><td>Muu</td><td>Ehto</td><td>2</td></tr>
+                  <tr><td>Varuste etu 1 mana</td><td>Ympäristö etu</td><td>1</td></tr>
                 </tbody>
               </table>
             </div>
@@ -510,20 +487,8 @@ Skaala: ${hahmonSkaala?.nimi || 'Tavallinen'}
           <p>{hahmonSkaala?.nimi} - {hahmonSkaala?.kuvaus}</p>
         </div>
       </div>
-
-      <div className="jakamis-toiminnot">
-        <button onClick={luoTekstimuoto} className="btn btn-secondary">
-          Kopioi tekstimuotoon
-        </button>
-        <button onClick={tulostahahmo} className="btn btn-info">
-          Tulosta hahmo
-        </button>
-        <button onClick={tallennaJaJaa} className="btn btn-primary">
-          Tallenna hahmo
-        </button>
-      </div>
     </div>
   );
 }
 
-export default HahmoYhteenveto;
+export default HahmoLomake;

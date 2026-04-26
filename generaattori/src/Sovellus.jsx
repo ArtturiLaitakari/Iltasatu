@@ -10,6 +10,7 @@ import {
   HenkilotiedotLomake,
   RotuValinta,
   HahmoYhteenveto,
+  HahmoLomake,
   WizardErrorBoundary
 } from './komponentit/Wizard';
 import HahmoLista from './komponentit/HahmoLista.jsx';
@@ -72,8 +73,8 @@ function Sovellus() {
       komponentti: HenkilotiedotLomake
     },
     {
-      nimi: 'Yhteenveto',
-      komponentti: HahmoYhteenveto
+      nimi: 'Hahmolomake',
+      komponentti: HahmoLomake
     }
   ];
 
@@ -120,6 +121,7 @@ function Sovellus() {
         paivitaHahmo={asetaHahmo}
         onValmis={() => asetaWizardValmis(true)}
         onHahmoLista={vieHahmoListaan}
+        aloitaUudelleen={aloitaUudelleen}
       />
     </div>
   );
