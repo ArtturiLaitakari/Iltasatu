@@ -90,3 +90,26 @@ export function poistaHahmo(id) {
   delete nykyiset[id];
   localStorage.setItem('iltasatu_hahmot', JSON.stringify(nykyiset));
 }
+
+export function suoritaRajamurtoTasonNousu(hahmo) {
+  if (!hahmo) return hahmo;
+
+  const arkkityyppiData = arkkityypit[hahmo.arkkityyppi] || {};
+  const paaOminaisuus = ['keho', 'mieli', 'sielu'].find(
+    (ominaisuus) => (arkkityyppiData[ominaisuus]?.alkuarvo || 0) >= 1
+  ) || (arkkityyppiData.paaKategoria === 'henkinen'
+    ? 'mieli'
+    : arkkityyppiData.paaKategoria === 'mystinen'
+      ? 'sielu'
+      : 'keho');
+
+  return {
+    ...hahmo,
+    keho: 0,
+    mieli: 0,
+    sielu: 0,
+    [paaOminaisuus]: 1,
+    skaala: Math.min(4, (hahmo.skaala || 0) + 1),
+    onkoRajamurto: false
+  };
+}

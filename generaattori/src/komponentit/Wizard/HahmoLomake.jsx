@@ -128,15 +128,17 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
   };
 
   const haeVoimarajat = (skaalaData) => {
-    const skaala = skaalaData || 1;
-    if (skaala === 1) {
+    const skaala = skaalaData || 0;
+    if (skaala === 0) {
       return [{ max: 3 }]; // Tavallinen: 1 voima max 3
+    } else if (skaala === 1) {
+      return [{ max: 5 }]; // Erinomainen: 1 voima max 5
     } else if (skaala === 2) {
-      return [{ max: 5 }]; // Yliluonnollinen: 1 voima max 5
+      return [{ max: 5 }]; // Uskomaton: 1 voima max 5
     } else if (skaala === 3) {
-      return [{ max: 5 }, { max: 3 }]; // Legendaarinen: 2 voimaa
+      return [{ max: 5 }, { max: 3 }]; // Eeppinen: 2 voimaa
     } else if (skaala >= 4) {
-      return [{ max: 5 }, { max: 4 }, { max: 3 }]; // Eeppinen ja Tarumainen: 3 voimaa
+      return [{ max: 5 }, { max: 4 }, { max: 3 }]; // Jumalainen: 3 voimaa
     }
     return [{ max: 3 }]; // Oletusarvo
   };
@@ -394,9 +396,9 @@ Rotu: ${hahmo.rotu?.nimi || 'Ei rotua'}, Luonne: ${hahmo.henkilotiedot?.luonne |
         <div className="teksti-osio">
           <div className="layout-flex-center">
             <div className="kehittyminen-boksi kestotasot">
-              <strong>Kesto:</strong> {luoYmpyraEsitys(0, (hahmo.keho || 0) + 2 + (hahmo.skaala || 1))}
+              <strong>Kesto:</strong> {luoYmpyraEsitys(0, (hahmo.keho || 0) + 2 + (hahmo.skaala || 0))}
               {' '}&nbsp;&nbsp;
-              <strong>Tahdonvoima:</strong> {luoYmpyraEsitys(0, (hahmo.mieli || 0) + 2 + (hahmo.skaala || 1))}
+              <strong>Tahdonvoima:</strong> {luoYmpyraEsitys(0, (hahmo.mieli || 0) + 2 + (hahmo.skaala || 0))}
               {' '}&nbsp;&nbsp;
               <strong>Mana:</strong> {luoYmpyraEsitys(0, (hahmo.sielu || 0) + 2 + (hahmo.skaala || 0))}
               {' '}&nbsp;&nbsp;
@@ -404,7 +406,7 @@ Rotu: ${hahmo.rotu?.nimi || 'Ei rotua'}, Luonne: ${hahmo.henkilotiedot?.luonne |
               {' '}&nbsp;&nbsp;
               <strong>Hahmopisteet:</strong> {hahmopisteetYhteensa} <span>&nbsp;</span><strong>Käyttämätön:</strong> {kayttamattomatHahmopisteet} <span>&nbsp;</span><strong> XP:</strong> {hahmo.xp || 0}
               {' '}&nbsp;&nbsp;
-              <strong>Skaala:</strong> {hahmonSkaala?.nimi } +{hahmonSkaala?.taso }
+              <strong>Skaala:</strong> {hahmonSkaala?.nimi } ({hahmonSkaala?.kuvaus })
             </div>
           </div>
           

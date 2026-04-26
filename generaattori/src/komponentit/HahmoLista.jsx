@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { haeHahmot, poistaHahmo } from '../utils/hahmoLogiikka.js';
+import { haeHahmot, poistaHahmo, suoritaRajamurtoTasonNousu } from '../utils/hahmoLogiikka.js';
 import { laskeHahmopisteet } from '../data/muutData.js';
 import HahmoKortti from './HahmoKortti.jsx';
 import HahmoLomake from './Wizard/HahmoLomake.jsx';
@@ -75,18 +75,23 @@ function HahmoLista({ onTakaisin }) {
   const vahvistaXp = () => {
     if (!valittuHahmo) return;
 
-    const vanhaXp = valittuHahmo.xp || 0;
-    const uusiXp = vanhaXp + 1;
-    const vanhaRaja = laskeHahmopisteet(vanhaXp);
-    const uusiRaja = laskeHahmopisteet(uusiXp);
-    const saadutPisteet = Math.max(0, uusiRaja - vanhaRaja);
+    const paivitetty = valittuHahmo.onkoRajamurto === true
+      ? suoritaRajamurtoTasonNousu(valittuHahmo)
+      : (() => {
+          const vanhaXp = valittuHahmo.xp || 0;
+          const uusiXp = vanhaXp + 1;
+          const vanhaRaja = laskeHahmopisteet(vanhaXp);
+          const uusiRaja = laskeHahmopisteet(uusiXp);
+          const saadutPisteet = Math.max(0, uusiRaja - vanhaRaja);
 
-    const paivitetty = {
-      ...valittuHahmo,
-      xp: uusiXp,
-      hp: Math.max(0, valittuHahmo.hp || 0) + saadutPisteet,
-      kayttamattomatHahmopisteet: Math.max(0, valittuHahmo.kayttamattomatHahmopisteet || 0) + saadutPisteet
-    };
+          return {
+            ...valittuHahmo,
+            xp: uusiXp,
+            hp: Math.max(0, valittuHahmo.hp || 0) + saadutPisteet,
+            kayttamattomatHahmopisteet: Math.max(0, valittuHahmo.kayttamattomatHahmopisteet || 0) + saadutPisteet
+          };
+        })();
+
     asetaValittuHahmo(paivitetty);
     if (paivitetty.id) {
       const paivitetytHahmot = { ...hahmot, [paivitetty.id]: paivitetty };
@@ -135,7 +140,12 @@ function HahmoLista({ onTakaisin }) {
         {naytaXpModaali && (
           <div className="xp-modal-overlay" onClick={peruXp}>
             <div className="xp-modal" onClick={(e) => e.stopPropagation()}>
-              <h3 className="xp-modal-title">Ansaitsitko kokemuspisteen?</h3>
+              <h3 className="xp-modal-title">
+                {valittuHahmo?.onkoRajamurto === true 
+                  ? "Annatko murtumalle periksi?" 
+                  : "Ansaitsitko kokemuspisteen?"
+                }
+              </h3>
               <div className="xp-modal-actions">
                 <button onClick={vahvistaXp} className="btn btn-primary">Kyllä</button>
                 <button onClick={peruXp} className="btn btn-secondary">Ei</button>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { UI_CONSTANTS } from '../../constants/index.js';
-import { laskeHahmopisteet } from '../../data/muutData.js';
 import WizardErrorBoundary from './WizardErrorBoundary.jsx';
 import './Wizard.css';
 
@@ -14,7 +13,6 @@ function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis, onHahmoLista, aloitaUu
   const [kopioiFunktio, setKopioiFunktio] = useState(null);
   const [tulostaFunktio, setTulostaFunktio] = useState(null);
   const [tallennaFunktio, setTallennaFunktio] = useState(null);
-  const [naytaXpModaali, setNaytaXpModaali] = useState(false);
   const [paluuHahmolomakkeelleVoimasta, setPaluuHahmolomakkeelleVoimasta] = useState(false);
 
   // Tallenna nykyinen vaihe localStorageen
@@ -56,32 +54,6 @@ function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis, onHahmoLista, aloitaUu
 
   const hahmoLista = () => {
     onHahmoLista && onHahmoLista();
-  };
-
-  const lisaaXpPopupista = () => {
-    setNaytaXpModaali(true);
-  };
-
-  const vahvistaXp = () => {
-    if (paivitaHahmo) {
-      const vanhaXp = hahmo.xp || 0;
-      const uusiXp = vanhaXp + 1;
-      const vanhaRaja = laskeHahmopisteet(vanhaXp);
-      const uusiRaja = laskeHahmopisteet(uusiXp);
-      const saadutPisteet = Math.max(0, uusiRaja - vanhaRaja);
-
-      paivitaHahmo({
-        ...hahmo,
-        xp: uusiXp,
-        hp: Math.max(0, hahmo.hp || 0) + saadutPisteet,
-        kayttamattomatHahmopisteet: Math.max(0, hahmo.kayttamattomatHahmopisteet || 0) + saadutPisteet
-      });
-    }
-    setNaytaXpModaali(false);
-  };
-
-  const peruXp = () => {
-    setNaytaXpModaali(false);
   };
 
   const nykyinenVaiheKomponentti = vaiheet[nykyinenVaihe];
@@ -129,21 +101,6 @@ function Wizard({ vaiheet, hahmo, paivitaHahmo, onValmis, onHahmoLista, aloitaUu
           <span onClick={tallennaFunktio} title="Tallenna hahmo" className="wizard-action-icon">
             💾
           </span>
-          <span onClick={lisaaXpPopupista} title="Lisää XP" className="wizard-action-icon">
-            ➕
-          </span>
-        </div>
-      )}
-
-      {naytaXpModaali && (
-        <div className="xp-modal-overlay" onClick={peruXp}>
-          <div className="xp-modal" onClick={(e) => e.stopPropagation()}>
-            <h3 className="xp-modal-title">Ansaitsitko kokemuspisteen?</h3>
-            <div className="xp-modal-actions">
-              <button onClick={vahvistaXp} className="btn btn-primary">Kyllä</button>
-              <button onClick={peruXp} className="btn btn-secondary">Ei</button>
-            </div>
-          </div>
         </div>
       )}
 
