@@ -161,7 +161,45 @@ export const taitotasoSanallisesti = [
   { taso: 10, nimi: 'Avatar' }
 ];
 
+export const voimarajat = [
+  {
+    skaala: 0,
+    nimi: 'Tavallinen',
+    voimat: [{ max: 3 }]
+  },
+  {
+    skaala: 1,
+    nimi: 'Erinomainen', 
+    voimat: [{ max: 5 }]
+  },
+  {
+    skaala: 2,
+    nimi: 'Uskomaton',
+    voimat: [{ max: 5 }]
+  },
+  {
+    skaala: 3,
+    nimi: 'Eeppinen',
+    jumalainen: true,
+    voimat: [{ max: 5 }, { max: 3 }]
+  },
+  {
+    skaala: 4,
+    nimi: 'Jumalainen',
+    jumalainen: true,
+    voimat: [{ max: 5 }, { max: 4 }, { max: 3 }]
+  }
+];
 
+export function haeVoimarajat(skaala) {
+  const skaalaData = voimarajat.find(s => s.skaala === (skaala || 0));
+  return skaalaData ? skaalaData.voimat : [{ max: 3 }];
+}
+
+export function onkoJumalainen(skaala) {
+  const skaalaData = voimarajat.find(s => s.skaala === (skaala || 0));
+  return skaalaData ? !!skaalaData.jumalainen : false;
+}
 
 // Laske hahmopisteet kolmiolukukaavalla T_n = n(n+1)/2, missä n = XP
 export function laskeHahmopisteet(xp) {

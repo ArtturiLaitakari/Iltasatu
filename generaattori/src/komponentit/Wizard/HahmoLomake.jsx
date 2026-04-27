@@ -1,5 +1,5 @@
 import { arkkityypit } from '../../data/arkkityypit.js';
-import { skaala, taitotasoSanallisesti, luonteet } from '../../data/muutData.js';
+import { skaala, taitotasoSanallisesti, luonteet, haeVoimarajat, onkoJumalainen } from '../../data/muutData.js';
 import { aistit, voimat } from '../../data/voimat.js';
 import { ammatit } from '../../data/ammatit.js';
 import { adjektiivit } from '../../data/adjektiivit.js';
@@ -127,22 +127,6 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
     return taitotasoData?.nimi || 'Tuntematon';
   };
 
-  const haeVoimarajat = (skaalaData) => {
-    const skaala = skaalaData || 0;
-    if (skaala === 0) {
-      return [{ max: 3 }]; // Tavallinen: 1 voima max 3
-    } else if (skaala === 1) {
-      return [{ max: 5 }]; // Erinomainen: 1 voima max 5
-    } else if (skaala === 2) {
-      return [{ max: 5 }]; // Uskomaton: 1 voima max 5
-    } else if (skaala === 3) {
-      return [{ max: 5 }, { max: 3 }]; // Eeppinen: 2 voimaa
-    } else if (skaala >= 4) {
-      return [{ max: 5 }, { max: 4 }, { max: 3 }]; // Jumalainen: 3 voimaa
-    }
-    return [{ max: 3 }]; // Oletusarvo
-  };
-
   const luoTekstimuoto = () => {
     // Luo teksti-muotoinen yhteenveto hahmosta
     const teksti = `${hahmo.henkilotiedot.nimi || 'Anonyymi'} - ${hahmo.kuvaaja?.nimi || 'Tuntematon'}
@@ -193,6 +177,13 @@ Rotu: ${hahmo.rotu?.nimi || 'Ei rotua'}, Luonne: ${hahmo.henkilotiedot?.luonne |
 
   const voimanMaksimi = haeVoimarajat(hahmo.skaala)[0]?.max || 3;
   const nykyinenVoimataso = valittuVoimatyyppi && hahmo.voimat ? (hahmo.voimat[valittuVoimatyyppi] || 0) : 0;
+  const voiValitaJumalaisenVoiman = onkoJumalainen(hahmo.skaala); // Valmis jumalaisten voimien valintaa varten
+  React.useEffect(() => {
+    // Jumalaisen voiman valinta valmis toteutettavaksi: voiValitaJumalaisenVoiman
+    if (voiValitaJumalaisenVoiman) {
+      // Tulevaisuudessa: näytä jumalaisten voimien valinnat
+    }
+  }, [voiValitaJumalaisenVoiman]);
   const ominaisuudetMaksimissa =
     (hahmo.keho || 0) >= (arkkityyppiData?.keho?.maksimi) &&
     (hahmo.mieli || 0) >= (arkkityyppiData?.mieli?.maksimi ) &&
