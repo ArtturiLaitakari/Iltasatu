@@ -51,35 +51,55 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const vapaakuvausTiedot = VAPAAKUVAUS_OTSIKOT[valittuVoimatyyppi];
   const tarvitseeVapaakuvaus = !!vapaakuvausTiedot;
 
+
   // Suodata kyvyt voiman tason mukaan - edistynyt taso näyttää edistyneet-listan
   const voimaData = voimat[valittuVoimatyyppi];
   const naytettavatKyvyt = onEdistynyt
     ? (voimaData?.edistyneet || [])
     : (voimaData?.peruskyvyt || []);
+
+    
   const onTasojarjestelma = naytettavatKyvyt.some(k => k.taso !== undefined);
-  const voimanTasoRaw = haeVoimanTaso(hahmo.voimaTaso || hahmo.voima || 1, 1);
-  const voimanTaso = typeof voimanTasoRaw === 'string'
-    ? parseInt(voimanTasoRaw.replace('e', ''))
-    : voimanTasoRaw;
+  
+  // Selvitä voimanTaso oikein tempKykyValinta tilanteessa
+  let voimanTaso;
+  if (onVoimatasoNosto && hahmo.tempKykyValinta?.taso) {
+    // Käytä tempKykyValinta tason arvoa
+    const tasoArvo = hahmo.tempKykyValinta.taso;
+    voimanTaso = typeof tasoArvo === 'string'
+      ? parseInt(tasoArvo.replace('e', ''))
+      : tasoArvo;
+  } else {
+    // Normaali progression taulukosta haku
+    const voimanTasoRaw = haeVoimanTaso(hahmo.voimaTaso || hahmo.voima || 1, 1);
+    voimanTaso = typeof voimanTasoRaw === 'string'
+      ? parseInt(voimanTasoRaw.replace('e', ''))
+      : voimanTasoRaw;
+  }
 
   const onKaytettavissa = (kyky) => !onTasojarjestelma || (kyky.taso || 1) <= voimanTaso;
 
   // Lisää kyky valittujen joukkoon (merkitään edistyneet)
   const valitseVoima = (voima) => {
     const tallennettava = onEdistynyt ? { ...voima, edistynyt: true } : voima;
+    const paivitetytKyvyt = [...valitutKyvyt, tallennettava];
+    
     const paivitettyHahmo = {
       ...hahmo,
       valitutKyvyt: {
         ...hahmo.valitutKyvyt,
-        [valintaAvain]: [...valitutKyvyt, tallennettava]
+        [valintaAvain]: paivitetytKyvyt
       }
     };
-    delete paivitettyHahmo.tempKykyValinta;
+    
     paivitaHahmo(paivitettyHahmo);
 
     // Auto-advance jos ei tarvita vapaakuvausta
     if (!tarvitseeVapaakuvaus) {
-      setTimeout(() => seuraavaVaihe(), 100);
+      setTimeout(() => {
+        paivitaHahmo({ ...paivitettyHahmo, tempKykyValinta: undefined });
+        seuraavaVaihe();
+      }, 100);
     }
   };
 
@@ -90,7 +110,7 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     });
   };
 
-  const onValmisSeuraavaan = onJokinValittu && (!tarvitseeVapaakuvaus || vapaakuvaus.trim().length >= 3);
+  const onValmisSeuraavaan = valitutKyvyt.length >= 1 && (!tarvitseeVapaakuvaus || vapaakuvaus.trim().length >= 3);
   const taustaKuva = haeTaustaKuva();
 
   return (
@@ -100,7 +120,9 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
 
           <div>
             <p className="vaihe-indikaattori">
-              {onEdistynyt ? 'Valitse edistynyt kyky' : 'Valitse kyky'}: {valittuVoimatyyppi} ({valintaAvain})
+              {onEdistynyt 
+                ? 'Valitse edistynyt kyky' 
+                : 'Valitse kyky'}: {valittuVoimatyyppi} ({valintaAvain})
             </p>
 
             <div className="ammatti-kortit-lista kapea">
@@ -152,7 +174,13 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
           {/* Seuraava-painike vain jos vapaakuvaus tarvitaan */}
           {tarvitseeVapaakuvaus && onValmisSeuraavaan && (
             <div className="wizard-navigation">
-              <button onClick={seuraavaVaihe} className="btn btn-primary">
+              <button onClick={() => {
+                // Poista tempKykyValinta ja siirry eteenpäin
+                const siivottuHahmo = { ...hahmo };
+                delete siivottuHahmo.tempKykyValinta;
+                paivitaHahmo(siivottuHahmo);
+                seuraavaVaihe();
+              }} className="btn btn-primary">
                 Seuraava
               </button>
             </div>

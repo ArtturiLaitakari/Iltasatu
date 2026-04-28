@@ -106,6 +106,17 @@ export const suoritaLimitBreak = (hahmo) => {
 
 // Selvitä mikä voima muuttui progression mukaan
 export const selvitaMuuttunutVoima = (vanhaTaso, uusiTaso) => {
+  // Erityistapaus: taso 0 -> 1 (ensimmäinen voima aktivoituu)
+  if (vanhaTaso === 0 && uusiTaso === 1) {
+    return {
+      voima: 'primary',
+      vanhaTaso: null,
+      uusiTaso: 1,
+      edistynyt: false,
+      kykyjaValittava: 1
+    };
+  }
+  
   const vanhaData = voimaProgression[vanhaTaso.toString()];
   const uusiData = voimaProgression[uusiTaso.toString()];
   
@@ -117,6 +128,7 @@ export const selvitaMuuttunutVoima = (vanhaTaso, uusiTaso) => {
   // Tarkista mikä voima nousi tai aktivoitui
   const tarkistaVoima = (avain, vanha, uusi) => {
     if (vanha === uusi) return null;
+    
     return {
       voima: avain,
       vanhaTaso: vanha,

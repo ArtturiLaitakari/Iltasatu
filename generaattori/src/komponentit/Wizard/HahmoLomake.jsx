@@ -200,10 +200,23 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
     paivitaHahmo(paivitettyHahmo);
     
     // Jos uusi voima aktivoitui (null -> taso) tai voima nousi uudelle tasolle joka antaa kyvyn
-    if (muutos && muutos.uusiTaso > 0) {
+    if (muutos) {
+      // Apufunktio voimatason numeraaliseen vertailuun (käsittelee myös "4e"/"5e")
+      const voimaTasonNumero = (taso) => {
+        if (typeof taso === 'string') {
+          // "4e" -> 4, "5e" -> 5
+          return parseInt(taso, 10);
+        }
+        return taso || 0;
+      };
+      
+      const uusiNumero = voimaTasonNumero(muutos.uusiTaso);
+      const vanhaNumero = voimaTasonNumero(muutos.vanhaTaso);
+      
       const tarvitseeUudenKyvyn = 
-        (muutos.vanhaTaso === null && muutos.uusiTaso === 1) || // Uusi voima aktivoitui
-        (muutos.uusiTaso > (muutos.vanhaTaso || 0)); // Voima nousi
+        (muutos.vanhaTaso === null && uusiNumero >= 1) || // Uusi voima aktivoitui
+        (uusiNumero > vanhaNumero) || // Voima nousi numeraalisesti
+        (muutos.edistynyt === true); // Tai tuli edistynyt kyky
         
       if (tarvitseeUudenKyvyn) {
         // Tallenna tieto siitä, mille voimalle valitaan kyky
