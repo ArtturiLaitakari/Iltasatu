@@ -39,7 +39,7 @@ function HahmoKortti({ hahmo, onKlikkaus, onPoista }) {
           onClick={poistaHahmo}
           title="Poista hahmo"
         >
-          ×
+          ✕
         </button>
       </div>
       

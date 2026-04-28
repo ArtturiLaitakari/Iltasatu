@@ -1,5 +1,5 @@
 // Wizard-komponenttien keskitetty export
-export { default as GenreValinta } from './GenreValinta.jsx';
+export { default as KampanjaValinta } from './KampanjaValinta.jsx';
 export { default as ArkkityyppiValinta } from './ArkkityyppiValinta.jsx';
 export { default as OlenValinta } from './OlenValinta.jsx';
 export { default as AdjektiiviValinta } from './AdjektiiviValinta.jsx';

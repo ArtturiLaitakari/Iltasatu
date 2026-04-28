@@ -1,7 +1,8 @@
 // Wizard-vaiheet ja konfiguraatio
 
 export const WIZARD_STEP_NAMES = [
-  'Genre',
+  'Kampanja',
+  'Rotu',
   'Arkkityyppi', 
   'Olen...',
   'Keho Adjektiivi',
@@ -11,7 +12,6 @@ export const WIZARD_STEP_NAMES = [
   'Sielu Adjektiivi',
   'Mystinen Koulutus',
   'Mystinen Voima',
-  'Rotu',
   'Henkilötiedot',
   'Yhteenveto'
 ];

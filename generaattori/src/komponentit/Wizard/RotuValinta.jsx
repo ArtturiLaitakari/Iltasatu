@@ -1,5 +1,6 @@
 import Kortti from '../Kortti.jsx';
 import { rodut } from '../../data/rodut.js';
+import { onkoRotuSallittu, haeRotuVariantti } from '../../data/kampanjaRajoitteet.js';
 import '../HahmoVaiheet.css';
 
 const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
@@ -8,15 +9,52 @@ const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
 });
 
 function RotuValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
-  const valitseRotu = (rotu) => {
+  const valitseRotu = (rotu, alkuperainenRotu = null) => {
+    // Tallennetaan alkuperäinen rotu jos kyseessä on variantti
+    const tallennettuRotu = alkuperainenRotu || rotu;
+    
     paivitaHahmo({ 
       ...hahmo, 
-      rotu: rotu
+      rotu: tallennettuRotu
     });
     
     // Auto-advance kun rotu valitaan
     setTimeout(() => seuraavaVaihe(), 100);
   };
+
+  // Luo lista näytettävistä roduista kampanjarajoitteiden mukaan
+  const luoNaytettavatRodut = () => {
+    if (!hahmo.kampanja) return rodut.fantasia;
+
+    const naytettavat = [];
+    
+    for (const alkuperainenRotu of rodut.fantasia) {
+      // Tarkista onko rotu suoraan sallittu
+      if (onkoRotuSallittu(hahmo.kampanja, alkuperainenRotu.nimi)) {
+        naytettavat.push({
+          ...alkuperainenRotu,
+          alkuperainenRotu: null // Ei variantti
+        });
+      }
+      
+      // Tarkista onko rodulle variantti
+      const variantti = haeRotuVariantti(hahmo.kampanja, alkuperainenRotu.nimi);
+      if (variantti && onkoRotuSallittu(hahmo.kampanja, variantti.nimi)) {
+        // Yhdistä alkuperäinen rotu + variantin muutokset
+        naytettavat.push({
+          ...alkuperainenRotu, // Kaikki alkuperäiset tiedot
+          nimi: variantti.nimi, // Korvaa nimi
+          kuvaus: variantti.kuvaus, // Korvaa kuvaus
+          // stuntti ja rajoitus säilyvät alkuperäisenä
+          alkuperainenRotu: alkuperainenRotu // Viittaus alkuperäiseen tallentamista varten
+        });
+      }
+    }
+    
+    return naytettavat;
+  };
+
+  const naytettavatRodut = luoNaytettavatRodut();
 
   const haeTaustaKuva = () => {
     const tiedostoVaihtoehdot = [
@@ -55,15 +93,15 @@ function RotuValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
       <div className="levea-grid">
         <div className={`ammatti-kategoria ${taustaKuva ? 'ammatti-kategoria-taustalla' : ''}`}>
           <div className="ammatti-kortit-lista">
-            {rodut.fantasia.map((rotu) => (
+            {naytettavatRodut.map((rotu) => (
               <Kortti
                 key={rotu.nimi}
                 nimi={rotu.nimi}
                 kuvaus={rotu.kuvaus}
                 korttiKoko="pieni"
                 otsikkoVari="#000000"
-                valittu={hahmo.rotu?.nimi === rotu.nimi}
-                onClick={() => valitseRotu(rotu)}
+                valittu={hahmo.rotu?.nimi === (rotu.alkuperainenRotu?.nimi || rotu.nimi)}
+                onClick={() => valitseRotu(rotu, rotu.alkuperainenRotu)}
               />
             ))}
           </div>

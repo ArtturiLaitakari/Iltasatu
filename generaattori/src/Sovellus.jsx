@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Wizard,
-  GenreValinta,
+  KampanjaValinta,
   ArkkityyppiValinta, 
   OlenValinta,
   AdjektiiviValinta,
@@ -22,10 +22,43 @@ function Sovellus() {
   const [wizardValmis, asetaWizardValmis] = useState(false);
   const [nakyma, asetaNakyma] = useState('wizard'); // 'wizard', 'hahmolista', 'valmis'
 
+  // Yksinkertaistettu - tarkista vain return_to_hahmolista
+  useEffect(() => {
+    const tempMode = localStorage.getItem('wizard_temp_mode');
+    const tempHahmo = localStorage.getItem('wizard_temp_hahmo');
+    
+    if (tempMode === 'return_to_hahmolista' && tempHahmo) {
+      try {
+        const parsedHahmo = JSON.parse(tempHahmo);
+        
+        // Tallenna päivitetty hahmo localStorage:iin
+        const tallennetutHahmot = JSON.parse(localStorage.getItem('iltasatu_hahmot') || '{}');
+        if (parsedHahmo.id && tallennetutHahmot[parsedHahmo.id]) {
+          tallennetutHahmot[parsedHahmo.id] = parsedHahmo;
+          localStorage.setItem('iltasatu_hahmot', JSON.stringify(tallennetutHahmot));
+        }
+        
+        // Puhdista väliaikainen data
+        localStorage.removeItem('wizard_temp_mode');
+        localStorage.removeItem('wizard_temp_hahmo');
+        
+        // Siirry hahmolistaan
+        asetaNakyma('hahmolista');
+      } catch (error) {
+        localStorage.removeItem('wizard_temp_mode');
+        localStorage.removeItem('wizard_temp_hahmo');
+      }
+    }
+  }, [nakyma]);
+
   const wizardVaiheet = [
     {
-      nimi: 'Genre',
-      komponentti: GenreValinta
+      nimi: 'Kampanja',
+      komponentti: KampanjaValinta
+    },
+    {
+      nimi: 'Rotu',
+      komponentti: RotuValinta
     },
     {
       nimi: 'Arkkityyppi',
@@ -64,10 +97,6 @@ function Sovellus() {
       komponentti: SieluVoimaValinta
     },
     {
-      nimi: 'Rotu',
-      komponentti: RotuValinta
-    },
-    {
       nimi: 'Henkilötiedot',
       komponentti: HenkilotiedotLomake
     },
@@ -88,6 +117,15 @@ function Sovellus() {
   };
 
   const takaisinWizardiin = () => {
+    // Tarkista onko voimakyky-valinta tilaa - älä nollaa silloin
+    const tempMode = localStorage.getItem('wizard_temp_mode');
+    if (tempMode === 'voima_kyky_valinta') {
+      // Älä nollaa hahmoa tai vaihetta, anna useEffect:n hoitaa
+      asetaNakyma('wizard');
+      return;
+    }
+    
+    // Normaali paluu - nollaa kaikki
     asetaHahmo(luoTyhjaHahmo());
     localStorage.removeItem(UI_CONSTANTS.LOCAL_STORAGE_KEYS.CURRENT_STEP);
     asetaNakyma('wizard');

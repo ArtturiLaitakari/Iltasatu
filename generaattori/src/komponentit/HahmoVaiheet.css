@@ -765,6 +765,63 @@
   max-width: 640px;
 }
 
+/* Voimat lista tyylit */
+.voimat-lista {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.voima-rivi {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.voima-rivi-upgradeable {
+  border: 2px solid #2f80ed;
+  background: rgba(47, 128, 237, 0.1);
+  cursor: pointer;
+  box-shadow: 0 0 0 2px rgba(47, 128, 237, 0.18);
+}
+
+.voima-rivi-upgradeable:hover {
+  background: rgba(47, 128, 237, 0.15);
+  transform: translateY(-1px);
+}
+
+.voima-nimi {
+  font-weight: 500;
+  flex: 1;
+}
+
+.voima-pallot {
+  margin-left: 1rem;
+}
+
+/* Voiman progression tyylit */
+.voima-selitys {
+  margin-left: 0.5rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+.skaala-info {
+  margin-top: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.skaala-info small {
+  color: var(--text-light);
+}
+
 .layout-two-col {
   display: flex;
   gap: 0;
@@ -791,6 +848,7 @@
   display: flex;
   gap: 1rem;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
 }
 
@@ -963,11 +1021,81 @@
 
 /* ===== TULOSTUS CSS ===== */
 @media print {
+  /* Sivun perusasetukset */
+  @page {
+    margin: 0.5cm;
+    size: A4;
+  }
+  
+  body {
+    font-size: 9pt !important;
+    line-height: 1.1 !important;
+  }
 
-  /* Leveys tulostuksessa 100% */
+  /* Leveys tulostuksessa 98% */
   .form-container-centered {
-    max-width: 100% !important;
+    max-width: 98% !important;
+    width: 98% !important;
+    margin: 0 auto !important;
+  }
+  
+  /* Layout-flex-grid tulostuksessa */
+  .layout-flex-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.3rem !important;
+    justify-content: space-between !important;
+  }
+  
+  .layout-flex-grid .voima-item {
+    flex: 1 1 120px !important;
+    min-width: 120px !important;
+    max-width: 140px !important;
+    padding: 0.3rem !important;
+    margin: 0 !important;
+    font-size: 8pt !important;
+  }
+  
+  .layout-flex-grid .voima-item strong {
+    font-size: 9pt !important;
+  }
+  
+  .layout-flex-grid .voima-item small {
+    font-size: 7pt !important;
+    line-height: 1.1 !important;
+  }
+  
+  /* Taulukot ja muut leveät elementit */
+  .table-flex-container {
+    display: block !important;
     width: 100% !important;
+  }
+  
+  .bordered-table,
+  .varusteet-taulukko,
+  .taistelu-taulukko {
+    width: 100% !important;
+    font-size: 8pt !important;
+  }
+  
+  .bordered-table td,
+  .bordered-table th {
+    padding: 0.1rem !important;
+    font-size: 7pt !important;
+  }
+  
+  /* Teksti-osiot */
+  .teksti-osio,
+  .info-kortti {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0.2rem 0 !important;
+    padding: 0.3rem !important;
+  }
+  
+  .teksti-osio h4 {
+    font-size: 10pt !important;
+    margin: 0.2rem 0 !important;
   }
   
   .form-card-fullwidth,
@@ -1020,29 +1148,12 @@
     gap: 0.2rem !important;
   }
   
-  /* Piilota skaala-ohjeteksti ja kaikki sen jälkeen */
-  .info-text {
-    display: none !important;
-  }
-  
-  .skaala {
-    display: none !important;
-  }
-  
-  .skaala ~ * {
-    display: none !important;
-  }
-  
-  /* Piilota navigointi ja jakamis-napit */
-  .jakamis-toiminnot {
-    display: none !important;
-  }
-  
-  .wizard-navigation {
-    display: none !important;
-  }
-  
-  .wizard-progress-popup {
+  /* Piilota vain navigointi ja toimintonapit tulostuksessa */
+  .jakamis-toiminnot,
+  .wizard-navigation,
+  .wizard-progress-popup,
+  .wizard-floating-actions,
+  .wizard-back-button {
     display: none !important;
   }
   
@@ -1070,6 +1181,12 @@
 .hahmolista-header h1 {
   color: var(--text-color);
   margin: 0;
+}
+
+.valkoinen-otsikko {
+  color: #ffffff !important;
+  white-space: nowrap;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 /* ===== FORM AND TABLE STYLING ===== */
@@ -1143,14 +1260,14 @@
   width: 4ch;
 }
 
-/* Development and equipment section with page break for print */
+/* Development and equipment section */
 .development-equipment-section {
-  page-break-before: always;
+  /* page-break-before poistettu */
 }
 
 @media print {
   .development-equipment-section {
-    page-break-before: always;
+    /* page-break-before poistettu */
     margin-top: 0 !important;
     padding-top: 0 !important;
   }
@@ -1169,8 +1286,6 @@
   margin-top: 10px;
   color: #666;
   font-style: italic;
-}
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Taustakuvan kanssa */
@@ -1284,24 +1399,28 @@
 }
 
 .btn-poista {
-  background: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e74c3c;
   border: none;
-  color: #e74c3c;
-  font-size: 1.5rem;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
   cursor: pointer;
-  padding: 0;
-  width: 24px;
-  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
   transition: var(--transition-standard);
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
+  padding: 0;
 }
 
 .btn-poista:hover {
-  background-color: #e74c3c;
-  color: white;
+  background: #c0392b;
+  transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(231, 76, 60, 0.5);
 }
 
 .hahmo-kortti-info {
@@ -1393,4 +1512,52 @@
   .hahmo-yksityiskohdat-header {
     flex-direction: column;
   }
+}
+
+/* Voimakyky Modal laajennukset */
+.xp-modal.voimakyky-modal {
+  width: min(95vw, 800px);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.voimakyky-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e74c3c;
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-standard);
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
+}
+
+.voimakyky-close-btn:hover {
+  background: #c0392b;
+  transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(231, 76, 60, 0.5);
+}
+
+.voimakyky-header {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  padding-right: 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.voimakyky-header h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.2rem;
 }

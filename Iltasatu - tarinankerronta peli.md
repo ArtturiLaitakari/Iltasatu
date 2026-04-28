@@ -1235,7 +1235,9 @@ Sallittu vain hahmoille, jolla täyskeijun verta.
 
 **Käytä Tarot voimaa muistista**
 
-- Tarot mestari ei tarvitse enää tarot kortteja tai esineitä Tarot voiman käyttämiseen. Jos hän on joskus tehnyt tarot kortin jostain henkilöstä tai paikasta, hän voi ottaa yhteyttä tähän henkilöön tai paikkaan suoraan ilman korttia/esinettä, ja käyttää Tarot voimaa normaalisti.	**•	Varjonhallinta**
+- Tarot mestari ei tarvitse enää tarot kortteja tai esineitä Tarot voiman käyttämiseen. Jos hän on joskus tehnyt tarot kortin jostain henkilöstä tai paikasta, hän voi ottaa yhteyttä tähän henkilöön tai paikkaan suoraan ilman korttia/esinettä, ja käyttää Tarot voimaa normaalisti.		
+
+# Heijastuksenhallinta
 
 Jaue lukitsi Eedenin luonnonlait kiveen. Niitä ei voi muuttaa muuten kuin rikkomalla tuo kivi ja kirjoittamalla ne uusiksi mestari tason Tarot voimalla. Mutta Eedenistä voi kävellä muutamasta paikasta pois eedenin varjoihin, maihin jotka heijastavat potentiaalissa eedenin mahtavuutta ja luovat lievästi erilaisen kopion. Mitä kauempana varjo on, sitä enemmän siinä on eri tarot voimien luomia vääristymiä, ja asukkaiden uskomusten luomia vääristymiä, ja maagisten voimien luomia vääristymiä.
 
@@ -1281,7 +1283,7 @@ Varjonhallinta voi tehdä tosiesineen.
 - Sillä voi leikata särön reunat siistiksi, jolloin särön kaaostulehdus alkaa parantua ja särö alkaa sukeutua.
 - Vain legendaarinen sankari voi saada omaksi pidemmäksi aikaa.
 
-**Varjosäikeet**
+# Kaaossäikeet
 
 Jauen esikoinen Saguel tuli äitiinsä Asheratiin, ja hänestä tuli Succubus. Hänellä oli taipumuksia pimeyden voimiin. Hän kohtasi nuorella iällä muinaisia ja liittoutui keijujen kanssa ajaakseen muinaiset pois.
 

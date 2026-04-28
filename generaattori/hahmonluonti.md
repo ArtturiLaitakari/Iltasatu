@@ -267,6 +267,54 @@ Jos valitsit mystisen ammatin:
 
 ---
 
+## Voiman kehittyminen (Uusi mekanismi)
+
+Voimat kehittyvät progressiivisesti kun hahmo käyttää hahmopisteitä voiman nostamiseen. Jokaisella hahmopisteella voima kehittyy seuraavan taulukon mukaan:
+
+| Taso | Voima 1 | Voima 2 | Voima 3 | Skaala |
+|------|---------|---------|---------|---------|
+| **1** | 1 | | | Tavallinen 0 |
+| **2** | 2 | | | |
+| **3** | 3 | | | |
+| **4** | 3 | 1 | | Erinomainen 1 |
+| **5** | 4 | 1 | | |
+| **6** | 4 | 2 | | |
+| **7** | 4 | 2 | 1 | Uskomaton 2 |
+| **8** | 4e | 2 | 1 | |
+| **9** | 4e | 3 | 1 | |
+| **10** | 4e | 3 | 2 | Eeppinen 3 |
+| **11** | 5 | 3 | 2 | |
+| **12** | 5 | 4 | 2 | |
+| **13** | 5 | 4e | 3 | Jumalainen 4 |
+| **14** | 5e | 4 | 3 | |
+| **15** | 5e | 4e | 3 | |
+
+### Voiman tasot selitykset
+
+- **Perustasot (1-5)**: Tavallinen voiman hallinta
+- **4e**: 4 perusvoimaa + 1 edistynyt kyky (yhteensä 5 kykyä)
+- **5e**: 5 perusvoimaa + 2 edistynyttä kykyä (yhteensä 7 kykyä)
+
+### Skaalan nousu
+
+Hahmon skaala nousee automaattisesti voiman kehittymisen mukana:
+- **Tasot 1-3**: Tavallinen 0
+- **Tasot 4-6**: Erinomainen 1
+- **Tasot 7-9**: Uskomaton 2
+- **Tasot 10-12**: Eeppinen 3
+- **Tasot 13+**: Jumalainen 4
+
+### Monivoimaisten hahmojen kehittyminen
+
+Kun hahmo avaa toisen voiman (taso 4), hahmo voi:
+1. Kehittää ensimmäistä voimaa edelleen
+2. Kehittää toista voimaa
+3. Taso 7 alkaen kehittää kolmatta voimaa
+
+Hahmopisteet voi jakaa vapaasti voimien kesken, mutta kokonaisprogression on noudatettava taulukkoa.
+
+---
+
 ## Ominaisuuksien laskenta
 
 Lopullinen taitotaso lasketaan:

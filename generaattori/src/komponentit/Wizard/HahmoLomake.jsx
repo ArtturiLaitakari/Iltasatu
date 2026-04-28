@@ -1,9 +1,10 @@
 import { arkkityypit } from '../../data/arkkityypit.js';
-import { skaala, taitotasoSanallisesti, luonteet, haeVoimarajat, onkoJumalainen } from '../../data/muutData.js';
+import { skaala, taitotasoSanallisesti, luonteet, haeVoimarajat, onkoJumalainen, laskeHahmopisteet } from '../../data/muutData.js';
 import { aistit, voimat } from '../../data/voimat.js';
 import { ammatit } from '../../data/ammatit.js';
 import { adjektiivit } from '../../data/adjektiivit.js';
 import { tallennaHahmo } from '../../utils/hahmoLogiikka.js';
+import { voimaProgression, haeVoimanPallot, haeSkaala, haeSkaalaText, haeEdistyneidenSelitys, voikoNostaaVoimaa as voikoNostaaVoimaaTaso, haeSeuraavaTaso } from '../../data/voimaProgression.js';
 import React from 'react';
 import '../HahmoVaiheet.css';
 
@@ -22,9 +23,20 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
     const voimaEntries = Object.entries(hahmo.voimat);
     const aktiivinenVoima = voimaEntries.find(([avain, taso]) => avain !== 'valitut' && taso > 0);
     if (aktiivinenVoima) {
-      valittuVoimatyyppi = aktiivinenVoima[0];
+      valittuVoimatyyppi = aktiivinenVoima[0]; // Tämän pitäisi olla string (avain)
     }
   }
+
+  // Hae kaikki voimat joilla on taso > 0
+  const haeKaikkiVoimat = () => {
+    if (!hahmo.voimat || typeof hahmo.voimat !== 'object') return [];
+    const voimaEntries = Object.entries(hahmo.voimat);
+    return voimaEntries
+      .filter(([avain, taso]) => avain !== 'valitut' && taso > 0)
+      .map(([avain, taso]) => ({ nimi: avain, taso: taso }));
+  };
+
+  const kaikkiVoimat = haeKaikkiVoimat();
 
   const haeTaustaKuva = () => {
     const tiedostoVaihtoehdot = [
@@ -114,12 +126,16 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
     return taso;
   };
 
-  const luoYmpyraEsitys = (taso, maksimi = 3) => {
+  const luoYmpyraEsitys = (taso, maksimi = 3, kaytetaanProgressiota = false) => {
+    if (kaytetaanProgressiota && taso) {
+      const pallot = haeVoimanPallot(taso);
+      return <span style={{ verticalAlign: 'middle' }}>{pallot}</span>;
+    }
     let esitys = '';
     for (let i = 0; i < maksimi; i++) {
       esitys += i < taso ? '●' : '○';
     }
-    return esitys;
+    return <span style={{ verticalAlign: 'middle' }}>{esitys}</span>;
   };
 
   const haeTaitotasonNimi = (taso) => {
@@ -129,10 +145,21 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
 
   const luoTekstimuoto = () => {
     // Luo teksti-muotoinen yhteenveto hahmosta
+    const voimateksti = typeof valittuVoimatyyppi === 'string' ? valittuVoimatyyppi : (valittuVoimatyyppi ? 'tuntematon voima' : 'ei voimaa');
+    const adjektiivitTeksti = `${haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.keho, 0, hahmo.adjektiivit)} ${haeAmmatinNimi(hahmo.ammatit?.keho)}, ${haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.mieli, 1, hahmo.adjektiivit)} ${haeAmmatinNimi(hahmo.ammatit?.mieli)} ja ${haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.sielu, 2, hahmo.adjektiivit)} ${haeAmmatinNimi(hahmo.ammatit?.sielu)}`;
+    
     const teksti = `${hahmo.henkilotiedot.nimi || 'Anonyymi'} - ${hahmo.kuvaaja?.nimi || 'Tuntematon'}
-Keho: ${hahmo.keho}, Mieli: ${hahmo.mieli}, Sielu: ${hahmo.sielu}
-Rotu: ${hahmo.rotu?.nimi || 'Ei rotua'}, Luonne: ${hahmo.henkilotiedot?.luonne || 'Ei luonnetta'}`;
+
+Olen ${hahmo.kuvaaja?.nimi || 'tuntematon'}, ${adjektiivitTeksti}.
+Rotuni on ${hahmo.rotu?.nimi || 'Ei rotua'}. 
+Luonteeltani olen ${hahmo.henkilotiedot?.luonne || 'Ei luonnetta'} ja voimani on ${voimateksti}.
+
+Ominaisuudet:
+Keho: ${hahmo.keho || 0}, Mieli: ${hahmo.mieli || 0}, Sielu: ${hahmo.sielu || 0}
+Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuvausta'})`;
+    
     navigator.clipboard.writeText(teksti);
+    alert('Hahmon tiedot kopioitu leikepöydälle!');
   };
 
   const tulostahahmo = () => {
@@ -157,8 +184,22 @@ Rotu: ${hahmo.rotu?.nimi || 'Ei rotua'}, Luonne: ${hahmo.henkilotiedot?.luonne |
     }
   };
 
-  const hahmopisteetYhteensa = Math.max(0, hahmo.hp || 0);
-  const kayttamattomatHahmopisteet = Math.max(0, hahmo.kayttamattomatHahmopisteet || 0);
+  // Laske hahmopisteet XP:stä
+  const hahmopisteetXpsta = laskeHahmopisteet(hahmo.xp || 0);
+  
+  // Laske käytetyt pisteet voimista - käytä uutta progression systeemiä
+  const kokonaisprogression = hahmo.voimaTaso || 1;
+  const kaytetytVoimaPisteet = kokonaisprogression - 1; // Progression alkaa 1:stä, joten vähennetään 1
+  
+  // Laske käytetyt pisteet ominaisuuksista (keho, mieli, sielu)
+  const kaytetytOminaisuusPisteet = (hahmo.keho || 0) + (hahmo.mieli || 0) + (hahmo.sielu || 0);
+  
+  // Laske käytettävissä olevat pisteet - käytä tallennettua arvoa jos saatavilla
+  const hahmopisteetYhteensa = hahmopisteetXpsta;
+  const lasketutKayttamattomatPisteet = Math.max(0, hahmopisteetYhteensa - kaytetytVoimaPisteet - kaytetytOminaisuusPisteet);
+  const kayttamattomatHahmopisteet = hahmo.kayttamattomatHahmopisteet !== undefined ? hahmo.kayttamattomatHahmopisteet : lasketutKayttamattomatPisteet;
+  
+
 
   const voikoNostaaOminaisuutta = (avain, maksimi) => {
     if (!paivitaHahmo) return false;
@@ -250,14 +291,7 @@ Rotu: ${hahmo.rotu?.nimi || 'Ei rotua'}, Luonne: ${hahmo.henkilotiedot?.luonne |
         {/* Lyhyt yhteenveto */}
         <div className="info-kortti">
           <p className="olen-teksti">
-            Olen {hahmo.kuvaaja?.nimi || 'tuntematon'}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.keho, 0, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.keho)}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.mieli, 1, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.mieli)} ja {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.sielu, 2, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.sielu)}, rotuni on {hahmo.rotu?.nimi || ''}. Luonteeltani olen {hahmo.henkilotiedot?.luonne || ''} ja voimani on{' '}
-            <span
-              className={voikoNostaaVoimaa() ? 'voima-item-inline-upgradeable' : ''}
-              onClick={nostaVoimaa}
-            >
-              {valittuVoimatyyppi || 'ei voimaa'}{valittuVoimatyyppi ? ` ${luoYmpyraEsitys(nykyinenVoimataso, voimanMaksimi)}` : ''}
-            </span>
-            . {hahmo.onkoRajamurto ? 'Ääriraja murtuma.' : ''}
+            Olen {hahmo.kuvaaja?.nimi || 'tuntematon'}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.keho, 0, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.keho)}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.mieli, 1, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.mieli)} ja {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.sielu, 2, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.sielu)}, rotuni on {hahmo.rotu?.nimi || ''}. Luonteeltani olen {hahmo.henkilotiedot?.luonne || ''}.{hahmo.onkoRajamurto ? ' Ääriraja murtuma.' : ''}
           </p>
         </div>
         
@@ -328,6 +362,80 @@ Rotu: ${hahmo.rotu?.nimi || 'Ei rotua'}, Luonne: ${hahmo.henkilotiedot?.luonne |
                   <small><strong>Stuntti:</strong> {haeLuonteenTiedot(hahmo.henkilotiedot.luonne).stuntti}</small>
                 </p>
               )}
+              {/* Voimat osio */}
+              <div className="voima-item">
+                <strong>Voimat (Taso {kokonaisprogression})</strong>
+                <div className="voimat-lista">
+                  {/* Voima 1 */}
+                  {voimaProgression[kokonaisprogression.toString()]?.voima1 && (
+                    <div 
+                      className={`voima-rivi ${voikoNostaaVoimaaTaso(kokonaisprogression, 15) && kayttamattomatHahmopisteet > 0 ? 'voima-rivi-upgradeable' : ''}`}
+                      onClick={() => {
+                        if (!voikoNostaaVoimaaTaso(kokonaisprogression, 15) || kayttamattomatHahmopisteet <= 0) return;
+                        
+                        const uusiKokonaisprogression = kokonaisprogression + 1;
+                        const uusiSkaala = haeSkaala(uusiKokonaisprogression);
+                        
+                        const paivitettyHahmo = {
+                          ...hahmo,
+                          voimaTaso: uusiKokonaisprogression,
+                          skaala: uusiSkaala,
+                          voimat: {
+                            ...hahmo.voimat,
+                            valittuVoima: null
+                          },
+                          kayttamattomatHahmopisteet: kayttamattomatHahmopisteet - 1
+                        };
+                        
+                        paivitaHahmo(paivitettyHahmo);
+                        
+                        if (siirryVoimanKykyyn && typeof siirryVoimanKykyyn === 'function') {
+                          siirryVoimanKykyyn();
+                        }
+                      }}
+                    >
+                      <span className="voima-nimi">{valittuVoimatyyppi || 'Voima 1'}</span>
+                      <span className="voima-pallot">{luoYmpyraEsitys(voimaProgression[kokonaisprogression.toString()].voima1, null, true)}</span>
+                      {haeEdistyneidenSelitys(voimaProgression[kokonaisprogression.toString()].voima1) && (
+                        <span className="voima-selitys">
+                          <small> ({haeEdistyneidenSelitys(voimaProgression[kokonaisprogression.toString()].voima1).kuvaus})</small>
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  
+                  {/* Voima 2 */}
+                  {voimaProgression[kokonaisprogression.toString()]?.voima2 && (
+                    <div className="voima-rivi">
+                      <span className="voima-nimi">Voima 2</span>
+                      <span className="voima-pallot">{luoYmpyraEsitys(voimaProgression[kokonaisprogression.toString()].voima2, null, true)}</span>
+                      {haeEdistyneidenSelitys(voimaProgression[kokonaisprogression.toString()].voima2) && (
+                        <span className="voima-selitys">
+                          <small> ({haeEdistyneidenSelitys(voimaProgression[kokonaisprogression.toString()].voima2).kuvaus})</small>
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  
+                  {/* Voima 3 */}
+                  {voimaProgression[kokonaisprogression.toString()]?.voima3 && (
+                    <div className="voima-rivi">
+                      <span className="voima-nimi">Voima 3</span>
+                      <span className="voima-pallot">{luoYmpyraEsitys(voimaProgression[kokonaisprogression.toString()].voima3, null, true)}</span>
+                      {haeEdistyneidenSelitys(voimaProgression[kokonaisprogression.toString()].voima3) && (
+                        <span className="voima-selitys">
+                          <small> ({haeEdistyneidenSelitys(voimaProgression[kokonaisprogression.toString()].voima3).kuvaus})</small>
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  
+                  {/* Skaala info */}
+                  <div className="skaala-info">
+                    <small><strong>Skaala:</strong> {haeSkaalaText(kokonaisprogression)} ({haeSkaala(kokonaisprogression)})</small>
+                  </div>
+                </div>
+              </div>
         </div>
         </div>
 
@@ -393,9 +501,9 @@ Rotu: ${hahmo.rotu?.nimi || 'Ei rotua'}, Luonne: ${hahmo.henkilotiedot?.luonne |
               {' '}&nbsp;&nbsp;
               <strong>Mana:</strong> {luoYmpyraEsitys(0, (hahmo.sielu || 0) + 2 + (hahmo.skaala || 0))}
               {' '}&nbsp;&nbsp;
-              <strong>Fate-pisteet:</strong> ○ ○ ○ ○ ○
+              <strong>Fate-pisteet:</strong> <span style={{ verticalAlign: 'middle' }}>○ ○ ○ ○ ○</span>
               {' '}&nbsp;&nbsp;
-              <strong>Hahmopisteet:</strong> {hahmopisteetYhteensa} <span>&nbsp;</span><strong>Käyttämätön:</strong> {kayttamattomatHahmopisteet} <span>&nbsp;</span><strong> XP:</strong> {hahmo.xp || 0}
+              <strong>Hahmopisteet:</strong> <span style={{ verticalAlign: 'middle' }}>({kayttamattomatHahmopisteet}/{hahmopisteetYhteensa})</span> <span>&nbsp;</span><strong> XP:</strong> <span style={{ verticalAlign: 'middle' }}>{hahmo.xp || 0}</span>
               {' '}&nbsp;&nbsp;
               <strong>Skaala:</strong> {hahmonSkaala?.nimi } ({hahmonSkaala?.kuvaus })
             </div>

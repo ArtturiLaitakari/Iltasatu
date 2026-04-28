@@ -1,5 +1,6 @@
 import '../HahmoVaiheet.css';
 import { voimat, aistit } from '../../data/voimat.js';
+import { voimaProgression, haeVoimanTaso } from '../../data/voimaProgression.js';
 import Kortti from '../Kortti.jsx';
 
 const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
@@ -53,6 +54,16 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const voimatyyppiTiedot = voimat[valittuVoimatyyppi];
   const aistiTiedot = aistit[valittuVoimatyyppi];
   const kaikki_peruskyvyt = voimatyyppiTiedot?.peruskyvyt || [];
+  
+  // Hae hahmon nykyinen voiman taso uudesta progression systeemistä
+  const kokonaisprogression = hahmo.voimaTaso || 1;
+  const nykyinenVoimanTaso = haeVoimanTaso(kokonaisprogression, 1); // Käytä voima1:tä pääasiallisena voimana
+  
+  // Jos voiman taso on merkkijono (esim. "4e"), muunna numeroksi kykyjen suodatusta varten
+  let kykyjenSuodatusTaso = nykyinenVoimanTaso;
+  if (typeof nykyinenVoimanTaso === 'string') {
+    kykyjenSuodatusTaso = parseInt(nykyinenVoimanTaso.replace('e', ''));
+  }
 
   // Tarkista onko kyvyillä tasosysteemi
   const onTasojarasteelma = kaikki_peruskyvyt.some(kyky => kyky.taso !== undefined);
@@ -60,9 +71,9 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   // Jos tasojärjestelmä, näytä kaikki kyvyt mutta disable korkeammat tasot
   const peruskyvyt = kaikki_peruskyvyt;
   
-  // Tason 1 kyvyt ovat käytettävissä (kyvyt joilla ei ole tasoa = taso 1)
-  const tasonYksiKyvyt = onTasojarasteelma 
-    ? kaikki_peruskyvyt.filter(kyky => kyky.taso === 1 || kyky.taso === undefined)
+  // Näytä kyvyt joiden taso <= hahmon nykyinen voiman taso
+  const kaytettavissaOlevatKyvyt = onTasojarasteelma 
+    ? kaikki_peruskyvyt.filter(kyky => (kyky.taso || 1) <= kykyjenSuodatusTaso)
     : kaikki_peruskyvyt;
 
   const valitseVoima = (voima) => {
@@ -78,8 +89,12 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     };
     paivitaHahmo(paivitettyHahmo);
     
+    // Tarkista pitääkö palata hahmolistaan
+    const returnTo = localStorage.getItem('wizard_return_to');
+    
     // Auto-advance vain jos ei tarvita vapaakuvausta
     if (!tarvitseeVapaakuvaus) {
+      // Kutsuu aina seuraavaVaihe (joka on nyt onnistunutVoimakykyValinta)
       setTimeout(() => seuraavaVaihe(), 100);
     }
   };
@@ -151,12 +166,12 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
           {/* Voimakyvyt */}
           <div>
             <p className="vaihe-indikaattori">
-              {tasonYksiKyvyt.length === 1 ? 'Automaattinen 1. tason kyky' : 'Valitse kyky'}
+              {kaytettavissaOlevatKyvyt.length === 1 ? 'Automaattinen kyky' : 'Valitse kyky'}
             </p>
             
             <div className="ammatti-kortit-lista kapea">
               {peruskyvyt.map((voima, index) => {
-                const onKaytettavissa = (!onTasojarasteelma || voima.taso === 1 || voima.taso === undefined) && !valitutKyvyt.includes(voima.nimi);
+                const onKaytettavissa = kaytettavissaOlevatKyvyt.includes(voima) && !valitutKyvyt.includes(voima.nimi);
                 
                 return (
                   <Kortti
@@ -165,7 +180,7 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
                     kuvaus={voima.kuvaus}
                     korttiKoko="pieni"
                     otsikkoVari={valittuVoima?.nimi === voima.nimi ? "#2e7d32" : "#000000"}
-                    extraInfo={valitutKyvyt.includes(voima.nimi) ? 'Valittu aiemmin' : (tasonYksiKyvyt.length === 1 && !onTasojarasteelma ? 'Automaattinen' : undefined)}
+                    extraInfo={kaytettavissaOlevatKyvyt.length === 1 && !onTasojarasteelma ? 'Automaattinen' : undefined}
                     valittu={valittuVoima?.nimi === voima.nimi}
                     onClick={() => onKaytettavissa ? valitseVoima(voima) : null}
                     disabled={!onKaytettavissa}

@@ -7,13 +7,15 @@ export function haeAmmattiKategoria(arkkityyppi) {
   return tyyppi.paaKategoria;
 }
 
-export function haeKategorianAmmatit(kategoria, genre = 'fantasia') {
+export function haeKategorianAmmatit(kategoria, kampanja = 'avoin-fantasia') {
+  // Kaikki kampanjat käyttävät fantasiadataa
+  const genre = 'fantasia';
   return ammatit[genre]?.[kategoria] || [];
 }
 
 export function luoTyhjaHahmo() {
   return {
-    genre: 'fantasia',
+    kampanja: 'avoin-fantasia',
     arkkityyppi: null,
     kuvaaja: null,
     adjektiivit: {
@@ -73,22 +75,47 @@ export function validoiHahmo(hahmo) {
 }
 
 export function tallennaHahmo(hahmo) {
-  const nykyiset = haeHahmot();
-  const id = Date.now().toString();
-  nykyiset[id] = { ...hahmo, id, luotu: new Date().toISOString() };
-  localStorage.setItem('iltasatu_hahmot', JSON.stringify(nykyiset));
-  return id;
+  try {
+    const nykyiset = haeHahmot();
+    const id = Date.now().toString();
+    nykyiset[id] = { ...hahmo, id, luotu: new Date().toISOString() };
+    
+    // Luo backup ennen tallennusta
+    luoBackup();
+    
+    localStorage.setItem('iltasatu_hahmot', JSON.stringify(nykyiset));
+    console.log('Hahmo tallennettu onnistuneesti:', id);
+    return id;
+  } catch (error) {
+    console.error('Virhe hahmon tallennuksessa:', error);
+    alert('VIRHE: Hahmon tallennus epäonnistui! Kopioi hahmotiedot ylös.');
+    return null;
+  }
 }
 
 export function haeHahmot() {
-  const data = localStorage.getItem('iltasatu_hahmot');
-  return data ? JSON.parse(data) : {};
+  try {
+    const data = localStorage.getItem('iltasatu_hahmot');
+    const hahmot = data ? JSON.parse(data) : {};
+    console.log('Ladattu hahmoja LocalStoragesta:', Object.keys(hahmot).length);
+    return hahmot;
+  } catch (error) {
+    console.error('Virhe hahmotietojen latauksessa:', error);
+    // Yritä palauttaa backup
+    return palautaBackup() || {};
+  }
 }
 
 export function poistaHahmo(id) {
-  const nykyiset = haeHahmot();
-  delete nykyiset[id];
-  localStorage.setItem('iltasatu_hahmot', JSON.stringify(nykyiset));
+  try {
+    luoBackup(); // Backup ennen poistoa
+    const nykyiset = haeHahmot();
+    delete nykyiset[id];
+    localStorage.setItem('iltasatu_hahmot', JSON.stringify(nykyiset));
+    console.log('Hahmo poistettu:', id);
+  } catch (error) {
+    console.error('Virhe hahmon poistossa:', error);
+  }
 }
 
 export function suoritaRajamurtoTasonNousu(hahmo) {
@@ -112,4 +139,49 @@ export function suoritaRajamurtoTasonNousu(hahmo) {
     skaala: Math.min(4, (hahmo.skaala || 0) + 1),
     onkoRajamurto: false
   };
+}
+
+// Backup-funktiot tietojen suojaamiseksi
+export function luoBackup() {
+  try {
+    const data = localStorage.getItem('iltasatu_hahmot');
+    if (data) {
+      const aikaleima = new Date().toISOString();
+      localStorage.setItem('iltasatu_hahmot_backup', data);
+      localStorage.setItem('iltasatu_hahmot_backup_aika', aikaleima);
+      console.log('Backup luotu:', aikaleima);
+    }
+  } catch (error) {
+    console.warn('Backup-luonti epäonnistui:', error);
+  }
+}
+
+export function palautaBackup() {
+  try {
+    const backup = localStorage.getItem('iltasatu_hahmot_backup');
+    const backupAika = localStorage.getItem('iltasatu_hahmot_backup_aika');
+    if (backup) {
+      console.log('Palautetaan backup ajalta:', backupAika);
+      return JSON.parse(backup);
+    }
+  } catch (error) {
+    console.error('Backup-palautus epäonnistui:', error);
+  }
+  return null;
+}
+
+export function vieBackupTiedostoon() {
+  try {
+    const data = localStorage.getItem('iltasatu_hahmot') || '{}';
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `iltasatu_backup_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    console.log('Backup viety tiedostoon');
+  } catch (error) {
+    console.error('Tiedosto-vienti epäonnistui:', error);
+  }
 }

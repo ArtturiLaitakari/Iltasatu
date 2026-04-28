@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { haeKategorianAmmatit } from '../../utils/hahmoLogiikka.js';
 import { arkkityypit } from '../../data/arkkityypit.js';
+import { onkoVoimaSallittu, onkoJumalaisetVoimatSallittu } from '../../data/kampanjaRajoitteet.js';
 import Kortti from '../Kortti.jsx';
 import '../HahmoVaiheet.css';
 
@@ -30,7 +31,23 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
     };
 
     const aktiivinenKategoria = kategoriaData[kategoria];
-    const ammatit = haeKategorianAmmatit(aktiivinenKategoria.ammattiKategoria, hahmo.genre || 'fantasia');
+    let ammatit = haeKategorianAmmatit(aktiivinenKategoria.ammattiKategoria, hahmo.genre || 'fantasia');
+
+    // Filttteröi mystisen kategorian ammatteja kampanjarajoitteiden mukaan
+    if (aktiivinenKategoria.avain === 'sielu' && hahmo.kampanja && hahmo.rotu) {
+      ammatit = ammatit.filter(ammatti => {
+        // Tarkista onko ammatin voima sallittu rodulle kampanjassa ja skaalassa
+        const voimaSallittu = onkoVoimaSallittu(hahmo.kampanja, hahmo.rotu.nimi, ammatti.voima, hahmo.skaala || 0);
+        
+        // Jos ammatti on jumalainen, tarkista että jumalaiset voimat on sallittu
+        if (ammatti.jumalainenAmmatii) {
+          const jumalaisetSallittu = onkoJumalaisetVoimatSallittu(hahmo.kampanja, hahmo.skaala || 0);
+          return voimaSallittu && jumalaisetSallittu;
+        }
+        
+        return voimaSallittu;
+      });
+    }
 
     // Hae taustakuva kategorian mukaan
     const haeKategoriaTaustaKuva = () => {
@@ -70,6 +87,9 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
             'muodonmuutos': ammatti.voima === 'muodonmuutos' ? 1 : 0,
             'mentalismi': ammatti.voima === 'mentalismi' ? 1 : 0,
             'elementin hallinta': ammatti.voima === 'elementin hallinta' ? 1 : 0,
+            'heijastuksen hallinta': ammatti.voima === 'heijastuksen hallinta' ? 1 : 0,
+            'kaaosnäikeet': ammatti.voima === 'kaaosnäikeet' ? 1 : 0,
+            'tarot': ammatti.voima === 'tarot' ? 1 : 0,
             valitut: []
           }
         };
@@ -93,11 +113,17 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
 
         <div className="levea-grid">
           <div className={`ammatti-kategoria ${taustaKuva ? 'ammatti-kategoria-taustalla' : ''}`}>
-            <div className={`ammatti-kortit-lista ${aktiivinenKategoria.avain === 'sielu' ? 'kapea' : ''}`}>
-              {ammatit.map((ammatti) => (
-                <Kortti
-                  key={ammatti.nimi}
-                  nimi={ammatti.nimi}
+            {ammatit.length === 0 ? (
+              <div className="ammatti-ei-sallittuja">
+                <p>Valitsemallesi rodulle ei ole sallittuja mystisiä ammatteja tässä kampanjassa.</p>
+                <p>Palaa takaisin ja valitse toinen rotu.</p>
+              </div>
+            ) : (
+              <div className={`ammatti-kortit-lista ${aktiivinenKategoria.avain === 'sielu' ? 'kapea' : ''}`}>
+                {ammatit.map((ammatti) => (
+                  <Kortti
+                    key={ammatti.nimi}
+                    nimi={ammatti.nimi}
                   kuvaus={ammatti.kuvaus}
                   korttiKoko="pieni"
                   otsikkoVari="#000000"
@@ -105,7 +131,8 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
                   onClick={() => valitseAmmatti(ammatti)}
                 />
               ))}
-            </div>
+              </div>
+            )}
           </div>
         </div>
         
@@ -211,6 +238,9 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
           'muodonmuutos': ammatti.voima === 'muodonmuutos' ? 1 : 0,
           'mentalismi': ammatti.voima === 'mentalismi' ? 1 : 0,
           'elementin hallinta': ammatti.voima === 'elementin hallinta' ? 1 : 0,
+          'heijastuksen hallinta': ammatti.voima === 'heijastuksen hallinta' ? 1 : 0,
+          'kaaos säikeet': ammatti.voima === 'kaaos säikeet' ? 1 : 0,
+          'tarot': ammatti.voima === 'tarot' ? 1 : 0,
           valitut: []
         }
       };
@@ -240,7 +270,24 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
   };
 
   const ammattiKategoria = haeAmmattiKategoria(aktiivinenVaihe.avain);
-  const ammatit = haeKategorianAmmatit(ammattiKategoria, hahmo.genre || 'fantasia');
+  let ammatit = haeKategorianAmmatit(ammattiKategoria, hahmo.genre || 'fantasia');
+  
+  // Suodata mystisiä ammatteja kampanjarajoitteiden mukaan
+  if (aktiivinenVaihe.avain === 'sielu' && hahmo.kampanja && hahmo.rotu) {
+    ammatit = ammatit.filter(ammatti => {
+      // Tarkista onko ammatin voima sallittu rodulle kampanjassa ja skaalassa
+      const voimaSallittu = onkoVoimaSallittu(hahmo.kampanja, hahmo.rotu.nimi, ammatti.voima, hahmo.skaala || 0);
+      
+      // Jos ammatti on jumalainen, tarkista että jumalaiset voimat on sallittu
+      if (ammatti.jumalainenAmmatii) {
+        const jumalaisetSallittu = onkoJumalaisetVoimatSallittu(hahmo.kampanja, hahmo.skaala || 0);
+        return voimaSallittu && jumalaisetSallittu;
+      }
+      
+      return voimaSallittu;
+    });
+  }
+  
   const taustaKuva = haeTaustaKuva(aktiivinenVaihe.avain);
   const taustaTyyli = taustaKuva
     ? {

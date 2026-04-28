@@ -29,6 +29,9 @@ export const ammatit = {
       { id: 'muodonmuuttaja', nimi: 'Muodonmuuttaja', kuvaus: 'Kehon ja olemuksen muokkaaja eri tilanteisiin.', voima: 'muodonmuutos' },
       { id: 'mentalisti', nimi: 'Mentalisti', kuvaus: 'Mielen voimiin erikoistunut psyykkinen käyttäjä.', voima: 'mentalismi' },
       { id: 'elementalisti', nimi: 'Elementalisti', kuvaus: 'Elementtien, tulen, veden, maan tai ilman hallitsija.', voima: 'elementin hallinta' },
+      { id: 'todellisuuden-mestari', nimi: 'Todellisuuden mestari', kuvaus: 'Manipuloi pehmeää kaaoksen todellisuutta hienovaraisesti.', voima: 'heijastuksen hallinta', jumalainenAmmatii: true },
+      { id: 'kaaosmestari', nimi: 'Kaaosmestari', kuvaus: 'Skannaa pehmeää potentiaalia kaaossäikeillä, tuo ja vie asioita niillä.', voima: 'kaaos säikeet', jumalainenAmmatii: true },
+      { id: 'tarot-mestari', nimi: 'Tarot mestari', kuvaus: 'Luo yhteys kuvan ja asian välillä, matkaa korttien avulla ja luo mahtiesineitä.', voima: 'tarot', jumalainenAmmatii: true },
       //{ id: 'spesialisti', nimi: 'Spesialisti', kuvaus: 'Taitoihin luottava expertti.', voima: 'magia' }
     ]
   }

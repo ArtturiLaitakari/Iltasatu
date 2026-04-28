@@ -29,27 +29,27 @@ export const skaala = [
   {
     taso: 0,
     nimi: 'Tavallinen',
-    kuvaus: 'Normaalin maailman toimija'
+    kuvaus: 'Normaali'
   },
   {
     taso: 1,
     nimi: 'Erinomainen',
-    kuvaus: '1 automaattinen onnistuminen'
+    kuvaus: '+1 onnistuminen'
   },
   {
     taso: 2,
     nimi: 'Uskomaton',
-    kuvaus: '2 automaattista onnistumista'
+    kuvaus: '+2 onnistumista'
   },
   {
     taso: 3,
     nimi: 'Eeppinen',
-    kuvaus: '3 automaattista onnistumista'
+    kuvaus: '+3 onnistumista'
   },
   {
     taso: 4,
     nimi: 'Jumalainen',
-    kuvaus: '4 automaattista onnistumista'
+    kuvaus: '+4 onnistumista'
   }
 ];
 
@@ -180,13 +180,11 @@ export const voimarajat = [
   {
     skaala: 3,
     nimi: 'Eeppinen',
-    jumalainen: true,
     voimat: [{ max: 5 }, { max: 3 }]
   },
   {
     skaala: 4,
     nimi: 'Jumalainen',
-    jumalainen: true,
     voimat: [{ max: 5 }, { max: 4 }, { max: 3 }]
   }
 ];

@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { haeHahmot, poistaHahmo, suoritaRajamurtoTasonNousu } from '../utils/hahmoLogiikka.js';
+import { haeHahmot, poistaHahmo, suoritaRajamurtoTasonNousu, vieBackupTiedostoon, palautaBackup } from '../utils/hahmoLogiikka.js';
 import { laskeHahmopisteet } from '../data/muutData.js';
 import HahmoKortti from './HahmoKortti.jsx';
 import HahmoLomake from './Wizard/HahmoLomake.jsx';
+import SieluVoimaValinta from './Wizard/SieluVoimaValinta.jsx';
 import './HahmoVaiheet.css';
 
 const taustaKuvat = import.meta.glob('../kuvat/*.{jpg,jpeg,png,webp}', {
@@ -14,6 +15,8 @@ function HahmoLista({ onTakaisin }) {
   const [hahmot, asetaHahmot] = useState(() => haeHahmot());
   const [valittuHahmo, asetaValittuHahmo] = useState(null);
   const [naytaXpModaali, setNaytaXpModaali] = useState(false);
+  const [naytaVoimakykyValinta, setNaytaVoimakykyValinta] = useState(false);
+  const [alkuperainenHahmo, setAlkuperainenHahmo] = useState(null);
   
   const haeTaustaKuva = () => {
     const tiedostoVaihtoehdot = [
@@ -105,6 +108,33 @@ function HahmoLista({ onTakaisin }) {
     setNaytaXpModaali(false);
   };
 
+  // Yksinkertainen voimakyvyn valinta - näytä modal suoraan
+  const siirryVoimanKykyyn = () => {
+    // Tallenna alkuperäinen hahmo cancel-toimintoa varten
+    setAlkuperainenHahmo(valittuHahmo);
+    setNaytaVoimakykyValinta(true);
+  };
+
+  const suljeVoimakykyValinta = () => {
+    // Peruuta-toiminto: palauta alkuperäinen hahmo jos ei valittu kykyä
+    if (alkuperainenHahmo) {
+      asetaValittuHahmo(alkuperainenHahmo);
+      if (alkuperainenHahmo.id) {
+        const palautetutHahmot = { ...hahmot, [alkuperainenHahmo.id]: alkuperainenHahmo };
+        asetaHahmot(palautetutHahmot);
+        localStorage.setItem('iltasatu_hahmot', JSON.stringify(palautetutHahmot));
+      }
+    }
+    setAlkuperainenHahmo(null);
+    setNaytaVoimakykyValinta(false);
+  };
+  
+  const onnistunutVoimakykyValinta = () => {
+    // Kyky valittu onnistuneesti - tyhjennä alkuperäinen hahmo
+    setAlkuperainenHahmo(null);
+    setNaytaVoimakykyValinta(false);
+  };
+
   // Tallenna toimintofunktiot HahmoLomakkeesta
   const [kopioiFunktio, setKopioiFunktio] = useState(null);
   const [tulostaFunktio, setTulostaFunktio] = useState(null);
@@ -115,13 +145,13 @@ function HahmoLista({ onTakaisin }) {
     return (
       <div className="sovellus">
         <div className="hahmo-yksityiskohdat-header">
-          <button onClick={takaisinListaan} className="btn btn-secondary">
-            ← Takaisin hahmolistaan
-          </button>
-          <button onClick={onTakaisin} className="btn btn-secondary">
-            🏠 Pääsivu
-          </button>
           <div className="wizard-floating-actions">
+            <span onClick={takaisinListaan} title="Takaisin hahmolistaan" className="wizard-action-icon">
+              ←
+            </span>
+            <span onClick={onTakaisin} title="Pääsivu" className="wizard-action-icon">
+              🏠
+            </span>
             <span onClick={kopioiFunktio} title="Kopioi tekstimuotoon" className="wizard-action-icon">
               📋
             </span>
@@ -154,6 +184,22 @@ function HahmoLista({ onTakaisin }) {
           </div>
         )}
 
+        {naytaVoimakykyValinta && (
+          <div className="xp-modal-overlay" onClick={suljeVoimakykyValinta}>
+            <div className="xp-modal voimakyky-modal" onClick={(e) => e.stopPropagation()}>
+              <button onClick={suljeVoimakykyValinta} className="voimakyky-close-btn">✕</button>
+              <div className="voimakyky-header">
+                <h3>Valitse uusi voimakyky</h3>
+              </div>
+              <SieluVoimaValinta 
+                hahmo={valittuHahmo}
+                paivitaHahmo={paivitaValittuaHahmoa}
+                seuraavaVaihe={onnistunutVoimakykyValinta}
+              />
+            </div>
+          </div>
+        )}
+
         <HahmoLomake 
           hahmo={valittuHahmo}
           paivitaHahmo={paivitaValittuaHahmoa}
@@ -162,6 +208,7 @@ function HahmoLista({ onTakaisin }) {
           setKopioiFunktio={setKopioiFunktio}
           setTulostaFunktio={setTulostaFunktio}
           setTallennaFunktio={setTallennaFunktio}
+          siirryVoimanKykyyn={siirryVoimanKykyyn}
         />
       </div>
     );
@@ -171,10 +218,29 @@ function HahmoLista({ onTakaisin }) {
   return (
     <div className="sovellus" style={taustaTyyli}>
       <div className="hahmolista-header">
-        <h1 style={{ color: '#fff' }}>Tallennetut Hahmot</h1>
-        <button onClick={onTakaisin} className="btn btn-primary">
-          ← Takaisin hahmonluontiin
-        </button>
+        <h1 className="valkoinen-otsikko">Tallennetut Hahmot</h1>
+      </div>
+
+      {/* Floating toimintopalkki samassa tyylissä kuin hahmonluonnissa */}
+      <div className="wizard-floating-actions">
+        <span onClick={onTakaisin} title="Palaa hahmonluontiin" className="wizard-action-icon">
+          🏠
+        </span>
+        <span onClick={vieBackupTiedostoon} title="Tallenna varmuuskopio" className="wizard-action-icon">
+          💾
+        </span>
+        <span onClick={() => {
+          const backup = palautaBackup();
+          if (backup && Object.keys(backup).length > 0) {
+            asetaHahmot(backup);
+            localStorage.setItem('iltasatu_hahmot', JSON.stringify(backup));
+            alert('Varmuuskopio palautettu!');
+          } else {
+            alert('Ei varmuuskopiota saatavilla.');
+          }
+        }} title="Lataa varmuuskopio" className="wizard-action-icon">
+          📂
+        </span>
       </div>
 
       {hahmoLista.length === 0 ? (

@@ -32,7 +32,7 @@ export const rodut = {
     {
       nimi: 'Päivähaltia',
       kuvaus: 'Auringonvaloon sopeutunut haltia, poikkeuksellinen näköaisti päivällä, tumma pigmentti',
-      stuntti: 'Saat +2 bonuksen havainnoointiin päivänvalossa',
+      stuntti: 'Saat +2 bonuksen havainnointiin päivänvalossa',
       rajoitus: 'Ei hämäränäköä - sokea pimeässä',
     },
     {
