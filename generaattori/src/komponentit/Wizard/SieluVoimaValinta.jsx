@@ -50,6 +50,10 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const vapaakuvaus = hahmo.vapaakuvaukset?.[valintaAvain] || '';
   const vapaakuvausTiedot = VAPAAKUVAUS_OTSIKOT[valittuVoimatyyppi];
   const tarvitseeVapaakuvaus = !!vapaakuvausTiedot;
+  
+  // Elementin hallinta erityiskäsittely
+  const onElementinHallinta = valittuVoimatyyppi === 'elementin hallinta';
+  const elementtiValittu = onElementinHallinta && vapaakuvaus.trim().length >= 3;
 
 
   // Suodata kyvyt voiman tason mukaan - edistynyt taso näyttää edistyneet-listan
@@ -94,8 +98,18 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     
     paivitaHahmo(paivitettyHahmo);
 
-    // Auto-advance jos ei tarvita vapaakuvausta
-    if (!tarvitseeVapaakuvaus) {
+    // Auto-advance logiikka
+    const voiSulkeutua = (() => {
+      if (onElementinHallinta) {
+        // Elementin hallinnassa: elementti valittu ja kyky valittu
+        return elementtiValittu;
+      } else {
+        // Muut voimat: ei tarvita vapaakuvausta
+        return !tarvitseeVapaakuvaus;
+      }
+    })();
+
+    if (voiSulkeutua) {
       setTimeout(() => {
         paivitaHahmo({ ...paivitettyHahmo, tempKykyValinta: undefined });
         seuraavaVaihe();
@@ -110,7 +124,15 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     });
   };
 
-  const onValmisSeuraavaan = valitutKyvyt.length >= 1 && (!tarvitseeVapaakuvaus || vapaakuvaus.trim().length >= 3);
+  const onValmisSeuraavaan = (() => {
+    if (onElementinHallinta) {
+      // Elementin hallinnassa: elementti valittu JA kyky valittu
+      return elementtiValittu && valitutKyvyt.length >= 1;
+    } else {
+      // Muut voimat: kyky valittu JA vapaakuvaus (jos tarvitaan)
+      return valitutKyvyt.length >= 1 && (!tarvitseeVapaakuvaus || vapaakuvaus.trim().length >= 3);
+    }
+  })();
   const taustaKuva = haeTaustaKuva();
 
   return (
@@ -119,39 +141,68 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
         <div className={`ammatti-kategoria ${taustaKuva ? 'ammatti-kategoria-taustalla' : ''}`}>
 
           <div>
-            <p className="vaihe-indikaattori">
-              {onEdistynyt 
-                ? 'Valitse edistynyt kyky' 
-                : 'Valitse kyky'}: {valittuVoimatyyppi} ({valintaAvain})
-            </p>
-
-            <div className="ammatti-kortit-lista kapea">
-              {naytettavatKyvyt.map((voima, index) => {
-                const onValittu = valitutKyvyt.some(k => k.nimi === voima.nimi);
-                const onDisabloitu = !onKaytettavissa(voima) || onValittu;
-                const extraInfo = !onKaytettavissa(voima)
-                  ? `Vaatii voimatason ${voima.taso || 1}`
-                  : undefined;
-
-                return (
-                  <Kortti
-                    key={`voima-${index}`}
-                    nimi={voima.nimi}
-                    kuvaus={voima.kuvaus}
-                    korttiKoko="pieni"
-                    otsikkoVari={onValittu ? "#2e7d32" : "#000000"}
-                    extraInfo={extraInfo}
-                    valittu={onValittu}
-                    onClick={() => valitseVoima(voima)}
-                    disabled={onDisabloitu}
+            {/* Elementin hallinta: Vapaakuvaus ensimmäiseksi */}
+            {onElementinHallinta && !elementtiValittu && (
+              <div className="mb-3">
+                <p className="vaihe-indikaattori">{vapaakuvausTiedot.otsikko}</p>
+                <div className="kentta">
+                  <input
+                    type="text"
+                    value={vapaakuvaus}
+                    onChange={(e) => paivitaVapaakuvaus(e.target.value)}
+                    placeholder={vapaakuvausTiedot.placeholder}
+                    maxLength={100}
+                    required
+                    className="input-custom"
                   />
-                );
-              })}
-            </div>
+                  {vapaakuvaus.trim().length > 0 && vapaakuvaus.trim().length < 3 && (
+                    <small className="error-text">Vähintään 3 merkkiä</small>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Kykyjen valinta (elementin hallinnassa vain kun elementti valittu) */}
+            {(!onElementinHallinta || elementtiValittu) && (
+              <>
+                <p className="vaihe-indikaattori">
+                  {onEdistynyt 
+                    ? 'Valitse edistynyt kyky' 
+                    : 'Valitse kyky'}: {valittuVoimatyyppi} ({valintaAvain})
+                  {onElementinHallinta && elementtiValittu && (
+                    <span> - {vapaakuvaus}</span>
+                  )}
+                </p>
+
+                <div className="ammatti-kortit-lista kapea">
+                  {naytettavatKyvyt.map((voima, index) => {
+                    const onValittu = valitutKyvyt.some(k => k.nimi === voima.nimi);
+                    const onDisabloitu = !onKaytettavissa(voima) || onValittu;
+                    const extraInfo = !onKaytettavissa(voima)
+                      ? `Vaatii voimatason ${voima.taso || 1}`
+                      : undefined;
+
+                    return (
+                      <Kortti
+                        key={`voima-${index}`}
+                        nimi={voima.nimi}
+                        kuvaus={voima.kuvaus}
+                        korttiKoko="pieni"
+                        otsikkoVari={onValittu ? "#2e7d32" : "#000000"}
+                        extraInfo={extraInfo}
+                        valittu={onValittu}
+                        onClick={() => valitseVoima(voima)}
+                        disabled={onDisabloitu}
+                      />
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
 
-          {/* Vapaakuvaus tekstikenttä tietyille voimatyypeille */}
-          {onJokinValittu && tarvitseeVapaakuvaus && (
+          {/* Vapaakuvaus tekstikenttä tietyille voimatyypeille (paitsi elementin hallinta) */}
+          {onJokinValittu && tarvitseeVapaakuvaus && !onElementinHallinta && (
             <div className="mt-2">
               <p className="vaihe-indikaattori">{vapaakuvausTiedot.otsikko}</p>
               <div className="kentta">
@@ -171,8 +222,8 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
             </div>
           )}
 
-          {/* Seuraava-painike vain jos vapaakuvaus tarvitaan */}
-          {tarvitseeVapaakuvaus && onValmisSeuraavaan && (
+          {/* Seuraava-painike vain jos tarvitaan vapaakuvaus (muodonmuutos) */}
+          {tarvitseeVapaakuvaus && !onElementinHallinta && onValmisSeuraavaan && (
             <div className="wizard-navigation">
               <button onClick={() => {
                 // Poista tempKykyValinta ja siirry eteenpäin

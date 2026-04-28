@@ -219,7 +219,47 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
         (muutos.edistynyt === true); // Tai tuli edistynyt kyky
         
       if (tarvitseeUudenKyvyn) {
-        // Tallenna tieto siitä, mille voimalle valitaan kyky
+        // Jos edistynyt kyky JA voimalla on jo edistynyt kyky, lisää kaikki edistyneet automaattisesti
+        if (muutos.edistynyt === true && muutos.voima) {
+          const valitutKyvyt = paivitettyHahmo.valitutKyvyt?.[muutos.voima] || [];
+          const onJoEdistynytKyky = Array.isArray(valitutKyvyt) 
+            ? valitutKyvyt.some(kyky => kyky.edistynyt === true)
+            : valitutKyvyt?.edistynyt === true;
+          
+          if (onJoEdistynytKyky) {
+            // Lisää kaikki edistyneet kyvyt automaattisesti
+            const voimatyyppi = paivitettyHahmo.voimienJarjestys?.[muutos.voima];
+            const voimaData = voimat[voimatyyppi];
+            const edistyneetKyvyt = voimaData?.edistyneet || [];
+            
+            const valitutNimet = Array.isArray(valitutKyvyt) 
+              ? valitutKyvyt.map(k => k.nimi)
+              : (valitutKyvyt?.nimi ? [valitutKyvyt.nimi] : []);
+            
+            const uudetKyvyt = edistyneetKyvyt
+              .filter(kyky => !valitutNimet.includes(kyky.nimi))
+              .map(kyky => ({ ...kyky, edistynyt: true }));
+            
+            if (uudetKyvyt.length > 0) {
+              const kaikki = Array.isArray(valitutKyvyt) 
+                ? [...valitutKyvyt, ...uudetKyvyt]
+                : [valitutKyvyt, ...uudetKyvyt].filter(Boolean);
+              
+              const lopullinenHahmo = {
+                ...paivitettyHahmo,
+                valitutKyvyt: {
+                  ...paivitettyHahmo.valitutKyvyt,
+                  [muutos.voima]: kaikki
+                }
+              };
+              
+              paivitaHahmo(lopullinenHahmo);
+              return; // Ei avaa modaalia
+            }
+          }
+        }
+        
+        // Normaali kykyvalinta modal
         const tempHahmo = {
           ...paivitettyHahmo,
           tempKykyValinta: {
