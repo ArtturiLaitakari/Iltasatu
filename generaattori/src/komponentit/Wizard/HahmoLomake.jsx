@@ -211,7 +211,8 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
           ...paivitettyHahmo,
           tempKykyValinta: {
             voima: muutos.voima, // 'primary', 'secondary' tai 'tertiary'
-            taso: muutos.uusiTaso
+            taso: muutos.uusiTaso,
+            edistynyt: muutos.edistynyt || false
           }
         };
         paivitaHahmo(tempHahmo);
@@ -394,150 +395,139 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
         </div>
 
         {/* Peruskyvyt ja rotu */}
-        {hahmo.rotu && (
-          <div className="teksti-osio">
-            <h4>Kyvyt</h4>
-            <div className="layout-flex-grid">
-              {/* Rotu tiedot */}
-              {hahmo.rotu && (
-                <div className="voima-item voima-item-wide">
-                  <strong>Rotukyvyt:</strong> {hahmo.rotu?.kuvaus || ''}
-                  {hahmo.rotu.stuntti && (
-                    <>
-                      <br />
-                      <small><strong>Stuntti:</strong> {hahmo.rotu.stuntti}</small>
-                    </>
-                  )}
-                  {hahmo.rotu.rajoitus && (
-                    <>
-                      <br />
-                      <small><strong>Rajoitus:</strong> {hahmo.rotu.rajoitus}</small>
-                    </>
-                  )}
-                </div>
-              )}
-              
-              {/* Mystisen voiman valitut kyvyt */}
-              {hahmo.valitutKyvyt?.primary && hahmo.valitutKyvyt.primary.length > 0 && (
-                <div className="voima-item voima-item-wide">
-                  <strong>{hahmo.voimienJarjestys?.primary }:</strong>
-                  {hahmo.valitutKyvyt.primary.map((kyky, index) => (
-                    <div key={index}>
-                      {kyky.nimi}
-                      <br />
-                      <small>{kyky.kuvaus}</small>
-                    </div>
-                  ))}
-                  {hahmo.vapaakuvaukset?.primary && (
-                    <>
-                      <br />
-                      <small><strong>Erikoistuminen:</strong> {hahmo.vapaakuvaukset.primary}</small>
-                    </>
-                  )}
-                </div>
-              )}
+        {hahmo.rotu && (() => {
+          // Kerää kaikki kykyrivit yhteen listaan uudessa järjestyksessä
+          const kykyRivit = [];
 
-              {/* Secondary voiman valitut kyvyt */}
-              {hahmo.valitutKyvyt?.secondary && hahmo.valitutKyvyt.secondary.length > 0 && (
-                <div className="voima-item voima-item-wide">
-                  <strong>{hahmo.voimienJarjestys?.secondary }:</strong>
-                  {hahmo.valitutKyvyt.secondary.map((kyky, index) => (
-                    <div key={index}>
-                      {kyky.nimi}
-                      <br />
-                      <small>{kyky.kuvaus}</small>
+          // 1. Aisti-kyvyt ensin - aktiivisille voimille
+          if (hahmo.voimienJarjestys) {
+            const voimaTaso = hahmo.voimaTaso || 1;
+            const progressData = voimaProgression[voimaTaso.toString()];
+            if (progressData) {
+              const aistiKentat = [
+                { tasoArvo: progressData.voima1, voimatyyppi: hahmo.voimienJarjestys.primary },
+                { tasoArvo: progressData.voima2, voimatyyppi: hahmo.voimienJarjestys.secondary },
+                { tasoArvo: progressData.voima3, voimatyyppi: hahmo.voimienJarjestys.tertiary }
+              ];
+              aistiKentat.forEach(({ tasoArvo, voimatyyppi }, idx) => {
+                if (tasoArvo > 0 && voimatyyppi && aistit[voimatyyppi]) {
+                  const aisti = aistit[voimatyyppi];
+                  kykyRivit.push(
+                    <div key={`aisti-${idx}`}>
+                      <small><strong>{aisti.nimi}:</strong> {aisti.kuvaus}</small>
+                      {aisti.lisakuvaus && (
+                        <div><small style={{ fontStyle: 'italic' }}>{aisti.lisakuvaus}</small></div>
+                      )}
                     </div>
-                  ))}
-                  {hahmo.vapaakuvaukset?.secondary && (
-                    <>
-                      <br />
-                      <small><strong>Erikoistuminen:</strong> {hahmo.vapaakuvaukset.secondary}</small>
-                    </>
-                  )}
-                </div>
-              )}
+                  );
+                }
+              });
+            }
+          }
 
-              {/* Tertiary voiman valitut kyvyt */}
-              {hahmo.valitutKyvyt?.tertiary && hahmo.valitutKyvyt.tertiary.length > 0 && (
-                <div className="voima-item voima-item-wide">
-                  <strong>{hahmo.voimienJarjestys?.tertiary }:</strong>
-                  {hahmo.valitutKyvyt.tertiary.map((kyky, index) => (
+          // 2. Mystiset voimat toiseksi (primary, secondary, tertiary)
+          ['primary', 'secondary', 'tertiary'].forEach(avain => {
+            const kyvyt = hahmo.valitutKyvyt?.[avain];
+            if (kyvyt && kyvyt.length > 0) {
+              kykyRivit.push(
+                <div key={`voima-${avain}`}>
+                  <strong>{hahmo.voimienJarjestys?.[avain]}:</strong>
+                  {kyvyt.map((kyky, index) => (
                     <div key={index}>
-                      {kyky.nimi}
-                      <br />
-                      <small>{kyky.kuvaus}</small>
+                      {kyky.nimi}{kyky.edistynyt && <em> (edistynyt)</em>}
+                      <div><small>{kyky.kuvaus}</small></div>
                     </div>
                   ))}
-                  {hahmo.vapaakuvaukset?.tertiary && (
-                    <>
-                      <br />
-                      <small><strong>Erikoistuminen:</strong> {hahmo.vapaakuvaukset.tertiary}</small>
-                    </>
+                  {hahmo.vapaakuvaukset?.[avain] && (
+                    <div><small><strong>Erikoistuminen:</strong> {hahmo.vapaakuvaukset[avain]}</small></div>
                   )}
                 </div>
-              )}
-              
-              {/* Aisti-kyvyt vain aktiivisille voimille */}
-              {hahmo.voimienJarjestys && (() => {
-                // Tarkista voimaProgression mukaan mitkä voimat on aktiivisia
-                const voimaTaso = hahmo.voimaTaso || 1;
-                const progressData = voimaProgression[voimaTaso.toString()];
-                
-                if (!progressData) return null;
-                
-                const aktiivisetAistit = [];
-                
-                // Lisää aisti-kyvyt vain aktiivisille voimille
-                if (progressData.voima1 > 0 && hahmo.voimienJarjestys.primary && aistit[hahmo.voimienJarjestys.primary]) {
-                  const aistiData = aistit[hahmo.voimienJarjestys.primary];
-                  aktiivisetAistit.push({
-                    nimi: aistiData.nimi,
-                    kuvaus: aistiData.kuvaus,
-                    lisakuvaus: aistiData.lisakuvaus,
-                    voimatyyppi: hahmo.voimienJarjestys.primary
-                  });
-                }
-                if (progressData.voima2 > 0 && hahmo.voimienJarjestys.secondary && aistit[hahmo.voimienJarjestys.secondary]) {
-                  const aistiData = aistit[hahmo.voimienJarjestys.secondary];
-                  aktiivisetAistit.push({
-                    nimi: aistiData.nimi,
-                    kuvaus: aistiData.kuvaus,
-                    lisakuvaus: aistiData.lisakuvaus,
-                    voimatyyppi: hahmo.voimienJarjestys.secondary
-                  });
-                }
-                if (progressData.voima3 > 0 && hahmo.voimienJarjestys.tertiary && aistit[hahmo.voimienJarjestys.tertiary]) {
-                  const aistiData = aistit[hahmo.voimienJarjestys.tertiary];
-                  aktiivisetAistit.push({
-                    nimi: aistiData.nimi,
-                    kuvaus: aistiData.kuvaus,
-                    lisakuvaus: aistiData.lisakuvaus,
-                    voimatyyppi: hahmo.voimienJarjestys.tertiary
-                  });
-                }
-                
-                if (aktiivisetAistit.length === 0) return null;
-                
-                return (
+              );
+            }
+          });
+
+          // 3. Rotukyvyt viimeiseksi
+          if (hahmo.rotu) {
+            kykyRivit.push(
+              <div key="rotu">
+                <strong>Rotukyvyt:</strong> {hahmo.rotu?.kuvaus || ''}
+                {hahmo.rotu.stuntti && (
+                  <div><small><strong>Stuntti:</strong> {hahmo.rotu.stuntti}</small></div>
+                )}
+                {hahmo.rotu.rajoitus && (
+                  <div><small><strong>Rajoitus:</strong> {hahmo.rotu.rajoitus}</small></div>
+                )}
+              </div>
+            );
+          }
+
+          // Jaa rivit kahteen tasapainoiseen palstaan sisällön mukaan
+          const kykyPainot = kykyRivit.map((rivi) => {
+            // Arvioi kunkin kyvyn "painoarvo" sisällön perusteella
+            let paino = 1;
+            
+            // Aisti-kyvyt ovat pieniä (ensimmäisinä listassa)
+            if (rivi.key && rivi.key.startsWith('aisti-')) {
+              paino = 0.7;
+            }
+            // Mystiset voimat - arvioi kyvyjen määrän perusteella
+            else if (rivi.key && rivi.key.startsWith('voima-')) {
+              const avain = rivi.key.split('-')[1];
+              const kyvytMaara = hahmo.valitutKyvyt?.[avain]?.length || 0;
+              paino = Math.max(1, kyvytMaara * 0.8 + (hahmo.vapaakuvaukset?.[avain] ? 0.5 : 0));
+            }
+            // Rotukyvyt ovat isoja (viimeisinä listassa)
+            else if (rivi.key === 'rotu') {
+              paino = 3; // Rotukuvaus + mahdolliset stuntti/rajoitus
+            }
+            
+            return { rivi, paino };
+          });
+          
+          // Jaa tasapainoisesti painoarvon mukaan
+          const kokonaisPaino = kykyPainot.reduce((sum, item) => sum + item.paino, 0);
+          const tavoitePaino = kokonaisPaino / 2;
+          
+          let vasenPaino = 0;
+          let vasenIndeksi = 0;
+          
+          // Etsi optimaalinen jako
+          for (let i = 0; i < kykyPainot.length; i++) {
+            const uusiPaino = vasenPaino + kykyPainot[i].paino;
+            if (uusiPaino <= tavoitePaino || i === 0) {
+              vasenPaino = uusiPaino;
+              vasenIndeksi = i + 1;
+            } else {
+              break;
+            }
+          }
+          
+          // Varmista että vasen puoli ei ole tyhjä
+          vasenIndeksi = Math.max(1, vasenIndeksi);
+          
+          const vasenPalsta = kykyRivit.slice(0, vasenIndeksi);
+          const oikeaPalsta = kykyRivit.slice(vasenIndeksi);
+
+          return (
+            <div className="teksti-osio">
+              <h4>Kyvyt</h4>
+              <div className="layout-flex-grid">
+                <div className="voima-item voima-item-wide">
+                  {vasenPalsta.map((rivi, i) => (
+                    <div key={i} style={{ marginBottom: '0.75rem' }}>{rivi}</div>
+                  ))}
+                </div>
+                {oikeaPalsta.length > 0 && (
                   <div className="voima-item voima-item-wide">
-                    {aktiivisetAistit.map((aisti, index) => (
-                      <React.Fragment key={index}>
-                        <small><strong>{aisti.nimi}:</strong> {aisti.kuvaus}</small>
-                        {aisti.lisakuvaus && (
-                          <>
-                            <small style={{fontStyle: 'italic'}}>{aisti.lisakuvaus}</small>
-                          </>
-                        )}
-                        <br />
-                        {index < aktiivisetAistit.length - 1 && <br />}
-                      </React.Fragment>
+                    {oikeaPalsta.map((rivi, i) => (
+                      <div key={i} style={{ marginBottom: '0.75rem' }}>{rivi}</div>
                     ))}
                   </div>
-                );
-              })()}
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         <div className="teksti-osio">
           <div className="layout-flex-center">

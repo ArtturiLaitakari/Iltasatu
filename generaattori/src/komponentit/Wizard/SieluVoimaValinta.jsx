@@ -31,6 +31,7 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   // Selvitä mihin voimaan kyky valitaan
   const onVoimatasoNosto = !!hahmo.tempKykyValinta;
   const valintaAvain = onVoimatasoNosto ? hahmo.tempKykyValinta.voima : 'primary';
+  const onEdistynyt = onVoimatasoNosto && hahmo.tempKykyValinta.edistynyt === true;
   const valittuVoimatyyppi = hahmo.voimienJarjestys?.[valintaAvain];
 
   if (!valittuVoimatyyppi) {
@@ -50,9 +51,12 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const vapaakuvausTiedot = VAPAAKUVAUS_OTSIKOT[valittuVoimatyyppi];
   const tarvitseeVapaakuvaus = !!vapaakuvausTiedot;
 
-  // Suodata kyvyt voiman tason mukaan
-  const peruskyvyt = voimat[valittuVoimatyyppi]?.peruskyvyt || [];
-  const onTasojarjestelma = peruskyvyt.some(k => k.taso !== undefined);
+  // Suodata kyvyt voiman tason mukaan - edistynyt taso näyttää edistyneet-listan
+  const voimaData = voimat[valittuVoimatyyppi];
+  const naytettavatKyvyt = onEdistynyt
+    ? (voimaData?.edistyneet || [])
+    : (voimaData?.peruskyvyt || []);
+  const onTasojarjestelma = naytettavatKyvyt.some(k => k.taso !== undefined);
   const voimanTasoRaw = haeVoimanTaso(hahmo.voimaTaso || hahmo.voima || 1, 1);
   const voimanTaso = typeof voimanTasoRaw === 'string'
     ? parseInt(voimanTasoRaw.replace('e', ''))
@@ -60,13 +64,14 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
 
   const onKaytettavissa = (kyky) => !onTasojarjestelma || (kyky.taso || 1) <= voimanTaso;
 
-  // Lisää kyky valittujen joukkoon
+  // Lisää kyky valittujen joukkoon (merkitään edistyneet)
   const valitseVoima = (voima) => {
+    const tallennettava = onEdistynyt ? { ...voima, edistynyt: true } : voima;
     const paivitettyHahmo = {
       ...hahmo,
       valitutKyvyt: {
         ...hahmo.valitutKyvyt,
-        [valintaAvain]: [...valitutKyvyt, voima]
+        [valintaAvain]: [...valitutKyvyt, tallennettava]
       }
     };
     delete paivitettyHahmo.tempKykyValinta;
@@ -95,11 +100,11 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
 
           <div>
             <p className="vaihe-indikaattori">
-              Valitse kyky: {valittuVoimatyyppi} ({valintaAvain})
+              {onEdistynyt ? 'Valitse edistynyt kyky' : 'Valitse kyky'}: {valittuVoimatyyppi} ({valintaAvain})
             </p>
 
             <div className="ammatti-kortit-lista kapea">
-              {peruskyvyt.map((voima, index) => {
+              {naytettavatKyvyt.map((voima, index) => {
                 const onValittu = valitutKyvyt.some(k => k.nimi === voima.nimi);
                 const onDisabloitu = !onKaytettavissa(voima) || onValittu;
                 const extraInfo = !onKaytettavissa(voima)

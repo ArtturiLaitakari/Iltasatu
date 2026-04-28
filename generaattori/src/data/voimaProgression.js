@@ -111,18 +111,23 @@ export const selvitaMuuttunutVoima = (vanhaTaso, uusiTaso) => {
   
   if (!vanhaData || !uusiData) return null;
   
-  // Tarkista mikä voima nousi tai aktivoitui
-  if (vanhaData.voima1 !== uusiData.voima1) {
-    return { voima: 'primary', vanhaTaso: vanhaData.voima1, uusiTaso: uusiData.voima1 };
-  }
-  if (vanhaData.voima2 !== uusiData.voima2) {
-    return { voima: 'secondary', vanhaTaso: vanhaData.voima2, uusiTaso: uusiData.voima2 };
-  }
-  if (vanhaData.voima3 !== uusiData.voima3) {
-    return { voima: 'tertiary', vanhaTaso: vanhaData.voima3, uusiTaso: uusiData.voima3 };
-  }
+  // Apufunktio: onko taso edistynyt (sisältää "e")
+  const onEdistynyt = (taso) => typeof taso === 'string' && taso.includes('e');
   
-  return null;
+  // Tarkista mikä voima nousi tai aktivoitui
+  const tarkistaVoima = (avain, vanha, uusi) => {
+    if (vanha === uusi) return null;
+    return {
+      voima: avain,
+      vanhaTaso: vanha,
+      uusiTaso: uusi,
+      edistynyt: onEdistynyt(uusi) && !onEdistynyt(vanha) // Muuttui edistyneeksi
+    };
+  };
+  
+  return tarkistaVoima('primary', vanhaData.voima1, uusiData.voima1)
+    || tarkistaVoima('secondary', vanhaData.voima2, uusiData.voima2)
+    || tarkistaVoima('tertiary', vanhaData.voima3, uusiData.voima3);
 };
 
 // Visualisointi palloilla
