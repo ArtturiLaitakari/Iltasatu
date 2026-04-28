@@ -1071,32 +1071,68 @@
   .layout-flex-grid {
     display: flex !important;
     flex-wrap: wrap !important;
-    gap: 0.3rem !important;
-    justify-content: space-between !important;
+    gap: 0.2rem !important;
+    justify-content: flex-start !important;
   }
   
   .layout-flex-grid .voima-item {
-    flex: 1 1 120px !important;
-    min-width: 120px !important;
-    max-width: 140px !important;
-    padding: 0.3rem !important;
+    flex: 1 1 calc(25% - 0.2rem) !important;
+    min-width: 110px !important;
+    max-width: none !important;
+    padding: 0.2rem 0.1rem !important;
     margin: 0 !important;
-    font-size: 8pt !important;
-  }
-  
-  .layout-flex-grid .voima-item strong {
-    font-size: 9pt !important;
-  }
-  
-  .layout-flex-grid .voima-item small {
     font-size: 7pt !important;
-    line-height: 1.1 !important;
+    box-sizing: border-box !important;
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Leveät voima-itemit kyvyille (2-palstaa) - poista laatikot */
+  .layout-flex-grid .voima-item-wide {
+    flex: 1 1 calc(50% - 0.1rem) !important;
+    min-width: 200px !important;
+    font-size: 8pt !important;
+    padding: 0.4rem 0.1rem !important;
+    margin: 0.1rem 0 !important;
+    box-sizing: border-box !important;
+    line-height: 1.3 !important;
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+  
+  .layout-flex-grid .voima-item strong,
+  .layout-flex-grid .voima-item-wide strong {
+    font-size: 9pt !important;
+    display: block !important;
+    margin-bottom: 0.2rem !important;
+  }
+  
+  .layout-flex-grid .voima-item small,
+  .layout-flex-grid .voima-item-wide small {
+    font-size: 7pt !important;
+    line-height: 1.2 !important;
+  }
+  
+  /* Kyvyt-osion sisäinen sisältö */
+  .voima-item-wide > div {
+    margin-bottom: 0.3rem !important;
   }
   
   /* Taulukot ja muut leveät elementit */
   .table-flex-container {
-    display: block !important;
+    display: flex !important;
     width: 100% !important;
+    gap: 0.3rem !important;
+    flex-wrap: wrap !important;
+  }
+  
+  .fate-seuraukset-taulukko {
+    flex: 1 1 calc(50% - 0.15rem) !important;
+    min-width: 200px !important;
+    max-width: 50% !important;
+    margin: 0 !important;
   }
   
   .bordered-table,
@@ -1112,18 +1148,33 @@
     font-size: 7pt !important;
   }
   
-  /* Teksti-osiot */
+  /* Teksti-osiot ja popup-otsikot */
   .teksti-osio,
   .info-kortti {
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0.2rem 0 !important;
-    padding: 0.3rem !important;
+    margin: 0.1rem 0 !important;
+    padding: 0.2rem !important;
+    page-break-inside: avoid !important;
   }
   
-  .teksti-osio h4 {
-    font-size: 10pt !important;
-    margin: 0.2rem 0 !important;
+  .teksti-osio h4,
+  .popup-otsikko h4 {
+    font-size: 11pt !important;
+    margin: 0.2rem 0 0.3rem 0 !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    display: block !important;
+    border-bottom: 1px solid #ccc !important;
+    padding-bottom: 0.1rem !important;
+  }
+  
+  /* Popup-otsikko erityismuotoilu */
+  .popup-otsikko {
+    border: none !important;
+    background: none !important;
+    margin: 0.3rem 0 !important;
+    padding: 0.1rem !important;
   }
   
   .form-card-fullwidth,
@@ -1176,22 +1227,63 @@
     gap: 0.2rem !important;
   }
   
-  /* Piilota vain navigointi ja toimintonapit tulostuksessa */
+  /* Piilota navigointi, toimintonapit ja interaktiiviset elementit */
   .jakamis-toiminnot,
   .wizard-navigation,
   .wizard-progress-popup,
   .wizard-floating-actions,
-  .wizard-back-button {
+  .wizard-back-button,
+  .btn,
+  .voima-item-upgradeable,
+  button,
+  input[type="button"],
+  input[type="submit"] {
     display: none !important;
   }
   
-  .btn {
-    display: none !important;
+  /* Poista hover-efektit ja kursori-muutokset */
+  .voima-item {
+    cursor: default !important;
+    pointer-events: none !important;
+  }
+  
+  .voima-item:hover {
+    background-color: inherit !important;
+    transform: none !important;
   }
 
   .kehittyminen-boksi.ominaisuudet-osio  {
     padding: 1px !important;
     margin: 1px 0 !important;
+  }
+  
+  /* Voimat-lista ja voima-rivit */
+  .voimat-lista {
+    margin: 0.1rem 0 !important;
+  }
+  
+  .voima-rivi {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin: 0.05rem 0 !important;
+    font-size: 6pt !important;
+  }
+  
+  .voima-nimi {
+    font-size: 6pt !important;
+  }
+  
+  .voima-pallot {
+    font-size: 6pt !important;
+    white-space: nowrap !important;
+  }
+  
+  /* Development-equipment-section */
+  .development-equipment-section {
+    page-break-before: auto !important;
+    margin-top: 0.2rem !important;
+    padding-top: 0.1rem !important;
   }
 }
 
