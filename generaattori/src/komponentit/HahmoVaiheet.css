@@ -546,6 +546,34 @@
   padding-bottom: 0.5rem;
 }
 
+/* Floating popup label styles */
+.teksti-osio.popup-otsikko {
+  position: relative;
+  padding-top: 2rem;
+}
+
+.teksti-osio.popup-otsikko h4 {
+  position: absolute;
+  top: -0.7rem;
+  left: 1rem;
+  background: white;
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-standard);
+  padding: 0.4rem 0.8rem;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.paa-kortti.taustalla .teksti-osio.popup-otsikko h4 {
+  background: var(--white-transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .paa-kortti.taustalla .teksti-osio h4,
 .paa-kortti.taustalla .teksti-osio .voima-item {
   color: var(--text-color);
@@ -848,7 +876,7 @@
   display: flex;
   gap: 1rem;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
 }
 

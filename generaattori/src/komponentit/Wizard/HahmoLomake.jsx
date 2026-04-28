@@ -278,7 +278,7 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
         </div>
         
         {/* ominaisuudet*/}
-        <div className="teksti-osio">
+        <div className="teksti-osio popup-otsikko">
           <h4>Ominaisuudet</h4>
         <div className="layout-flex-grid">
               <p
@@ -509,7 +509,7 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
           const oikeaPalsta = kykyRivit.slice(vasenIndeksi);
 
           return (
-            <div className="teksti-osio">
+            <div className="teksti-osio popup-otsikko">
               <h4>Kyvyt</h4>
               <div className="layout-flex-grid">
                 <div className="voima-item voima-item-wide">
@@ -637,42 +637,54 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
           </div>
         </div>
 
-        <div className="teksti-osio development-equipment-section">
+        <div className="teksti-osio popup-otsikko development-equipment-section">
+          <h4>Lisätiedot</h4>
           {/* Kehittyminen ja varusteet rinnakkain */}
           <div className="layout-flex-center">
-            <div className="kehittyminen-vasen">
+            <div className="kehittyminen-vasen" style={{ marginTop: '-10px' }}>
               <table className="taistelu-taulukko">
                 <tbody>
                   <tr><td>ETU +1</td><td>KESTO</td><td>Mana</td></tr>
                   <tr><td>Varuste</td><td>Kierros, keskit.</td><td>0</td></tr>
                   <tr><td>Ympäristö</td><td>Kohtaus</td><td>1</td></tr>
                   <tr><td>Muu</td><td>Ehto</td><td>2</td></tr>
-                  <tr><td>Varuste etu 1 mana</td><td>Ympäristö etu</td><td>1</td></tr>
+                  <tr style={{ backgroundColor: '#e9ecef' }}><td>Varuste etu 1 mana</td><td>Ympäristö etu</td><td>1</td></tr>
                 </tbody>
               </table>
             </div>
 
             <div className="kehittyminen-boksi varusteet-laatikko">
-              <table className="varusteet-taulukko">
-                <thead>
-                  <tr>
-                    <th>Varusteet</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr><td>&nbsp;</td></tr>
-                  <tr><td>&nbsp;</td></tr>
-                  <tr><td>&nbsp;</td></tr>
-                  <tr><td>&nbsp;</td></tr>
-                  <tr><td>&nbsp;</td></tr>
-                </tbody>
-              </table>
+              <div className="table-flex-container">
+                <table className="varusteet-taulukko table-column-flex">
+                  <thead>
+                    <tr>
+                      <th>Varusteet</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>&nbsp;</td></tr>
+                    <tr><td>&nbsp;</td></tr>
+                    <tr><td>&nbsp;</td></tr>
+                  </tbody>
+                </table>
+                <table className="varusteet-taulukko table-column-flex">
+                  <thead>
+                    <tr>
+                      <th>Varusteet</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>&nbsp;</td></tr>
+                    <tr><td>&nbsp;</td></tr>
+                    <tr><td>&nbsp;</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
 
           <div className="layout-flex-center">
             <div className="kehittyminen-boksi varusteet-laatikko">
-              <h4>Opitut asiat</h4>
               <div className="table-flex-container">
                 <table className="bordered-table table-column-flex">
                   <colgroup>
