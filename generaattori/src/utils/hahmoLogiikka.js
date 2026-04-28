@@ -84,7 +84,6 @@ export function tallennaHahmo(hahmo) {
     luoBackup();
     
     localStorage.setItem('iltasatu_hahmot', JSON.stringify(nykyiset));
-    console.log('Hahmo tallennettu onnistuneesti:', id);
     return id;
   } catch (error) {
     console.error('Virhe hahmon tallennuksessa:', error);
@@ -97,7 +96,6 @@ export function haeHahmot() {
   try {
     const data = localStorage.getItem('iltasatu_hahmot');
     const hahmot = data ? JSON.parse(data) : {};
-    console.log('Ladattu hahmoja LocalStoragesta:', Object.keys(hahmot).length);
     return hahmot;
   } catch (error) {
     console.error('Virhe hahmotietojen latauksessa:', error);
@@ -112,7 +110,6 @@ export function poistaHahmo(id) {
     const nykyiset = haeHahmot();
     delete nykyiset[id];
     localStorage.setItem('iltasatu_hahmot', JSON.stringify(nykyiset));
-    console.log('Hahmo poistettu:', id);
   } catch (error) {
     console.error('Virhe hahmon poistossa:', error);
   }
@@ -149,7 +146,6 @@ export function luoBackup() {
       const aikaleima = new Date().toISOString();
       localStorage.setItem('iltasatu_hahmot_backup', data);
       localStorage.setItem('iltasatu_hahmot_backup_aika', aikaleima);
-      console.log('Backup luotu:', aikaleima);
     }
   } catch (error) {
     console.warn('Backup-luonti epäonnistui:', error);
@@ -161,7 +157,6 @@ export function palautaBackup() {
     const backup = localStorage.getItem('iltasatu_hahmot_backup');
     const backupAika = localStorage.getItem('iltasatu_hahmot_backup_aika');
     if (backup) {
-      console.log('Palautetaan backup ajalta:', backupAika);
       return JSON.parse(backup);
     }
   } catch (error) {
@@ -180,7 +175,6 @@ export function vieBackupTiedostoon() {
     a.download = `iltasatu_backup_${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    console.log('Backup viety tiedostoon');
   } catch (error) {
     console.error('Tiedosto-vienti epäonnistui:', error);
   }

@@ -3,37 +3,37 @@ export const voimat = {
     peruskyvyt: [
       {
         nimi: 'Luo portaali',
-        kuvaus: 'Magus voi avata yhteyden toiseen paikkaan tai henkimaailman tasolle josta hän voi kutsua elementtejä tai olentoja. Oma telesiirto on vaikeaa. Kesto hetken'
+        kuvaus: 'Magus voi avata yhteyden toiseen paikkaan tai henkimaailman tasolle, josta hän voi kutsua elementtejä tai olentoja. Oma siirtyminen on vaikeaa. Kesto: hetken'
       },
       {
         nimi: 'Taivuta energiaa',
-        kuvaus: 'Velho voi taivuttaa mitä tahansa energiaa mitä hän on opetellut eri tavoilla, sallien suojakilpi, näkymättömyys tai levitointi loitsuja. Kesto keskittyminen'
+        kuvaus: 'Velho voi taivuttaa mitä tahansa energiaa, mitä hän on opetellut eri tavoilla, sallien suojakilvien, näkymättömyyden tai levitoinnin loitsuja. Kesto: keskittyminen'
       },
       {
         nimi: 'Transformaatio',
-        kuvaus: 'Druidi voi muuttaa kohteen toiseksi kohteeksi jonka hän on opetellut. Kesto Muodonmuutosvaurio'
+        kuvaus: 'Druidi voi muuttaa kohteen toiseksi kohteeksi jonka hän on opetellut. Kesto: muodonmuutosvaurio'
       },
       {
         nimi: 'Animoi',
-        kuvaus: 'Shamaani voi kutsua hengen esineeseen, kasviin tai yksinkertaiseen eläimeen tehden siitä uskollisen palvelijan. Kesto on pysyvä, ja olento itsenäistyy ajan myötä'
+        kuvaus: 'Shamaani voi kutsua hengen esineeseen, kasviin tai yksinkertaiseen eläimeen tehden siitä uskollisen palvelijan. Kesto on pysyvä, ja olento itsenäistyy ajan myötä.'
       },
       {
         nimi: 'Vaihda ominaisuus',
-        kuvaus: 'Noita voi vaihtaa ominaisuuden, lähestymistavan, haavan tai muun määriteltävissä olevan ominaisuuden kohteelta. Kesto MMV.'
+        kuvaus: 'Noita voi vaihtaa ominaisuuden, lähestymistavan, haavan tai muun määriteltävissä olevan ominaisuuden kohteelta. Kesto: MMV.'
       }
     ],
     edistyneet: [
       {
         nimi: 'Alkemia',
-        kuvaus: 'Maagi voi tehdä taikaesineitä Alkemia sääntöjen mukaan.'
+        kuvaus: 'Maagi voi tehdä taikaesineitä alkemian sääntöjen mukaan.'
       },
       {
         nimi: 'Riimutaikuus',
-        kuvaus: 'Maagi voi tehdä taikaesineen Riimutaikuuden sääntöjen mukaan'
+        kuvaus: 'Maagi voi tehdä taikaesineen riimutaikuuden sääntöjen mukaan.'
       },
       {
         nimi: 'Taikajuomat',
-        kuvaus: 'Maagi voi tehdä taikajuoman Taikajuomasääntöjen mukaan'
+        kuvaus: 'Maagi voi tehdä taikajuoman taikajuomasääntöjen mukaan.'
       }
     ]
   },
@@ -41,33 +41,33 @@ export const voimat = {
     peruskyvyt: [
       {
         nimi: 'Telekinesia',
-        kuvaus: 'Liikuta esineitä etäältä (sieluvoima)'
+        kuvaus: 'Liikuta esineitä etäältä (sieluvoiman avulla).'
       },
       {
         nimi: 'Telepatia',
-        kuvaus: 'Luo mielten yhteyden jota voi käyttää henkiseen taistelun. Luo tai lue muistoja tai ajatuksia.'
+        kuvaus: 'Luo mielten välisen yhteyden jota voi käyttää henkiseen taisteluun. Luo tai lue muistoja tai ajatuksia.'
       },
       {
         nimi: 'Empatia',
-        kuvaus: 'Lue ja aiheuta tunteita (riski on tynneyhteys)'
+        kuvaus: 'Lue ja aiheuta tunteita (riski on tunnesitoumat)'
       },
       {
         nimi: 'Ennustus',
-        kuvaus: 'Näe enneunia vaaroista ja isoista asioista, näe epäonnistuneet tehtävät näin luoden tallennuspisteen.'
+        kuvaus: 'Näe enneunia vaaroista ja suurista asioista, näe epäonnistuneet tehtävät näin luoden tallennuspisteen.'
       },
       {
         nimi: 'Psykokinesia',
-        kuvaus: 'Luonteen perusteella voit ampua yhtä elementtiä, sähköä, tulta tai henkistä vauriota tekevän iskun.'
+        kuvaus: 'Luonteen perusteella voit ampua yhtä elementtiä, sähköä, tulta tai henkistä vauriota tekevää iskua.'
       }
     ],
     edistyneet: [
       {
         nimi: 'Astraalikeho',
-        kuvaus: 'Irrota astraalikeho ja liiku näkymättömästi ympäriinsä ja havannoi ympäristöä. Kehon valtaamalla voit käyttää voimiasi fyysiseen maailmaan'
+        kuvaus: 'Irrota astraalikeho ja liiku näkymättömästi ympäriinsä ja havannoi ympäristöä. Kehonvallinnalla voit käyttää voimiasi fyysiseen maailmaan.'
       },
       {
         nimi: 'ESP',
-        kuvaus: 'Aisti kaukaisia paikkoja kuin olisit siellä, tarvitsee yhteyden'
+        kuvaus: 'Aisti kaukaisia paikkoja kuin olisit siellä, tarvitsee yhteyden.'
       },
       {
         nimi: 'Käsillä parannus',
@@ -79,7 +79,7 @@ export const voimat = {
     peruskyvyt: [
       {
         nimi: 'Ihmismuodot',
-        kuvaus: 'Hallitse ihoa, kynsiä, lihaksia ja karvoja. Voit ottaa humanoidi olennon muodon jonka verta tai lihaa olet maistanut',
+        kuvaus: 'Hallitse ihoa, kynsiä, lihaksia ja karvoja. Voit ottaa humanoidiolennon muodon, jonka verta tai lihaa olet maistanut',
         taso: 1
       },
       {
@@ -106,7 +106,7 @@ export const voimat = {
     edistyneet: [
       {
         nimi: 'Sisäelinten hallinta',
-        kuvaus: 'Muokkaa sisäelimiiäsi kuten haluat.'
+        kuvaus: 'Muokkaa sisäeliniiäsi kuten haluat.'
       },
       {
         nimi: 'Mielen hallinta',
@@ -114,7 +114,7 @@ export const voimat = {
       },
       {
         nimi: 'Verimagia',
-        kuvaus: 'Muokkaa verestäsi olentoja, tai juota sitä ihmisille ja saa heille kykyjä ja saat otteen heistä henkisesti.'
+        kuvaus: 'Muokkaa verestäsi olentoja, tai juota sitä ihmisille ja anna heille kykyjä ja saat otteen heistä henkisesti.'
       }
     ]
   },
@@ -122,15 +122,15 @@ export const voimat = {
     peruskyvyt: [
       {
         nimi: 'Luo elementtiä',
-        kuvaus: 'Luo hallitsemaasi elementtiä. Tee iskuja, valleja, aluehyökkäyksiä tai paranna (keho-elementti).',
+        kuvaus: 'Luo hallitsemaasi elementtiä. Tee iskuja, valleja, aluehyökkäyksiä tai paranna (kehoelementti).',
       },
       {
         nimi: 'Ohjaa elementtiä',
-        kuvaus: 'Ohjaa elementtiäsi telekineesin tavoin. Käskytä elementaalisia tai liikuta esineitä.',
+        kuvaus: 'Ohjaa elementtiäsi telekinesiksen tavoin. Käske elementaalisia tai liikuta esineitä.',
       },
       {
         nimi: 'Muuta elementtiä',
-        kuvaus: 'Muuta elementtiäsi haluamallasi tavalla. Taiteelliset lahjasi ovat rajana. Keho-elementti parantaa.',
+        kuvaus: 'Muuta elementtiäsi haluamallasi tavalla. Taiteelliset lahjasi ovat rajana. Kehoelementti parantaa.',
       },
       {
         nimi: 'Poista elementtiä',
@@ -145,7 +145,7 @@ export const voimat = {
     edistyneet: [
       {
         nimi: 'Boosteri +1',
-        kuvaus: 'Tehosta voiman kestoaikaa tai aluetta ilmaiseksi.',
+        kuvaus: 'Tehosta voiman kestoa tai aluevaikutusta ilmaiseksi.',
       },
       {
         nimi: 'Elementaalinen',
@@ -160,25 +160,103 @@ export const voimat = {
   
   // Jumalaiset voimat - vain korkeimmilla skaaloilla
   'heijastuksen hallinta': {
-    peruskyvyt: [],
-    edistyneet: [],
+    peruskyvyt: [
+      {
+        nimi: 'Kuvaile näyttämön takaa maisemia',
+        kuvaus: 'Varjonhallinta, kirous. Näe ja manipuloi ympäristön todellisuuden taakse.',
+        taso: 1
+      },
+      {
+        nimi: 'Kuvaile näyttämön kulissien sisältö',
+        kuvaus: 'Paljasta todellisuuden piilotetut kerrokset ja näe mitä näkyy pintaa syvemmältä.',
+        taso: 2
+      },
+      {
+        nimi: 'Kuvaile näyttämön takaa hahmoja',
+        kuvaus: 'Näe olentojen ja henkilöiden todellinen olemus ja piilotettu luonne.',
+        taso: 3
+      },
+      {
+        nimi: 'Kuvaile näyttämöä, ohjaa tarinaa',
+        kuvaus: 'Samanajan näkö. Hallitse tapahtumien kulkua ja ohjaa todellisuuden kerronnan suuntaa.',
+        taso: 4
+      },
+      {
+        nimi: 'Kuvaile kaupunkia, hallitse säätä',
+        kuvaus: 'Kirous. Laajenna hallintaasi koskemaan laajoja alueita ja luonnonvoimia.',
+        taso: 5
+      }
+    ],
+    edistyneet: [
+      {
+        nimi: 'Todennäköisyyksien hallinta',
+        kuvaus: 'Manipuloi sattuman ja todennäköisyyksien virtoja muuttaaksesi tapahtumien kulkua.'
+      },
+      {
+        nimi: 'Muuta luonnonlakeja',
+        kuvaus: 'Taivuta tai muuta fysiikan ja todellisuuden perussääntöjä paikallisesti.'
+      },
+      {
+        nimi: 'Luo oma todellisuustasku',
+        kuvaus: 'Muodosta oma pieni todellisuuden taskualue, jossa voit hallita kaikkea.'
+      }
+    ]
   },
   
-  'kaaos säikeet': {
-    peruskyvyt: [],
-    edistyneet: [],
+  'kaaosnäikeet': {
+    peruskyvyt: [
+      {
+        nimi: 'Henkiset säikeet',
+        kuvaus: 'Varjosäikeet näkö. Näe ja manipuloi henkisiä yhteyksiä ja mentaalisia lankoja.',
+        taso: 1
+      },
+      {
+        nimi: 'Fyysiset säikeet',
+        kuvaus: 'Hae esineitä ja olentoja kaaosnäikeillä. Vedä fyysisiä asioita läpi todellisuuksien.',
+        taso: 2
+      },
+      {
+        nimi: 'Varjosäikeet esineet',
+        kuvaus: 'Luo min/piste. Muodosta pysyviä yhteyksiä ja säikeitä esineiden välille.',
+        taso: 3
+      },
+      {
+        nimi: 'Kuvaile näyttämöä',
+        kuvaus: 'Hallitse tapahtumapaikan dynamiikkaa ja ohjaa tilanteen kehittymistä säikeiden avulla.',
+        taso: 4
+      },
+      {
+        nimi: 'Kuvaile kaupunkia, hallitse säätä',
+        kuvaus: 'Laajenna säikeiden hallintaasi koskemaan laajoja alueita ja luonnonilmiöitä.',
+        taso: 5
+      }
+    ],
+    edistyneet: [
+      {
+        nimi: 'Todennäköisyyksien hallinta',
+        kuvaus: 'Manipuloi sattuman ja todennäköisyyksien virtoja muuttaaksesi tapahtumien kulkua.'
+      },
+      {
+        nimi: 'Muuta luonnonlakeja',
+        kuvaus: 'Taivuta tai muuta fysiikan ja todellisuuden perussääntöjä paikallisesti.'
+      },
+      {
+        nimi: 'Luo oma todellisuustasku',
+        kuvaus: 'Muodosta oma pieni todellisuuden taskualue, jossa voit hallita kaikkea.'
+      }
+    ]
   },
   
   'tarot': {
     peruskyvyt: [
       {
         nimi: 'Luo yhteys etäälle',
-        kuvaus: 'Luo tarot kortti henkilöstä tai paikasta ottaaksesi yhteyttä häneen. Voi kommunikoida äänellä tai luoda näköyhteyden. Käytettävissä henkiseen taisteluun.',
+        kuvaus: 'Luo tarotkortti henkilöstä tai paikasta ottaaksesi yhteyttä häneen. Voi kommunikoida äänellä tai luoda näköyhteyden. Käytettävissä henkiseen taisteluun.',
         taso: 1
       },
       {
         nimi: 'Siirtymä avaruuden läpi',
-        kuvaus: 'Luo kortti varjosiirtoa varten tai tarot esine joka lainaa kohteen ominaisuuden. 1 onnistuminen = toinen varjo, 2 = 3 varjon yli, 3 = 6 varjon yli.',
+        kuvaus: 'Luo kortti varjosiirtoa varten tai tarotesine joka lainaa kohteen ominaisuuden. 1 onnistuminen = toinen varjo, 2 = 3 varjon yli, 3 = 6 varjon yli.',
         taso: 2
       },
       {
@@ -188,7 +266,7 @@ export const voimat = {
       },
       {
         nimi: 'Muuta, taivuta avaruutta',
-        kuvaus: 'Taivuta avaruutta tarot kortin avulla: pidennä käytäviä, pyöritä tiloja, muuta painovoimaa. Saat 1 edistyneen kyvyn.',
+        kuvaus: 'Taivuta avaruutta tarotkortin avulla: pidennä käytäviä, pyöritä tiloja, muuta painovoimaa. Saat 1 edistyneen kyvyn.',
         taso: 4
       },
       {
@@ -199,16 +277,16 @@ export const voimat = {
     ],
     edistyneet: [
       {
-        nimi: 'Valekuva, tarot ohjelmointi',
-        kuvaus: 'Luo tarot kortti jossa on 2 kuvaa - yhteys menee alla olevaan kohteeseen. Ohjelmoi tarot esineitä tekemään asioita tietyillä ehdoilla.'
+        nimi: 'Valekuva, tarot-ohjelmointi',
+        kuvaus: 'Luo tarotkortti jossa on 2 kuvaa - yhteys menee alla olevaan kohteeseen. Ohjelmoi tarotesineitä tekemään asioita tietyillä ehdoilla.'
       },
       {
         nimi: 'Tuo luonnonlakeja',
         kuvaus: 'Ota yhteys toiseen varjoon ja tuo sen olosuhteet (painovoima, magia, fysiikan lait) lähiympäristöön. Vaikuta todennäköisyyksiin.'
       },
       {
-        nimi: 'Käytä Tarot voimaa muistista',
-        kuvaus: 'Ei tarvitse enää kortteja tai esineitä. Voit ottaa yhteyttä kaikkiin aiemmin tehtyihin tarot yhteyksiin suoraan muistista.'
+        nimi: 'Käytä tarotvoimaa muistista',
+        kuvaus: 'Ei tarvitse enää kortteja tai esineitä. Voit ottaa yhteyttä kaikkiin aiemmin tehtyihin tarotyhtyksiin suoraan muistista.'
       }
     ]
   }
@@ -218,38 +296,38 @@ export const aistit = {
   magia: {
     nimi: 'Aisti magiaa',
     kuvaus: 'Kun keskityt näet maagiset virtaukset, paljastaa maagiset esineet, loitsut, olennot.',
-    lisakuvaus: 'magus aisti: todellisuuden paksuus, yhteydet, velho aisti: näe energiavirrat, druidi aisti: näe tosimuoto, shamaani aisti: näe henget, noita-aisti, näe olennon ominaisuudet ja heikkoudet'
+    lisakuvaus: 'Magusaisti: todellisuuden paksuus, yhteydet. Velhoaisti: näe energiavirrat. Druidiaisti: näe tosimuoto. Shamaaniaisti: näe henget. Noita-aisti: näe olennon ominaisuudet ja heikkoudet.'
   },
   mentalismi: {
     nimi: 'Aisti aikomus',
-    kuvaus: 'Tunnet ympäröiviä aistimuksia kuin ilmanpaineen, agressio tuntuu kuumalta, intohimo lämpimältä, ja pelko kylmältä.',
-    lisakuvaus: 'Telepaatti: kuule ihmisten ajatukset kuin puheena, Empaatti: näe tunteet väreinä, Ennustaja: näe pari sekunttia tulevaisuuteen aavekuvana.'
+    kuvaus: 'Tunnet ympäröiviä aistimuksia kuin ilmanpaineen muutoksia: aggressio tuntuu kuumalta, intohimo lämpimältä ja pelko kylmältä.',
+    lisakuvaus: 'Telepaatti: kuule ihmisten ajatukset kuin puheena. Empaatti: näe tunteet väreinä. Ennustaja: näe pari sekuntia tulevaisuuteen aavekuvana.'
   },
   muodonmuutos: {
     nimi: 'Eläimen aisti',
-    kuvaus: 'Valitse 1 eläimen aisti pysyväksi aistiksesi',
-    lisakuvaus: 'Voit lisätä eläinominaisuuksia 1 per onnistumistaso (tavallinen = 1), bonus adjektiiveja 1 per voimataso kumuloituu. Adjektiivi on fyysinen tai henkinen'
+    kuvaus: 'Valitse 1 eläimen aisti pysyväksi aistiksesi.',
+    lisakuvaus: 'Voit lisätä eläinominaisuuksia 1 per onnistumistaso (tavallinen = 1), bonusadjektiiveja 1 per voimataso kumuloituu. Adjektiivi on fyysinen tai henkinen.'
   },
   'elementin hallinta': {
     nimi: 'Elementtiaisti',
-    kuvaus: 'Saa elementtikohtaisen aistin: tuli=infrapuna, maa=näkö kiven läpi, ilma=kuuleminen kauas, vesi=näkö veden alla',
-    lisakuvaus: 'Puhu elementin kieltä ja kyvyn puhua elementaalisille.'
+    kuvaus: 'Saa elementtikohtaisen aistin: tuli = infrapuna, maa = näkö kiven läpi, ilma = kuuleminen kauas, vesi = näkö veden alla.',
+    lisakuvaus: 'Puhu elementin kieltä ja kyvy puhua elementaaleille.'
   },
   
   // Jumalaiset aistit
   'heijastuksen hallinta': {
     nimi: 'Heijastusaisti',
-    kuvaus: 'Aisti todellisuuden heijastuksia ja varjojen välisiä yhteyksiä.',
-    lisakuvaus: 'Näe pehmeän kaaoksen todellisuuden manipulaatiomahdollisuudet ympärilläsi.'
+    kuvaus: 'Tunne kun taivaallisia voimia käytetään. Aisti todellisuuden heijastuksia ja varjojen välisiä yhteyksiä.',
+    lisakuvaus: 'Näe pehmeän kaaoksen todellisuuden manipulaatiomahdollisuudet ympärilläsi. Havaitse kun joku muuttaa todellisuuden kerroksia.'
   },
-  'kaaos säikeet': {
-    nimi: 'Kaaosaisti',
-    kuvaus: 'Skannaa pehmeää potentiaalia ja aisti kaaoksen säikeitä.',
-    lisakuvaus: 'Tunne mitä asioita voi tuoda ja viedä kaaossäikeillä lähistöllä.'
+  'kaaosnäikeet': {
+    nimi: 'Varjosäikeiden näkö',
+    kuvaus: 'Skannaa pehmeää potentiaalia ja aisti kaaoksen säikeitä. Näe henkisiä ja fyysisiä yhteyksiä.',
+    lisakuvaus: 'Tunne mitä asioita voi tuoda ja viedä kaaosnäikeillä lähistöllä. Havaitse todellisuuksien väliset langat.'
   },
-  'tarot': {
-    nimi: 'Tarot aisti',
-    kuvaus: 'Aisti kuka ottaa yhteyttä tarot kortin avulla. Hallitse tekemiäsi tarot esineitä telekinesian avulla melee-etäisyydellä.',
+  tarot: {
+    nimi: 'Tarotaisti',
+    kuvaus: 'Aisti kuka ottaa yhteyttä tarotkortin avulla. Hallitse tekemiäsi tarotesineitä telekinesian avulla lähietäisyydellä.',
     lisakuvaus: 'Aisti taivaallisten voimien käyttö: voimakas käyttö samassa kaupungissa, varjon ylittävä käyttö samassa kylässä, pieni manipulaatio samassa talossa.'
   }
 };

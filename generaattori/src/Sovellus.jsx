@@ -9,6 +9,7 @@ import {
   SieluVoimaValinta,
   HenkilotiedotLomake,
   RotuValinta,
+  VoimaValinta,
   HahmoLomake,
   WizardErrorBoundary
 } from './komponentit/Wizard';
@@ -63,6 +64,10 @@ function Sovellus() {
     {
       nimi: 'Arkkityyppi',
       komponentti: ArkkityyppiValinta
+    },
+    {
+      nimi: 'Voimien Valinta',
+      komponentti: VoimaValinta
     },
     {
       nimi: 'Olen...',

@@ -42,6 +42,9 @@ export const kampanjaRajoitteet = {
       },
       'Puolituinen': {
         sallitutVoimat: '*' // Kaikki voimat kaikilla skaaloilla
+      },
+      'Kimera': {
+        sallitutVoimat: ['muodonmuutos', 'mentalismi', 'elementin hallinta'] 
       }
     },
     variantit: {

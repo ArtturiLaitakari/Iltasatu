@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { haeHahmot, poistaHahmo, suoritaRajamurtoTasonNousu, vieBackupTiedostoon, palautaBackup } from '../utils/hahmoLogiikka.js';
+import { haeHahmot, poistaHahmo, suoritaRajamurtoTasonNousu, vieBackupTiedostoon, palautaBackup, tallennaHahmo } from '../utils/hahmoLogiikka.js';
 import { laskeHahmopisteet } from '../data/muutData.js';
+import { onkoLimitBreakMahdollinen } from '../data/voimaProgression.js';
 import HahmoKortti from './HahmoKortti.jsx';
 import HahmoLomake from './Wizard/HahmoLomake.jsx';
 import SieluVoimaValinta from './Wizard/SieluVoimaValinta.jsx';
@@ -72,13 +73,22 @@ function HahmoLista({ onTakaisin }) {
   };
 
   const lisaaXpPopupista = () => {
+    if (!valittuHahmo) return;
+    
+    // Tarkista onko limit break mahdollinen ja aseta tila sen mukaan
+    const paivitettyHahmo = {
+      ...valittuHahmo,
+      onkoRajamurto: onkoLimitBreakMahdollinen(valittuHahmo)
+    };
+    asetaValittuHahmo(paivitettyHahmo);
+    
     setNaytaXpModaali(true);
   };
 
   const vahvistaXp = () => {
     if (!valittuHahmo) return;
 
-    const paivitetty = valittuHahmo.onkoRajamurto === true
+    const paivitetty = onkoLimitBreakMahdollinen(valittuHahmo)
       ? suoritaRajamurtoTasonNousu(valittuHahmo)
       : (() => {
           const vanhaXp = valittuHahmo.xp || 0;
@@ -164,6 +174,36 @@ function HahmoLista({ onTakaisin }) {
             <span onClick={lisaaXpPopupista} title="Lisää XP" className="wizard-action-icon">
               ➕
             </span>
+            <span 
+              onClick={() => {
+                const uusiXp = (valittuHahmo.xp || 0) + 820;
+                const uudetHahmopisteet = laskeHahmopisteet(uusiXp);
+                
+                // Laske käytetyt pisteet
+                const kaytetytOminaisuusPisteet = (valittuHahmo.keho || 0) + (valittuHahmo.mieli || 0) + (valittuHahmo.sielu || 0);
+                const kaytetytVoimaPisteet = (valittuHahmo.voimaTaso || 1) - 1; // Progression alkaa 1:stä
+                const kayttamattomatPisteet = Math.max(0, uudetHahmopisteet - kaytetytOminaisuusPisteet - kaytetytVoimaPisteet);
+                
+                const paivitettyHahmo = {
+                  ...valittuHahmo,
+                  xp: uusiXp,
+                  kayttamattomatHahmopisteet: kayttamattomatPisteet
+                };
+                
+                // Käytä samoja setState funktioita kuin ➕ plus
+                asetaValittuHahmo(paivitettyHahmo);
+                
+                if (paivitettyHahmo.id) {
+                  const paivitetytHahmot = { ...hahmot, [paivitettyHahmo.id]: paivitettyHahmo };
+                  asetaHahmot(paivitetytHahmot);
+                  localStorage.setItem('iltasatu_hahmot', JSON.stringify(paivitetytHahmot));
+                }
+              }} 
+              title="Lisää 820 XP" 
+              className="wizard-action-icon"
+            >
+              ⭐
+            </span>
           </div>
         </div>
 
@@ -171,7 +211,7 @@ function HahmoLista({ onTakaisin }) {
           <div className="xp-modal-overlay" onClick={peruXp}>
             <div className="xp-modal" onClick={(e) => e.stopPropagation()}>
               <h3 className="xp-modal-title">
-                {valittuHahmo?.onkoRajamurto === true 
+                {onkoLimitBreakMahdollinen(valittuHahmo) 
                   ? "Annatko murtumalle periksi?" 
                   : "Ansaitsitko kokemuspisteen?"
                 }

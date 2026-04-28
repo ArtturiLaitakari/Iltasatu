@@ -1,6 +1,6 @@
 import Kortti from '../Kortti.jsx';
 import { rodut } from '../../data/rodut.js';
-import { onkoRotuSallittu, haeRotuVariantti } from '../../data/kampanjaRajoitteet.js';
+import { onkoRotuSallittu, haeRotuVariantti, kampanjaRajoitteet } from '../../data/kampanjaRajoitteet.js';
 import '../HahmoVaiheet.css';
 
 const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
@@ -13,9 +13,32 @@ function RotuValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     // Tallennetaan alkuperäinen rotu jos kyseessä on variantti
     const tallennettuRotu = alkuperainenRotu || rotu;
     
+    // Tarkista onko kampanjarajoitteita tälle rodulle
+    let voimienJarjestys = null;
+    
+    if (hahmo.kampanja && kampanjaRajoitteet[hahmo.kampanja]) {
+      const kampanja = kampanjaRajoitteet[hahmo.kampanja];
+      const rotuRajoitteet = kampanja.rajoitteet[tallennettuRotu.nimi];
+      
+      if (rotuRajoitteet && rotuRajoitteet.sallitutVoimat) {
+        const sallitutVoimat = rotuRajoitteet.sallitutVoimat;
+        
+        // Jos on array, aseta voimat järjestyksessä
+        if (Array.isArray(sallitutVoimat) && sallitutVoimat.length >= 3) {
+          voimienJarjestys = {
+            primary: sallitutVoimat[0],
+            secondary: sallitutVoimat[1], 
+            tertiary: sallitutVoimat[2]
+          };
+        }
+        // Jos on '*', jätä voimienJarjestys null:iksi - valinta tarvitaan
+      }
+    }
+    
     paivitaHahmo({ 
       ...hahmo, 
-      rotu: tallennettuRotu
+      rotu: tallennettuRotu,
+      voimienJarjestys: voimienJarjestys
     });
     
     // Auto-advance kun rotu valitaan

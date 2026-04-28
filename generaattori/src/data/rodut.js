@@ -49,7 +49,7 @@ export const rodut = {
     },
     {
       nimi: 'Kimera',
-      kuvaus: 'Ihmisrotuisen ja keijun sekoitus, yleensä muodonmuutostaito',
+      kuvaus: 'Ihmisrotuisen ja keijun sekoitus, jolla on eläimen ominaisuuksia.',
       stuntti: 'Kerran per kohtaus käytä eläimen kykyä',
       rajoitus: 'Vieras ulkomuoto, sosiaalinen haitta -2',
     }

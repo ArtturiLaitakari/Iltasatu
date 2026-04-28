@@ -4,7 +4,7 @@ import { aistit, voimat } from '../../data/voimat.js';
 import { ammatit } from '../../data/ammatit.js';
 import { adjektiivit } from '../../data/adjektiivit.js';
 import { tallennaHahmo } from '../../utils/hahmoLogiikka.js';
-import { voimaProgression, haeVoimanPallot, haeSkaala, haeSkaalaText, haeEdistyneidenSelitys, voikoNostaaVoimaa as voikoNostaaVoimaaTaso, haeSeuraavaTaso } from '../../data/voimaProgression.js';
+import { haeVoimanPallot, haeSkaalaText, voikoNostaa, haeOminaisuudenPallot, laskeOminaisuudenMaksimi, laskeVoimaMaksimi, VOIMAN_MAKSIMIT, voimaProgression, selvitaMuuttunutVoima } from '../../data/voimaProgression.js';
 import React from 'react';
 import '../HahmoVaiheet.css';
 
@@ -16,27 +16,6 @@ const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
 function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKopioiFunktio, setTulostaFunktio, setTallennaFunktio, siirryVoimanKykyyn }) {
   const arkkityyppiData = arkkityypit[hahmo.arkkityyppi];
   const hahmonSkaala = skaala.find(s => s.taso === hahmo.skaala);
-  
-  // Etsi mikä voima on tasolla 1 (aktiivinen voima)
-  let valittuVoimatyyppi = null;
-  if (hahmo.voimat && typeof hahmo.voimat === 'object') {
-    const voimaEntries = Object.entries(hahmo.voimat);
-    const aktiivinenVoima = voimaEntries.find(([avain, taso]) => avain !== 'valitut' && taso > 0);
-    if (aktiivinenVoima) {
-      valittuVoimatyyppi = aktiivinenVoima[0]; // Tämän pitäisi olla string (avain)
-    }
-  }
-
-  // Hae kaikki voimat joilla on taso > 0
-  const haeKaikkiVoimat = () => {
-    if (!hahmo.voimat || typeof hahmo.voimat !== 'object') return [];
-    const voimaEntries = Object.entries(hahmo.voimat);
-    return voimaEntries
-      .filter(([avain, taso]) => avain !== 'valitut' && taso > 0)
-      .map(([avain, taso]) => ({ nimi: avain, taso: taso }));
-  };
-
-  const kaikkiVoimat = haeKaikkiVoimat();
 
   const haeTaustaKuva = () => {
     const tiedostoVaihtoehdot = [
@@ -145,14 +124,15 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
 
   const luoTekstimuoto = () => {
     // Luo teksti-muotoinen yhteenveto hahmosta
-    const voimateksti = typeof valittuVoimatyyppi === 'string' ? valittuVoimatyyppi : (valittuVoimatyyppi ? 'tuntematon voima' : 'ei voimaa');
+    const voimaTaso = hahmo.voimaTaso || 1;
+    const voimateksti = `Voima ${voimaTaso}`;
     const adjektiivitTeksti = `${haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.keho, 0, hahmo.adjektiivit)} ${haeAmmatinNimi(hahmo.ammatit?.keho)}, ${haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.mieli, 1, hahmo.adjektiivit)} ${haeAmmatinNimi(hahmo.ammatit?.mieli)} ja ${haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.sielu, 2, hahmo.adjektiivit)} ${haeAmmatinNimi(hahmo.ammatit?.sielu)}`;
     
     const teksti = `${hahmo.henkilotiedot.nimi || 'Anonyymi'} - ${hahmo.kuvaaja?.nimi || 'Tuntematon'}
 
 Olen ${hahmo.kuvaaja?.nimi || 'tuntematon'}, ${adjektiivitTeksti}.
 Rotuni on ${hahmo.rotu?.nimi || 'Ei rotua'}. 
-Luonteeltani olen ${hahmo.henkilotiedot?.luonne || 'Ei luonnetta'} ja voimani on ${voimateksti}.
+Luonteeltani olen ${hahmo.henkilotiedot?.luonne || 'Ei luonnetta'} ja ${voimateksti}.
 
 Ominaisuudet:
 Keho: ${hahmo.keho || 0}, Mieli: ${hahmo.mieli || 0}, Sielu: ${hahmo.sielu || 0}
@@ -201,14 +181,50 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
   
 
 
-  const voikoNostaaOminaisuutta = (avain, maksimi) => {
-    if (!paivitaHahmo) return false;
-    if (kayttamattomatHahmopisteet <= 0) return false;
-    return (hahmo[avain] || 0) < maksimi;
+  const nostaVoimaa = () => {
+    if (!voikoNostaa(hahmo, 'voima') || kayttamattomatHahmopisteet <= 0) return;
+    
+    const vanhaTaso = hahmo.voimaTaso || 1;
+    const uusiVoimaTaso = vanhaTaso + 1;
+    
+    // Selvitä mikä voima muuttui
+    const muutos = selvitaMuuttunutVoima(vanhaTaso, uusiVoimaTaso);
+    
+    // Päivitä voimaTaso ensin
+    const paivitettyHahmo = {
+      ...hahmo,
+      voimaTaso: uusiVoimaTaso,
+      kayttamattomatHahmopisteet: kayttamattomatHahmopisteet - 1
+    };
+    
+    paivitaHahmo(paivitettyHahmo);
+    
+    // Jos uusi voima aktivoitui (null -> taso) tai voima nousi uudelle tasolle joka antaa kyvyn
+    if (muutos && muutos.uusiTaso > 0) {
+      const tarvitseeUudenKyvyn = 
+        (muutos.vanhaTaso === null && muutos.uusiTaso === 1) || // Uusi voima aktivoitui
+        (muutos.uusiTaso > (muutos.vanhaTaso || 0)); // Voima nousi
+        
+      if (tarvitseeUudenKyvyn) {
+        // Tallenna tieto siitä, mille voimalle valitaan kyky
+        const tempHahmo = {
+          ...paivitettyHahmo,
+          tempKykyValinta: {
+            voima: muutos.voima, // 'primary', 'secondary' tai 'tertiary'
+            taso: muutos.uusiTaso
+          }
+        };
+        paivitaHahmo(tempHahmo);
+        
+        // Siirry kyvynvalintaan
+        setTimeout(() => siirryVoimanKykyyn(), 100);
+      }
+    }
   };
 
   const nostaOminaisuutta = (avain, maksimi) => {
-    if (!voikoNostaaOminaisuutta(avain, maksimi)) return;
+    if (!voikoNostaa(hahmo, avain) || kayttamattomatHahmopisteet <= 0) return;
+    
     paivitaHahmo({
       ...hahmo,
       [avain]: (hahmo[avain] || 0) + 1,
@@ -216,8 +232,8 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
     });
   };
 
-  const voimanMaksimi = haeVoimarajat(hahmo.skaala)[0]?.max || 3;
-  const nykyinenVoimataso = valittuVoimatyyppi && hahmo.voimat ? (hahmo.voimat[valittuVoimatyyppi] || 0) : 0;
+  const voimanMaksimi = laskeVoimaMaksimi(hahmo.skaala);
+  const nykyinenVoimataso = hahmo.voimaTaso || 1;
   const voiValitaJumalaisenVoiman = onkoJumalainen(hahmo.skaala); // Valmis jumalaisten voimien valintaa varten
   React.useEffect(() => {
     // Jumalaisen voiman valinta valmis toteutettavaksi: voiValitaJumalaisenVoiman
@@ -226,46 +242,11 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
     }
   }, [voiValitaJumalaisenVoiman]);
   const ominaisuudetMaksimissa =
-    (hahmo.keho || 0) >= (arkkityyppiData?.keho?.maksimi) &&
-    (hahmo.mieli || 0) >= (arkkityyppiData?.mieli?.maksimi ) &&
-    (hahmo.sielu || 0) >= (arkkityyppiData?.sielu?.maksimi );
-  const voimaMaksimissa = valittuVoimatyyppi ? nykyinenVoimataso >= voimanMaksimi : false;
+    (hahmo.keho || 0) >= (arkkityyppiData?.keho?.maksimi || 1) &&
+    (hahmo.mieli || 0) >= (arkkityyppiData?.mieli?.maksimi || 1) &&
+    (hahmo.sielu || 0) >= (arkkityyppiData?.sielu?.maksimi || 1);
+  const voimaMaksimissa = nykyinenVoimataso >= voimanMaksimi;
   const kaikkiOstettavatMaksimissa = ominaisuudetMaksimissa && voimaMaksimissa;
-  const valitutVoimakyvyt = (() => {
-    if (!valittuVoimatyyppi) return [];
-    const kaikkiKyvyt = voimat[valittuVoimatyyppi]?.peruskyvyt || [];
-    const valitutNimet = Array.isArray(hahmo.voimat?.valitut) ? [...hahmo.voimat.valitut] : [];
-    if (hahmo.voimat?.valittuVoima?.nimi && !valitutNimet.includes(hahmo.voimat.valittuVoima.nimi)) {
-      valitutNimet.push(hahmo.voimat.valittuVoima.nimi);
-    }
-    return valitutNimet
-      .map((nimi) => kaikkiKyvyt.find((kyky) => kyky.nimi === nimi))
-      .filter(Boolean);
-  })();
-
-  const voikoNostaaVoimaa = () => {
-    if (!paivitaHahmo) return false;
-    if (!siirryVoimanKykyyn) return false;
-    if (!valittuVoimatyyppi) return false;
-    if (kayttamattomatHahmopisteet <= 0) return false;
-    return nykyinenVoimataso < voimanMaksimi;
-  };
-
-  const nostaVoimaa = () => {
-    if (!voikoNostaaVoimaa()) return;
-    paivitaHahmo({
-      ...hahmo,
-      voimat: {
-        ...hahmo.voimat,
-        [valittuVoimatyyppi]: nykyinenVoimataso + 1,
-        valittuVoima: null
-      },
-      kayttamattomatHahmopisteet: kayttamattomatHahmopisteet - 1
-    });
-    if (siirryVoimanKykyyn) {
-      siirryVoimanKykyyn();
-    }
-  };
 
   React.useEffect(() => {
     if (!paivitaHahmo) return;
@@ -300,8 +281,8 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
           <h4>Ominaisuudet</h4>
         <div className="layout-flex-grid">
               <p
-                className={`voima-item ${voikoNostaaOminaisuutta('keho', arkkityyppiData?.keho?.maksimi || 3) ? 'voima-item-upgradeable' : ''}`}
-                onClick={() => nostaOminaisuutta('keho', arkkityyppiData?.keho?.maksimi || 3)}
+                className={`voima-item ${voikoNostaa(hahmo, 'keho') && kayttamattomatHahmopisteet > 0 ? 'voima-item-upgradeable' : ''}`}
+                onClick={() => nostaOminaisuutta('keho', laskeOminaisuudenMaksimi(hahmo.arkkityyppi, 'keho'))}
               >
                 <strong>Keho {luoYmpyraEsitys(hahmo.keho, arkkityyppiData?.keho?.maksimi || 3)}</strong>
                 <br />
@@ -310,8 +291,8 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
                 <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, hahmo.ammatit?.keho))} {haeAdjektiivinNimi(hahmo.adjektiivit?.keho).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.keho).toLowerCase()}.</small>
               </p>
               <p
-                className={`voima-item ${voikoNostaaOminaisuutta('mieli', arkkityyppiData?.mieli?.maksimi || 3) ? 'voima-item-upgradeable' : ''}`}
-                onClick={() => nostaOminaisuutta('mieli', arkkityyppiData?.mieli?.maksimi || 3)}
+                className={`voima-item ${voikoNostaa(hahmo, 'mieli') && kayttamattomatHahmopisteet > 0 ? 'voima-item-upgradeable' : ''}`}
+                onClick={() => nostaOminaisuutta('mieli', laskeOminaisuudenMaksimi(hahmo.arkkityyppi, 'mieli'))}
               >
                 <strong>Mieli {luoYmpyraEsitys(hahmo.mieli, arkkityyppiData?.mieli?.maksimi || 3)}</strong>
                 <br />
@@ -320,8 +301,8 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
                 <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, hahmo.ammatit?.mieli))} {haeAdjektiivinNimi(hahmo.adjektiivit?.mieli).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.mieli).toLowerCase()}.</small>
               </p>
               <p
-                className={`voima-item ${voikoNostaaOminaisuutta('sielu', arkkityyppiData?.sielu?.maksimi || 3) ? 'voima-item-upgradeable' : ''}`}
-                onClick={() => nostaOminaisuutta('sielu', arkkityyppiData?.sielu?.maksimi || 3)}
+                className={`voima-item ${voikoNostaa(hahmo, 'sielu') && kayttamattomatHahmopisteet > 0 ? 'voima-item-upgradeable' : ''}`}
+                onClick={() => nostaOminaisuutta('sielu', laskeOminaisuudenMaksimi(hahmo.arkkityyppi, 'sielu'))}
               >
                 <strong>Sielu {luoYmpyraEsitys(hahmo.sielu, arkkityyppiData?.sielu?.maksimi || 3)}</strong>
                 <br />
@@ -363,113 +344,60 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
                 </p>
               )}
               {/* Voimat osio */}
-              <div className="voima-item">
-                <strong>Voimat (Taso {kokonaisprogression})</strong>
+              <div 
+                className={`voima-item ${voikoNostaa(hahmo, 'voima') && kayttamattomatHahmopisteet > 0 ? 'voima-item-upgradeable' : ''}`}
+                onClick={nostaVoimaa}
+              >
+                <strong>Voimat</strong>
                 <div className="voimat-lista">
-                  {/* Voima 1 */}
-                  {voimaProgression[kokonaisprogression.toString()]?.voima1 && (
-                    <div 
-                      className={`voima-rivi ${voikoNostaaVoimaaTaso(kokonaisprogression, 15) && kayttamattomatHahmopisteet > 0 ? 'voima-rivi-upgradeable' : ''}`}
-                      onClick={() => {
-                        if (!voikoNostaaVoimaaTaso(kokonaisprogression, 15) || kayttamattomatHahmopisteet <= 0) return;
-                        
-                        const uusiKokonaisprogression = kokonaisprogression + 1;
-                        const uusiSkaala = haeSkaala(uusiKokonaisprogression);
-                        
-                        const paivitettyHahmo = {
-                          ...hahmo,
-                          voimaTaso: uusiKokonaisprogression,
-                          skaala: uusiSkaala,
-                          voimat: {
-                            ...hahmo.voimat,
-                            valittuVoima: null
-                          },
-                          kayttamattomatHahmopisteet: kayttamattomatHahmopisteet - 1
-                        };
-                        
-                        paivitaHahmo(paivitettyHahmo);
-                        
-                        if (siirryVoimanKykyyn && typeof siirryVoimanKykyyn === 'function') {
-                          siirryVoimanKykyyn();
-                        }
-                      }}
-                    >
-                      <span className="voima-nimi">{valittuVoimatyyppi || 'Voima 1'}</span>
-                      <span className="voima-pallot">{luoYmpyraEsitys(voimaProgression[kokonaisprogression.toString()].voima1, null, true)}</span>
-                      {haeEdistyneidenSelitys(voimaProgression[kokonaisprogression.toString()].voima1) && (
-                        <span className="voima-selitys">
-                          <small> ({haeEdistyneidenSelitys(voimaProgression[kokonaisprogression.toString()].voima1).kuvaus})</small>
-                        </span>
-                      )}
-                    </div>
-                  )}
-                  
-                  {/* Voima 2 */}
-                  {voimaProgression[kokonaisprogression.toString()]?.voima2 && (
-                    <div className="voima-rivi">
-                      <span className="voima-nimi">Voima 2</span>
-                      <span className="voima-pallot">{luoYmpyraEsitys(voimaProgression[kokonaisprogression.toString()].voima2, null, true)}</span>
-                      {haeEdistyneidenSelitys(voimaProgression[kokonaisprogression.toString()].voima2) && (
-                        <span className="voima-selitys">
-                          <small> ({haeEdistyneidenSelitys(voimaProgression[kokonaisprogression.toString()].voima2).kuvaus})</small>
-                        </span>
-                      )}
-                    </div>
-                  )}
-                  
-                  {/* Voima 3 */}
-                  {voimaProgression[kokonaisprogression.toString()]?.voima3 && (
-                    <div className="voima-rivi">
-                      <span className="voima-nimi">Voima 3</span>
-                      <span className="voima-pallot">{luoYmpyraEsitys(voimaProgression[kokonaisprogression.toString()].voima3, null, true)}</span>
-                      {haeEdistyneidenSelitys(voimaProgression[kokonaisprogression.toString()].voima3) && (
-                        <span className="voima-selitys">
-                          <small> ({haeEdistyneidenSelitys(voimaProgression[kokonaisprogression.toString()].voima3).kuvaus})</small>
-                        </span>
-                      )}
-                    </div>
-                  )}
-                  
-                  {/* Skaala info */}
-                  <div className="skaala-info">
-                    <small><strong>Skaala:</strong> {haeSkaalaText(kokonaisprogression)} ({haeSkaala(kokonaisprogression)})</small>
-                  </div>
+                  {/* Käytä voimaProgression taulukkoa näyttämään voima1, voima2, voima3 */}
+                  {(() => {
+                    const voimaTaso = hahmo.voimaTaso || 1;
+                    const progressData = voimaProgression[voimaTaso.toString()];
+                    
+                    if (!progressData) {
+                      return (
+                        <div className="voima-rivi">
+                          <span className="voima-nimi">Ei voimia</span>
+                          <span className="voima-pallot">-</span>
+                        </div>
+                      );
+                    }
+                    
+                    // Hae voimien nimet hahmon tiedoista tai käytä oletusnimiä
+                    const voimienNimet = hahmo.voimienJarjestys || {
+                      primary: hahmo.rotu?.voimat?.[0],
+                      secondary: hahmo.rotu?.voimat?.[1], 
+                      tertiary: hahmo.rotu?.voimat?.[2]
+                    };
+                    
+                    const voimat = [
+                      { nimi: voimienNimet.primary, taso: progressData.voima1 },
+                      { nimi: voimienNimet.secondary, taso: progressData.voima2 },
+                      { nimi: voimienNimet.tertiary, taso: progressData.voima3 }
+                    ];
+                    
+                    return voimat
+                      .filter(voima => voima.taso !== null && voima.taso !== undefined)
+                      .map((voima, index) => (
+                        <div key={index} className="voima-rivi">
+                          <span className="voima-nimi">{voima.nimi}</span>
+                          <span className="voima-pallot">
+                            {haeVoimanPallot(voima.taso)}
+                          </span>
+                        </div>
+                      ));
+                  })()}
                 </div>
               </div>
         </div>
         </div>
 
         {/* Peruskyvyt ja rotu */}
-        {(valittuVoimatyyppi || hahmo.rotu) && (
+        {hahmo.rotu && (
           <div className="teksti-osio">
             <h4>Kyvyt</h4>
             <div className="layout-flex-grid">
-              {/* Aistikyky */}
-              {valittuVoimatyyppi && aistit[valittuVoimatyyppi] && (
-                <p className="voima-item voima-item-wide">
-                  <strong>{aistit[valittuVoimatyyppi].nimi}:</strong> {aistit[valittuVoimatyyppi].kuvaus}
-                  {aistit[valittuVoimatyyppi].lisakuvaus && (
-                    <>
-                      <br />
-                      <strong>Kuvaus:</strong> {aistit[valittuVoimatyyppi].lisakuvaus}
-                    </>
-                  )}
-                </p>
-              )}
-
-              {/* Valitut voimakyvyt */}
-              {valitutVoimakyvyt.map((kyky) => (
-                <p key={kyky.nimi} className="voima-item voima-item-wide">
-                  <strong>{kyky.nimi}:</strong> {kyky.kuvaus}
-                  {hahmo.voimat?.valittuVoima?.nimi === kyky.nimi && hahmo.voimat.vapaakuvaus && (
-                    <>
-                      <br />
-                      <strong>{valittuVoimatyyppi === 'elementin hallinta' ? 'Elementti' : valittuVoimatyyppi === 'muodonmuutos' ? 'Eläimen aisti' : 'Kuvaus'}:</strong> {hahmo.voimat.vapaakuvaus}
-                    </>
-                  )}
-                </p>
-              ))}
-
               {/* Rotu tiedot */}
               {hahmo.rotu && (
                 <div className="voima-item voima-item-wide">
@@ -488,6 +416,125 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
                   )}
                 </div>
               )}
+              
+              {/* Mystisen voiman valitut kyvyt */}
+              {hahmo.valitutKyvyt?.primary && hahmo.valitutKyvyt.primary.length > 0 && (
+                <div className="voima-item voima-item-wide">
+                  <strong>{hahmo.voimienJarjestys?.primary }:</strong>
+                  {hahmo.valitutKyvyt.primary.map((kyky, index) => (
+                    <div key={index}>
+                      {kyky.nimi}
+                      <br />
+                      <small>{kyky.kuvaus}</small>
+                    </div>
+                  ))}
+                  {hahmo.vapaakuvaukset?.primary && (
+                    <>
+                      <br />
+                      <small><strong>Erikoistuminen:</strong> {hahmo.vapaakuvaukset.primary}</small>
+                    </>
+                  )}
+                </div>
+              )}
+
+              {/* Secondary voiman valitut kyvyt */}
+              {hahmo.valitutKyvyt?.secondary && hahmo.valitutKyvyt.secondary.length > 0 && (
+                <div className="voima-item voima-item-wide">
+                  <strong>{hahmo.voimienJarjestys?.secondary }:</strong>
+                  {hahmo.valitutKyvyt.secondary.map((kyky, index) => (
+                    <div key={index}>
+                      {kyky.nimi}
+                      <br />
+                      <small>{kyky.kuvaus}</small>
+                    </div>
+                  ))}
+                  {hahmo.vapaakuvaukset?.secondary && (
+                    <>
+                      <br />
+                      <small><strong>Erikoistuminen:</strong> {hahmo.vapaakuvaukset.secondary}</small>
+                    </>
+                  )}
+                </div>
+              )}
+
+              {/* Tertiary voiman valitut kyvyt */}
+              {hahmo.valitutKyvyt?.tertiary && hahmo.valitutKyvyt.tertiary.length > 0 && (
+                <div className="voima-item voima-item-wide">
+                  <strong>{hahmo.voimienJarjestys?.tertiary }:</strong>
+                  {hahmo.valitutKyvyt.tertiary.map((kyky, index) => (
+                    <div key={index}>
+                      {kyky.nimi}
+                      <br />
+                      <small>{kyky.kuvaus}</small>
+                    </div>
+                  ))}
+                  {hahmo.vapaakuvaukset?.tertiary && (
+                    <>
+                      <br />
+                      <small><strong>Erikoistuminen:</strong> {hahmo.vapaakuvaukset.tertiary}</small>
+                    </>
+                  )}
+                </div>
+              )}
+              
+              {/* Aisti-kyvyt vain aktiivisille voimille */}
+              {hahmo.voimienJarjestys && (() => {
+                // Tarkista voimaProgression mukaan mitkä voimat on aktiivisia
+                const voimaTaso = hahmo.voimaTaso || 1;
+                const progressData = voimaProgression[voimaTaso.toString()];
+                
+                if (!progressData) return null;
+                
+                const aktiivisetAistit = [];
+                
+                // Lisää aisti-kyvyt vain aktiivisille voimille
+                if (progressData.voima1 > 0 && hahmo.voimienJarjestys.primary && aistit[hahmo.voimienJarjestys.primary]) {
+                  const aistiData = aistit[hahmo.voimienJarjestys.primary];
+                  aktiivisetAistit.push({
+                    nimi: aistiData.nimi,
+                    kuvaus: aistiData.kuvaus,
+                    lisakuvaus: aistiData.lisakuvaus,
+                    voimatyyppi: hahmo.voimienJarjestys.primary
+                  });
+                }
+                if (progressData.voima2 > 0 && hahmo.voimienJarjestys.secondary && aistit[hahmo.voimienJarjestys.secondary]) {
+                  const aistiData = aistit[hahmo.voimienJarjestys.secondary];
+                  aktiivisetAistit.push({
+                    nimi: aistiData.nimi,
+                    kuvaus: aistiData.kuvaus,
+                    lisakuvaus: aistiData.lisakuvaus,
+                    voimatyyppi: hahmo.voimienJarjestys.secondary
+                  });
+                }
+                if (progressData.voima3 > 0 && hahmo.voimienJarjestys.tertiary && aistit[hahmo.voimienJarjestys.tertiary]) {
+                  const aistiData = aistit[hahmo.voimienJarjestys.tertiary];
+                  aktiivisetAistit.push({
+                    nimi: aistiData.nimi,
+                    kuvaus: aistiData.kuvaus,
+                    lisakuvaus: aistiData.lisakuvaus,
+                    voimatyyppi: hahmo.voimienJarjestys.tertiary
+                  });
+                }
+                
+                if (aktiivisetAistit.length === 0) return null;
+                
+                return (
+                  <div className="voima-item voima-item-wide">
+                    {aktiivisetAistit.map((aisti, index) => (
+                      <React.Fragment key={index}>
+                        <small><strong>{aisti.nimi}:</strong> {aisti.kuvaus}</small>
+                        {aisti.lisakuvaus && (
+                          <>
+                            <small style={{fontStyle: 'italic'}}>{aisti.lisakuvaus}</small>
+                          </>
+                        )}
+                        <br />
+                        {index < aktiivisetAistit.length - 1 && <br />}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                );
+              })()}
             </div>
           </div>
         )}
