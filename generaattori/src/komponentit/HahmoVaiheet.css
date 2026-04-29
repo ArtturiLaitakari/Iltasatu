@@ -314,6 +314,12 @@ table {
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
+/* Kenttä-säiliö joka on saman levyinen kuin korttien lista */
+.kentta-container {
+  max-width: 500px;
+  margin: 2rem auto;
+}
+
 .luonne-valinnat {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

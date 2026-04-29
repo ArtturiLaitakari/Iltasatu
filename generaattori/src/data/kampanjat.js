@@ -4,8 +4,8 @@ import multiverseKuva from '../kuvat/multiverse.jpg';
 export const kampanjat = {
   'avoin-fantasia': {
     id: 'avoin-fantasia',
-    nimi: 'Avoin Fantasia',
-    kuvaus: 'Avoimen maailman fantasiamaailma täynnä valtavaa määrää mahdollisuuksia',
+    nimi: 'Miekkarannikko',
+    kuvaus: 'Maailma jossa seikkailijoista voi tulla jumalia. Avoin fantasia maailma.',
     kuva: fantasiaKuva
   },
   'hopea-fantasia': {
@@ -17,7 +17,7 @@ export const kampanjat = {
   'heijastus-matkaajat': {
     id: 'heijastus-matkaajat',
     nimi: 'Heijastus Matkaajat', 
-    kuvaus: 'Matkaa eri todellisuuksien ja heijastusten maailmoissa',
+    kuvaus: 'Tarina ihmisistä jotka löytävät kyvyn matkustaa eri tarinoihin.',
     kuva: multiverseKuva
   }
 };

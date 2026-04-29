@@ -155,7 +155,7 @@ function VoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
                 <Kortti
                   key={voimatyyppi}
                   nimi={voimatyyppi}
-                  kuvaus={voimaData.kuvaus || 'Mystinen voima'}
+                  kuvaus={voimaData.kuvaus}
                   korttiKoko="pieni"
                   otsikkoVari="#000000"
                   valittu={onValittu}

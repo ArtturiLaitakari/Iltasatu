@@ -1,5 +1,6 @@
 export const voimat = {
   magia: {
+    kuvaus: "Manipuloi todellisuutta magian voimin",
     peruskyvyt: [
       {
         nimi: 'Luo portaali',
@@ -38,6 +39,7 @@ export const voimat = {
     ]
   },
   mentalismi: {
+    kuvaus: "Hallitse mieltä, liikuta esineitä ajatuksen voimalla",
     peruskyvyt: [
       {
         nimi: 'Telekinesia',
@@ -76,6 +78,7 @@ export const voimat = {
     ]
   },
   muodonmuutos: {
+    kuvaus: "Muuta kehoasi ja ota eri muotoja",
     peruskyvyt: [
       {
         nimi: 'Ihmismuodot',
@@ -119,10 +122,11 @@ export const voimat = {
     ]
   },
   'elementin hallinta': {
+    kuvaus: "Hallitse ja manipuloi vaistomaisesti yhtä elementtiä",
     peruskyvyt: [
       {
         nimi: 'Luo elementtiä',
-        kuvaus: 'Luo hallitsemaasi elementtiä. Tee iskuja, valleja, aluehyökkäyksiä tai paranna (kehoelementti).',
+        kuvaus: 'Luo hallitsemaasi elementtiä. Tee iskuja, valleja, aluehyökkäyksiä.',
       },
       {
         nimi: 'Ohjaa elementtiä',
@@ -160,6 +164,7 @@ export const voimat = {
   
   // Jumalaiset voimat - vain korkeimmilla skaaloilla
   'heijastuksen hallinta': {
+    kuvaus: "Manipuloi todellisuuden rakenteita hienostuneilla säädöillä",
     peruskyvyt: [
       {
         nimi: 'Kuvaile näyttämön takaa maisemia',
@@ -204,6 +209,7 @@ export const voimat = {
   },
   
   'kaaossäikeet': {
+    kuvaus: "Luo yhteyksiä todellisuuksien välille, hae ja nouda esineitä ja olentoja kaaossäikeillä",
     peruskyvyt: [
       {
         nimi: 'Henkiset säikeet',
@@ -248,6 +254,7 @@ export const voimat = {
   },
   
   'tarot': {
+    kuvaus: "Matka avaruuden ja varjojen läpi",
     peruskyvyt: [
       {
         nimi: 'Luo yhteys etäälle',

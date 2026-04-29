@@ -143,8 +143,8 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     // Auto-advance logiikka
     const voiSulkeutua = (() => {
       if (onElementinHallinta) {
-        // Elementin hallinnassa: elementti valittu ja kyky valittu
-        return elementtiValittu;
+        // Elementin hallinnassa: elementti valittu JA kyky valittu
+        return elementtiValittu && paivitetytKyvyt.length >= 1;
       } else if (onMagia) {
         // Magiassa: lähestymistapa valittu ja kyky valittu
         return magiaValittu;
@@ -190,8 +190,8 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
 
           <div>
             {/* Elementin hallinta: Vapaakuvaus ensimmäiseksi */}
-            {onElementinHallinta && !elementtiValittu && (
-              <div className="mb-3">
+            {onElementinHallinta && (valitutKyvyt.length === 0) && (
+              <div className="kentta-container">
                 <p className="vaihe-indikaattori">{vapaakuvausTiedot.otsikko}</p>
                 <div className="kentta">
                   <input
@@ -236,7 +236,7 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
             )}
 
             {/* Kykyjen valinta (kun valinta tehty) */}
-            {((!onElementinHallinta && !onMagia) || elementtiValittu || magiaValittu) && (
+            {((!onElementinHallinta && !onMagia) || (onElementinHallinta && elementtiValittu) || magiaValittu) && (
               <>
                 <p className="vaihe-indikaattori">
                   {onEdistynyt 
