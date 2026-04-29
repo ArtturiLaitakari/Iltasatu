@@ -1,5 +1,6 @@
 import { arkkityypit } from '../data/arkkityypit.js';
 import { ammatit } from '../data/ammatit.js';
+import { haeKampanjanAmmattiTyyppi } from '../data/kampanjaRajoitteet.js';
 
 export function haeAmmattiKategoria(arkkityyppi) {
   const tyyppi = arkkityypit[arkkityyppi];
@@ -8,9 +9,9 @@ export function haeAmmattiKategoria(arkkityyppi) {
 }
 
 export function haeKategorianAmmatit(kategoria, kampanja = 'avoin-fantasia') {
-  // Kaikki kampanjat käyttävät fantasiadataa
-  const genre = 'fantasia';
-  return ammatit[genre]?.[kategoria] || [];
+  // Hae kampanjan mukainen ammattiTyyppi (fantasia/moderni)
+  const ammattiTyyppi = haeKampanjanAmmattiTyyppi(kampanja);
+  return ammatit[ammattiTyyppi]?.[kategoria] || [];
 }
 
 export function luoTyhjaHahmo() {

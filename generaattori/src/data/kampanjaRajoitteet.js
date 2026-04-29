@@ -10,6 +10,7 @@ import { voimat } from './voimat.js';
 
 export const kampanjaRajoitteet = {
   'avoin-fantasia': {
+    ammattiTyyppi: 'fantasia',
     jumalaisetVoimat: 2,
     rajoitteet: {
       '*': { // Kaikki rodut
@@ -20,6 +21,7 @@ export const kampanjaRajoitteet = {
   },
 
   'hopea-fantasia': {
+    ammattiTyyppi: 'fantasia',
     jumalaisetVoimat: 5,
     rajoitteet: { // Sallitut rodut: Ihminen + 6 muuta rotua
       'Ihminen': {
@@ -60,6 +62,7 @@ export const kampanjaRajoitteet = {
   },
 
   'heijastus-matkaajat': {
+    ammattiTyyppi: 'moderni',
     jumalaisetVoimat: 0,
     rajoitteet: {
       'Ihminen': {
@@ -152,4 +155,12 @@ export function haeRotuVariantti(kampanja, alkuperainenRotuNimi) {
   if (!kampanjaData || !kampanjaData.variantit) return null;
   
   return kampanjaData.variantit[alkuperainenRotuNimi] || null;
+}
+
+// Apufunktio hakemaan kampanjan ammattiryhmä (fantasia/moderni)
+export function haeKampanjanAmmattiTyyppi(kampanja) {
+  const kampanjaData = kampanjaRajoitteet[kampanja];
+  if (!kampanjaData) return 'fantasia'; // Oletus fantasia
+  
+  return kampanjaData.ammattiTyyppi || 'fantasia'; // Oletus fantasia jos ei määritelty
 }

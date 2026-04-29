@@ -31,7 +31,7 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
     };
 
     const aktiivinenKategoria = kategoriaData[kategoria];
-    let ammatit = haeKategorianAmmatit(aktiivinenKategoria.ammattiKategoria, hahmo.genre || 'fantasia');
+    let ammatit = haeKategorianAmmatit(aktiivinenKategoria.ammattiKategoria, hahmo.kampanja || 'avoin-fantasia');
 
     // Filttteröi mystisen kategorian ammatteja kampanjarajoitteiden mukaan
     if (aktiivinenKategoria.avain === 'sielu' && hahmo.kampanja && hahmo.rotu) {
@@ -270,7 +270,7 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
   };
 
   const ammattiKategoria = haeAmmattiKategoria(aktiivinenVaihe.avain);
-  let ammatit = haeKategorianAmmatit(ammattiKategoria, hahmo.genre || 'fantasia');
+  let ammatit = haeKategorianAmmatit(ammattiKategoria, hahmo.kampanja || 'avoin-fantasia');
   
   // Suodata mystisiä ammatteja kampanjarajoitteiden mukaan
   if (aktiivinenVaihe.avain === 'sielu' && hahmo.kampanja && hahmo.rotu) {

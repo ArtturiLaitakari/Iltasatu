@@ -1382,11 +1382,6 @@ table {
   width: 4ch;
 }
 
-/* Development and equipment section */
-.development-equipment-section {
-  /* page-break-before poistettu */
-}
-
 @media print {
   .development-equipment-section {
     /* page-break-before poistettu */

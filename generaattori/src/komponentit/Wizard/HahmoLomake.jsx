@@ -5,6 +5,7 @@ import { ammatit } from '../../data/ammatit.js';
 import { adjektiivit } from '../../data/adjektiivit.js';
 import { rodut } from '../../data/rodut.js';
 import { tallennaHahmo } from '../../utils/hahmoLogiikka.js';
+import { haeKampanjanAmmattiTyyppi } from '../../data/kampanjaRajoitteet.js';
 import { haeVoimanPallot, haeSkaalaText, voikoNostaa, haeOminaisuudenPallot, laskeOminaisuudenMaksimi, laskeVoimaMaksimi, VOIMAN_MAKSIMIT, voimaProgression, selvitaMuuttunutVoima } from '../../data/voimaProgression.js';
 import React from 'react';
 import '../HahmoVaiheet.css';
@@ -98,8 +99,8 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
     if (!ammattiId) return '';
     
     // Etsi ammatti kaikista kategorioista
-    const genre = hahmo.genre || 'fantasia';
-    const genreAmmatit = ammatit[genre] || {};
+    const ammattiTyyppi = haeKampanjanAmmattiTyyppi(hahmo.kampanja || 'avoin-fantasia');
+    const genreAmmatit = ammatit[ammattiTyyppi] || {};
     const kaikki = [
       ...(genreAmmatit.fyysinen || []),
       ...(genreAmmatit.henkinen || []),
@@ -367,7 +368,7 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
                 <br />
                 <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, false, hahmo.ammatit?.keho))} {haeAmmatinNimi(hahmo.ammatit?.keho)}</small>
                 <br />
-                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, hahmo.ammatit?.keho))} {haeAdjektiivinNimi(hahmo.adjektiivit?.keho).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.keho).toLowerCase()}. ({haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, hahmo.ammatit?.keho) + (hahmo.skaala || 0))})</small>
+                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, hahmo.ammatit?.keho))} {haeAdjektiivinNimi(hahmo.adjektiivit?.keho).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.keho).toLowerCase()}.{(hahmo.skaala || 0) > 0 ? ` (${haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, hahmo.ammatit?.keho) + (hahmo.skaala || 0))})` : ''}</small>
               </p>
               <p
                 className={`voima-item ${voikoNostaa(hahmo, 'mieli') && kayttamattomatHahmopisteet > 0 ? 'voima-item-upgradeable' : ''}`}
@@ -377,7 +378,7 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
                 <br />
                 <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, false, hahmo.ammatit?.mieli))} {haeAmmatinNimi(hahmo.ammatit?.mieli)}</small>
                 <br />
-                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, hahmo.ammatit?.mieli))} {haeAdjektiivinNimi(hahmo.adjektiivit?.mieli).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.mieli).toLowerCase()}. ({haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, hahmo.ammatit?.mieli) + (hahmo.skaala || 0))})</small>
+                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, hahmo.ammatit?.mieli))} {haeAdjektiivinNimi(hahmo.adjektiivit?.mieli).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.mieli).toLowerCase()}.{(hahmo.skaala || 0) > 0 ? ` (${haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, hahmo.ammatit?.mieli) + (hahmo.skaala || 0))})` : ''}</small>
               </p>
               <p
                 className={`voima-item ${voikoNostaa(hahmo, 'sielu') && kayttamattomatHahmopisteet > 0 ? 'voima-item-upgradeable' : ''}`}
@@ -387,7 +388,7 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
                 <br />
                 <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, false, hahmo.ammatit?.sielu))} {haeAmmatinNimi(hahmo.ammatit?.sielu)}</small>
                 <br />
-                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, hahmo.ammatit?.sielu))} {haeAdjektiivinNimi(hahmo.adjektiivit?.sielu).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.sielu).toLowerCase()}. ({haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, hahmo.ammatit?.sielu) + (hahmo.skaala || 0))})</small>
+                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, hahmo.ammatit?.sielu))} {haeAdjektiivinNimi(hahmo.adjektiivit?.sielu).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.sielu).toLowerCase()}.{(hahmo.skaala || 0) > 0 ? ` (${haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, hahmo.ammatit?.sielu) + (hahmo.skaala || 0))})` : ''}</small>
               </p>
               <p className="voima-item">
                 <strong>{hahmo.kuvaaja?.nimi || 'Ei kuvaajaa valittu'}</strong>
