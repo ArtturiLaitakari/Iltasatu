@@ -1,12 +1,13 @@
 import fantasiaKuva from '../kuvat/fantasia.jpg';
 import multiverseKuva from '../kuvat/multiverse.jpg';
+import miekanhampaatKuva from '../kuvat/Miekkahampaat.png';
 
 export const kampanjat = {
   'avoin-fantasia': {
     id: 'avoin-fantasia',
-    nimi: 'Miekkarannikko',
+    nimi: 'Miekanhampaat',
     kuvaus: 'Maailma jossa seikkailijoista voi tulla jumalia. Avoin fantasia maailma.',
-    kuva: fantasiaKuva
+    kuva: miekanhampaatKuva
   },
   'hopea-fantasia': {
     id: 'hopea-fantasia', 

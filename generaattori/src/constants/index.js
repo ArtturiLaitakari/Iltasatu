@@ -33,7 +33,7 @@ export const KORTTI_VARIANTS = {
 };
 
 export const KORTTI_DEFAULTS = {
-  KORKEUS: 300,
+  KORKEUS: 250,
   KUVA_KOKO: 'cover',
   TAUSTA_SIJAINTI: 'center'
 };

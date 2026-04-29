@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Kortti from '../Kortti.jsx';
+import Modal from '../Modal.jsx';
 import { voimat } from '../../data/voimat.js';
 import { onkoVoimaSallittu } from '../../data/kampanjaRajoitteet.js';
 import '../HahmoVaiheet.css';
@@ -9,8 +10,21 @@ const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
   import: 'default'
 });
 
+// Magian lähestymistavat
+const MAGIA_VAIHTOEHDOT = [
+  { arvo: 'hermeettinen', nimi: 'Hermeettinen magia', kuvaus: 'Kirjoihin ja oppiin perustuva magia' },
+  { arvo: 'instrumentaali', nimi: 'Instrumentaali magia', kuvaus: 'Välineisiin ja esineisiin perustuva magia' }
+];
+
 function VoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const [nykyinenPrioriteetti, setNykyinenPrioriteetti] = useState('primary');
+  const [magiaModalOpen, setMagiaModalOpen] = useState(false);
+  const [valittuMagiaLahestymistapa, setValittuMagiaLahestymistapa] = useState('');
+  const [valitutVoimat, setValitutVoimat] = useState({
+    primary: null,
+    secondary: null,
+    tertiary: null
+  });
 
   // Jos voimienJarjestys on jo asetettu (esim. Pimentohaltia), ohita tämä vaihe
   useEffect(() => {
@@ -23,11 +37,6 @@ function VoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   if (hahmo.voimienJarjestys) {
     return null;
   }
-  const [valitutVoimat, setValitutVoimat] = useState({
-    primary: null,
-    secondary: null,
-    tertiary: null
-  });
 
   // Hae sallitut voimat kampanjan mukaan
   const haeSallitutVoimat = () => {
@@ -59,6 +68,18 @@ function VoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const sallitutVoimat = haeSallitutVoimat();
 
   const valitseVoima = (voimatyyppi) => {
+    // Jos valitaan magia, avaa modal lähestymistavan valintaan
+    if (voimatyyppi === 'magia') {
+      setValittuMagiaLahestymistapa('');
+      setMagiaModalOpen(true);
+      return;
+    }
+
+    // Muut voimat toimivat normaalisti
+    tallennaNSiirryEteenpain(voimatyyppi);
+  };
+
+  const tallennaNSiirryEteenpain = (voimatyyppi, magiaLahestymistapa = null) => {
     const uudetValitutVoimat = { ...valitutVoimat };
     
     // Jos tämä voima on jo valittu toisessa prioriteetissa, poista se sieltä
@@ -72,6 +93,15 @@ function VoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     uudetValitutVoimat[nykyinenPrioriteetti] = voimatyyppi;
     setValitutVoimat(uudetValitutVoimat);
 
+    // Jos magia, tallenna lähestymistapa vapaakuvaukset kenttään
+    let paivitettyHahmo = { ...hahmo, voimienJarjestys: uudetValitutVoimat };
+    if (voimatyyppi === 'magia' && magiaLahestymistapa) {
+      paivitettyHahmo.vapaakuvaukset = {
+        ...hahmo.vapaakuvaukset,
+        [nykyinenPrioriteetti]: magiaLahestymistapa
+      };
+    }
+
     // Siirry seuraavaan prioriteettiin automaattisesti
     if (nykyinenPrioriteetti === 'primary') {
       setNykyinenPrioriteetti('secondary');
@@ -80,12 +110,19 @@ function VoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     } else if (nykyinenPrioriteetti === 'tertiary') {
       // Kun kaikki valittu, tallenna ja siirry eteenpäin
       setTimeout(() => {
-        paivitaHahmo({
-          ...hahmo,
-          voimienJarjestys: uudetValitutVoimat
-        });
+        paivitaHahmo(paivitettyHahmo);
         seuraavaVaihe();
       }, 300);
+      return;
+    }
+    
+    paivitaHahmo(paivitettyHahmo);
+  };
+
+  const valitseMagianLahestymistapa = () => {
+    if (valittuMagiaLahestymistapa) {
+      setMagiaModalOpen(false);
+      tallennaNSiirryEteenpain('magia', valittuMagiaLahestymistapa);
     }
   };
 
@@ -167,6 +204,49 @@ function VoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
           </div>
         </div>
       </div>
+      
+      {/* Magia lähestymistapa modal */}
+      <Modal 
+        isOpen={magiaModalOpen} 
+        onClose={() => setMagiaModalOpen(false)}
+        title="Valitse magian lähestymistapa"
+        size="medium"
+      >
+        <div>
+          <p style={{ marginBottom: '1.5rem', color: '#666' }}>
+            Valitse miten hahmosi lähestyy magiaa:
+          </p>
+          <div className="radio-group">
+            {MAGIA_VAIHTOEHDOT.map((vaihtoehto, index) => (
+              <label key={index} className="radio-option">
+                <input
+                  type="radio"
+                  name="magia-lahestymistapa"
+                  value={vaihtoehto.arvo}
+                  checked={valittuMagiaLahestymistapa === vaihtoehto.arvo}
+                  onChange={(e) => setValittuMagiaLahestymistapa(e.target.value)}
+                  className="radio-input"
+                />
+                <div className="radio-content">
+                  <strong>{vaihtoehto.nimi}</strong>
+                  <small>{vaihtoehto.kuvaus}</small>
+                </div>
+              </label>
+            ))}
+          </div>
+          
+          {valittuMagiaLahestymistapa && (
+            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+              <button
+                onClick={valitseMagianLahestymistapa}
+                className="btn btn-primary"
+              >
+                Valitse {MAGIA_VAIHTOEHDOT.find(v => v.arvo === valittuMagiaLahestymistapa)?.nimi}
+              </button>
+            </div>
+          )}
+        </div>
+      </Modal>
       
       {/* Taustakuva koko sivulle (sama kuin RotuValinta) */}
       {taustaKuva && (

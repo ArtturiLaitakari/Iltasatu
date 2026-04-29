@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import Kortti from '../Kortti.jsx';
-import '../HahmoVaiheet.css';
 import { kampanjat } from '../../data/kampanjat.js';
 import { luoTyhjaHahmo } from '../../utils/hahmoLogiikka.js';
+import Ohje from './Ohje.jsx';
+import VaiheSivu from './VaiheSivu.jsx';
 
 function KampanjaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
+  const [ohjeAuki, setOhjeAuki] = useState(false);
+
   const valitseKampanja = (kampanjaId) => {
     // Aloita uusi hahmo alusta - tyhjennä kaikki vanhat valinnat
     paivitaHahmo({ ...luoTyhjaHahmo(), kampanja: kampanjaId });
@@ -11,11 +15,11 @@ function KampanjaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   };
 
   return (
-    <div className="vaihe-sisalto genre-sivu">
-      <div className="vaihe-otsikko">
-        <h2>Valitse Kampanja</h2>
-        <p>Valitse kampanja, johon hahmo osallistuu</p>
-      </div>
+    <VaiheSivu
+      otsikko="Valitse Kampanja"
+      alaotsikko={<><span>Valitse kampanja, johon hahmo osallistuu</span>{' '}<button type="button" onClick={() => setOhjeAuki(true)} className="btn-link-ohje">📖 Hahmonluonnin ohje</button></>}
+    >
+      {ohjeAuki && <Ohje onSulje={() => setOhjeAuki(false)} />}
 
       <div className="kortit-grid">
         {Object.values(kampanjat).map(kampanja => (
@@ -29,7 +33,7 @@ function KampanjaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
           />
         ))}
       </div>
-    </div>
+    </VaiheSivu>
   );
 }
 

@@ -101,6 +101,7 @@ export function onkoVoimaSallittu(kampanja, rotuNimi, voimaTyyppi, hahmonSkaala 
     }
   }
   
+  // Käytä suoraan rotuNimi:ä - variantit on määritelty omilla nimillään
   const rotuRajoitteet = kampanjaData.rajoitteet[rotuNimi] || 
                         kampanjaData.rajoitteet['*'];
   
@@ -155,6 +156,22 @@ export function haeRotuVariantti(kampanja, alkuperainenRotuNimi) {
   if (!kampanjaData || !kampanjaData.variantit) return null;
   
   return kampanjaData.variantit[alkuperainenRotuNimi] || null;
+}
+
+// Apufunktio hakemaan alkuperäisen rodun varianttirodun perusteella
+export function haeAlkuperainenRotu(kampanja, varianttiRotuNimi) {
+  const kampanjaData = kampanjaRajoitteet[kampanja];
+  if (!kampanjaData || !kampanjaData.variantit) return varianttiRotuNimi;
+  
+  // Etsi avain jolla on tämä variantti
+  for (const [alkuperainenRotu, variantti] of Object.entries(kampanjaData.variantit)) {
+    if (variantti.nimi === varianttiRotuNimi) {
+      return alkuperainenRotu;
+    }
+  }
+  
+  // Jos ei löydy varianttia, palautetaan alkuperäinen nimi
+  return varianttiRotuNimi;
 }
 
 // Apufunktio hakemaan kampanjan ammattiryhmä (fantasia/moderni)

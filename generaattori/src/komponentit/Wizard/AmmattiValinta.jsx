@@ -3,12 +3,7 @@ import { haeKategorianAmmatit } from '../../utils/hahmoLogiikka.js';
 import { arkkityypit } from '../../data/arkkityypit.js';
 import { onkoVoimaSallittu, onkoJumalaisetVoimatSallittu } from '../../data/kampanjaRajoitteet.js';
 import Kortti from '../Kortti.jsx';
-import '../HahmoVaiheet.css';
-
-const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
-  eager: true,
-  import: 'default'
-});
+import VaiheSivu, { haeTaustaKuva } from './VaiheSivu.jsx';
 
 function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }) {
   // useState pitää kutsua aina komponentin alussa - resetoidaan kun arkkityyppi muuttuu
@@ -50,35 +45,13 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
     }
 
     // Hae taustakuva kategorian mukaan
-    const haeKategoriaTaustaKuva = () => {
-      const tiedostoVaihtoehdot = [
-        `${aktiivinenKategoria.avain}_tausta.jpg`,
-        `${aktiivinenKategoria.avain}_tausta.jpeg`,
-        `${aktiivinenKategoria.avain}_tausta.png`,
-        `${aktiivinenKategoria.avain}_tausta.webp`,
-        `${aktiivinenKategoria.avain}_ammatti.jpg`,
-        `${aktiivinenKategoria.avain}_ammatit.jpg`
-      ];
-      for (const tiedostoNimi of tiedostoVaihtoehdot) {
-        const osuma = Object.entries(taustaKuvat).find(([polku]) => polku.endsWith(`/${tiedostoNimi}`));
-        if (osuma) return osuma[1];
-      }
-      return null;
-    };
-    const taustaKuva = haeKategoriaTaustaKuva();
+    const avain = aktiivinenKategoria.avain;
+    const taustaKuva = haeTaustaKuva(`${avain}_tausta`) || haeTaustaKuva(`${avain}_ammatti`) || haeTaustaKuva(`${avain}_ammatit`);
 
     const valitseAmmatti = (ammatti) => {
-      const uudetAmmatit = {
-        ...hahmo.ammatit,
-        [aktiivinenKategoria.avain]: ammatti.id // Tallenna id
-      };
+      const uudetAmmatit = { ...hahmo.ammatit, [aktiivinenKategoria.avain]: ammatti.id };
+      let paivitettyHahmo = { ...hahmo, ammatit: uudetAmmatit };
 
-      let paivitettyHahmo = { 
-        ...hahmo, 
-        ammatit: uudetAmmatit
-      };
-
-      // Aseta voimat kun valitaan sielu ammatti
       if (aktiivinenKategoria.avain === 'sielu') {
         paivitettyHahmo = {
           ...paivitettyHahmo,
@@ -94,59 +67,33 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
           }
         };
       }
-
       paivitaHahmo(paivitettyHahmo);
-      
-      // Siirry automaattisesti seuraavalle sivulle
-      if (seuraavaVaihe) {
-        seuraavaVaihe();
-      }
+      seuraavaVaihe?.();
     };
 
-
     return (
-      <div className={`vaihe-sisalto ${taustaKuva ? 'taustakuvalla' : ''}`}>
-        <div className="vaihe-otsikko">
-          <h2>{aktiivinenKategoria.nimi} Ammatti</h2>
-          <p>Valitse {aktiivinenKategoria.nimi.toLowerCase()} ammatti hahmollesi</p>
-        </div>
-
-        <div className="levea-grid">
-          <div className={`ammatti-kategoria ${taustaKuva ? 'ammatti-kategoria-taustalla' : ''}`}>
-            {ammatit.length === 0 ? (
-              <div className="ammatti-ei-sallittuja">
-                <p>Valitsemallesi rodulle ei ole sallittuja mystisiä ammatteja tässä kampanjassa.</p>
-                <p>Palaa takaisin ja valitse toinen rotu.</p>
-              </div>
-            ) : (
-              <div className={`ammatti-kortit-lista ${aktiivinenKategoria.avain === 'sielu' ? 'kapea' : ''}`}>
-                {ammatit.map((ammatti) => (
-                  <Kortti
-                    key={ammatti.nimi}
-                    nimi={ammatti.nimi}
-                  kuvaus={ammatti.kuvaus}
-                  korttiKoko="pieni"
-                  otsikkoVari="#000000"
-                  valittu={hahmo.ammatit?.[aktiivinenKategoria.avain] === ammatti.id}
-                  onClick={() => valitseAmmatti(ammatti)}
-                />
-              ))}
-              </div>
-            )}
+      <VaiheSivu taustaKuva={taustaKuva} otsikko={`${aktiivinenKategoria.nimi} Ammatti`} alaotsikko={`Valitse ${aktiivinenKategoria.nimi.toLowerCase()} ammatti hahmollesi`}>
+        {ammatit.length === 0 ? (
+          <div className="ammatti-ei-sallittuja">
+            <p>Valitsemallesi rodulle ei ole sallittuja mystisiä ammatteja tässä kampanjassa.</p>
+            <p>Palaa takaisin ja valitse toinen rotu.</p>
           </div>
-        </div>
-        
-        {/* Taustakuva koko sivulle */}
-        {taustaKuva && (
-          <style>{`
-            .sovellus {
-              background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${taustaKuva}) !important;
-              background-size: cover !important;
-              background-position: center !important;
-            }
-          `}</style>
+        ) : (
+          <div className={`ammatti-kortit-lista ${aktiivinenKategoria.avain === 'sielu' ? 'kapea' : ''}`}>
+            {ammatit.map((ammatti) => (
+              <Kortti
+                key={ammatti.nimi}
+                nimi={ammatti.nimi}
+                kuvaus={ammatti.kuvaus}
+                korttiKoko="pieni"
+                otsikkoVari="#000000"
+                valittu={hahmo.ammatit?.[aktiivinenKategoria.avain] === ammatti.id}
+                onClick={() => valitseAmmatti(ammatti)}
+              />
+            ))}
+          </div>
         )}
-      </div>
+      </VaiheSivu>
     );
   }
 
@@ -198,26 +145,6 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
     return kategoriaKartta[kategoria] || 'fyysinen';
   };
 
-  const haeTaustaKuva = (stat) => {
-    const tiedostoVaihtoehdot = [
-      `${stat}_tausta.jpg`,
-      `${stat}_tausta.jpeg`,
-      `${stat}_tausta.png`,
-      `${stat}_tausta.webp`,
-      `${stat}_ammatti.jpg`,
-      `${stat}_ammatit.jpg`
-    ];
-
-    for (const tiedostoNimi of tiedostoVaihtoehdot) {
-      const osuma = Object.entries(taustaKuvat).find(([polku]) => polku.endsWith(`/${tiedostoNimi}`));
-      if (osuma) {
-        return osuma[1];
-      }
-    }
-
-    return null;
-  };
-  
   const valitseAmmatti = (kategoria, ammatti) => {
     const uudetAmmatit = {
       ...hahmo.ammatit,
@@ -288,42 +215,26 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
     });
   }
   
-  const taustaKuva = haeTaustaKuva(aktiivinenVaihe.avain);
-  const taustaTyyli = taustaKuva
-    ? {
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${taustaKuva})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
-      }
-    : undefined;
+  const avain = aktiivinenVaihe.avain;
+  const taustaKuva = haeTaustaKuva(`${avain}_tausta`) || haeTaustaKuva(`${avain}_ammatti`) || haeTaustaKuva(`${avain}_ammatit`);
 
   return (
-    <div className="vaihe-sisalto">
-      <div className="vaihe-otsikko">
-        <h2>Valitse Ammatit</h2>
-        <p>Valitse ammatti, koulutus ja harrastus kullekin ominaisuudelle</p>
+    <VaiheSivu taustaKuva={taustaKuva} otsikko="Valitse Ammatit" alaotsikko="Valitse ammatti, koulutus ja harrastus kullekin ominaisuudelle">
+      <p className="vaihe-indikaattori text-center">{aktiivinenVaihe.nimi} {aktiivinenVaihe.otsikko} — {nykyinenSivu + 1} / {ammattiVaiheet.length}</p>
+      <div className="ammatti-kortit-lista">
+        {ammatit.map((ammatti) => (
+          <Kortti
+            key={ammatti.nimi}
+            nimi={ammatti.nimi}
+            kuvaus={ammatti.kuvaus}
+            korttiKoko="pieni"
+            otsikkoVari="#000000"
+            valittu={hahmo.ammatit[aktiivinenVaihe.avain] === ammatti.id}
+            onClick={() => valitseAmmatti(aktiivinenVaihe.avain, ammatti)}
+          />
+        ))}
       </div>
-
-      <div className="levea-grid">
-        <div className={`ammatti-kategoria ${taustaKuva ? 'ammatti-kategoria-taustalla' : ''}`} style={taustaTyyli}>
-          <h3>{aktiivinenVaihe.nimi} {aktiivinenVaihe.otsikko}</h3>
-          <p className="vaihe-indikaattori">{nykyinenSivu + 1} / {ammattiVaiheet.length}</p>
-          <div className="ammatti-kortit-lista">
-            {ammatit.map((ammatti) => (
-              <Kortti
-                key={ammatti.nimi}
-                nimi={ammatti.nimi}
-                kuvaus={ammatti.kuvaus}
-                korttiKoko="pieni"
-                otsikkoVari="#000000"
-                valittu={hahmo.ammatit[aktiivinenVaihe.avain] === ammatti.id}
-                onClick={() => valitseAmmatti(aktiivinenVaihe.avain, ammatti)}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+    </VaiheSivu>
   );
 }
 

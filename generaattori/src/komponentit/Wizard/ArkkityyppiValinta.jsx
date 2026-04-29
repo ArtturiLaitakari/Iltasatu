@@ -1,6 +1,5 @@
 import Kortti from '../Kortti.jsx';
 import { KORTTI_DEFAULTS } from '../../constants';
-import '../HahmoVaiheet.css';
 import { arkkityypit } from '../../data/arkkityypit.js';
 import soturiKuva from '../../kuvat/Soturi.jpeg';
 import temppeliritariKuva from '../../kuvat/Temppeliritari.jpg';
@@ -9,6 +8,7 @@ import tietajaKuva from '../../kuvat/Tietaja.jpg';
 import maagiKuva from '../../kuvat/Maagi.jpg';
 import soturimaagiKuva from '../../kuvat/Soturimaagi.jpg';
 import kehoAmmattiTausta from '../../kuvat/keho_ammatti.jpg';
+import VaiheSivu from './VaiheSivu.jsx';
 
 function ArkkityyppiValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const taustaKuva = kehoAmmattiTausta;
@@ -47,41 +47,25 @@ function ArkkityyppiValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   };
 
   return (
-    <div className={`vaihe-sisalto ${taustaKuva ? 'taustakuvalla' : ''}`}>
-      <div className="vaihe-otsikko">
-        <h2>Valitse Arkkityyppi</h2>
-        <p>Arkkityyppi määrää hahmon perusominaisuudet ja kehityssuunnan</p>
+    <VaiheSivu
+      taustaKuva={taustaKuva}
+      otsikko="Valitse Arkkityyppi"
+      alaotsikko="Arkkityyppi määrää hahmon perusominaisuudet ja kehityssuunnan"
+    >
+      <div className="kuvaaja-kortit-lista">
+        {Object.entries(arkkityypit).map(([id, arkkityyppi]) => (
+          <Kortti
+            key={id}
+            nimi={arkkityyppi.nimi}
+            kuvaus={arkkityyppi.kuvaus}
+            kuva={arkkityyppiKuvat[id]}
+            valittu={hahmo.arkkityyppi === id}
+            onClick={() => valitseArkkityyppi(id)}
+            extraInfo={luoStatsKuvaus(arkkityyppi)}
+          />
+        ))}
       </div>
-
-      <div className="levea-grid">
-        <div className={`kuvaaja-kategoria ${taustaKuva ? 'kuvaaja-kategoria-taustalla' : ''}`}>
-          <div className="kuvaaja-kortit-lista">
-            {Object.entries(arkkityypit).map(([id, arkkityyppi]) => (
-              <Kortti
-                key={id}
-                nimi={arkkityyppi.nimi}
-                kuvaus={arkkityyppi.kuvaus}
-                kuva={arkkityyppiKuvat[id]}
-                korttiKorkeus={KORTTI_DEFAULTS.KORKEUS}
-                valittu={hahmo.arkkityyppi === id}
-                onClick={() => valitseArkkityyppi(id)}
-                extraInfo={luoStatsKuvaus(arkkityyppi)}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-      
-      {taustaKuva && (
-        <style>{`
-          .sovellus {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${taustaKuva}) !important;
-            background-size: cover !important;
-            background-position: center !important;
-          }
-        `}</style>
-      )}
-    </div>
+    </VaiheSivu>
   );
 }
 

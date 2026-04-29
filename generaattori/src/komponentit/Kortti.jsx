@@ -10,10 +10,12 @@ function Kortti({
   kuva = null,
   kuvaKoko = KORTTI_DEFAULTS.KUVA_KOKO,
   extraInfo = null,
-  korttiKoko = KORTTI_VARIANTS.NORMAALI,
-  korttiKorkeus = null,
+  korttiKoko = null, // Ei oletusarvoa - päätellään jälkempänä
+  korttiKorkeus = KORTTI_DEFAULTS.KORKEUS,
   otsikkoVari = null
 }) {
+  // Jos korttiKoko ei ole määritelty ja kuvaa ei ole, käytä pientä kokoa
+  const lopullinenKorttiKoko = korttiKoko || (!kuva ? KORTTI_VARIANTS.PIENI : KORTTI_VARIANTS.NORMAALI);
   const taustaTyyli = kuva
     ? {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${kuva})`,
@@ -25,7 +27,8 @@ function Kortti({
 
   const korttiTyyli = {
     ...taustaTyyli,
-    ...(korttiKorkeus && { height: `${korttiKorkeus}px` })
+    // Älä aseta eksplisiittistä korkeutta pienille tai tiivisille korteille - anna CSS:n hoitaa min-height
+    ...(korttiKorkeus && lopullinenKorttiKoko === KORTTI_VARIANTS.NORMAALI && { height: `${korttiKorkeus}px` })
   };
 
   const otsikkoTyyli = otsikkoVari ? { color: otsikkoVari } : undefined;
@@ -33,9 +36,9 @@ function Kortti({
   return (
     <div 
       className={`kortti ${valittu ? 'valittu' : ''} ${disabled ? 'disabled' : ''} ${kuva ? 'kortti-taustakuvalla' : ''} ${
-        korttiKoko === KORTTI_VARIANTS.PIENI ? 'kortti-pieni' : ''
+        lopullinenKorttiKoko === KORTTI_VARIANTS.PIENI ? 'kortti-pieni' : ''
       } ${
-        korttiKoko === KORTTI_VARIANTS.TIIVIS ? 'kortti-tiivis' : ''
+        lopullinenKorttiKoko === KORTTI_VARIANTS.TIIVIS ? 'kortti-tiivis' : ''
       }`}
       style={korttiTyyli}
       onClick={disabled ? undefined : onClick}

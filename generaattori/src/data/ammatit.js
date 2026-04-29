@@ -12,7 +12,7 @@ export const ammatit = {
       { id: 'temppeliritari', nimi: 'Temppeliritari', kuvaus: 'Vannoutunut suojelija, joka yhdistää uskon ja miekan.' },
       { id: 'paladiini', nimi: 'Paladiini', kuvaus: 'Pyhä soturi, joka vannoo valan ja käyttää jumalallista voimaa.' },
       { id: 'samooja', nimi: 'Samooja', kuvaus: 'Eränkävijä, jäljittäjä ja luonnossa selviytyjä.' },
-      { id: 'ryovari', nimi: 'Ryövari', kuvaus: 'Nopea, tarkka ja varjoissa toimiva ammattilainen.' },
+      { id: 'ryovari', nimi: 'Voro', kuvaus: 'Nopea, tarkka ja varjoissa toimiva ammattilainen.' },
       { id: 'soturimaagi', nimi: 'Soturimaagi', kuvaus: 'Yhdistää taistelutaidon ja taikuuden yhdeksi tyyliksi.' },
       { id: 'kasityolainen', nimi: 'Käsityöläinen', kuvaus: 'Taitava käden työn mestari, sepän, puusepän tai muun ammatin osaaja.' }
     ],

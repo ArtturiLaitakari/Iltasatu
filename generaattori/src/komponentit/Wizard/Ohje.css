@@ -1,0 +1,128 @@
+.ohje-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.ohje-modaali {
+  background: #fdfaf3;
+  color: #1a1a1a;
+  width: min(960px, 100%);
+  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ohje-sulje {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.08);
+  border: none;
+  border-radius: 999px;
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.ohje-sulje:hover {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.ohje-sisalto {
+  overflow-y: auto;
+  padding: 32px 40px;
+  line-height: 1.55;
+}
+
+.ohje-sisalto h1,
+.ohje-sisalto h2,
+.ohje-sisalto h3 {
+  margin-top: 1.4em;
+  margin-bottom: 0.5em;
+  color: #2a1d0a;
+}
+
+.ohje-sisalto h1 { font-size: 1.9rem; }
+.ohje-sisalto h2 { font-size: 1.45rem; border-bottom: 2px solid #d8c9a3; padding-bottom: 4px; }
+.ohje-sisalto h3 { font-size: 1.15rem; }
+
+.ohje-sisalto p,
+.ohje-sisalto li {
+  font-size: 0.95rem;
+}
+
+.ohje-sisalto blockquote {
+  border-left: 4px solid #b89559;
+  background: #f5ecd3;
+  margin: 1em 0;
+  padding: 0.6em 1em;
+  border-radius: 4px;
+}
+
+.ohje-sisalto table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.8em 0 1.2em;
+  font-size: 0.88rem;
+}
+
+.ohje-sisalto th,
+.ohje-sisalto td {
+  border: 1px solid #d2c4a0;
+  padding: 6px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.ohje-sisalto th {
+  background: #ebdcb6;
+}
+
+.ohje-sisalto tr:nth-child(even) td {
+  background: #f7efd9;
+}
+
+.ohje-sisalto code {
+  background: #ebe2c8;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.85em;
+}
+
+.ohje-sisalto hr {
+  border: none;
+  border-top: 1px solid #d2c4a0;
+  margin: 1.5em 0;
+}
+
+@media (max-width: 600px) {
+  .ohje-sisalto { padding: 22px 18px; }
+  .ohje-sisalto table { font-size: 0.78rem; }
+}
+
+.btn-link-ohje {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: inherit;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.15s ease;
+}
+
+.btn-link-ohje:hover {
+  background: rgba(255, 255, 255, 0.25);
+}

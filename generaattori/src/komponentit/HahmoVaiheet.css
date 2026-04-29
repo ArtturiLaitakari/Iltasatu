@@ -259,12 +259,14 @@ table {
 
 /* Container sizes */
 .sailio-kapea {
-  max-width: 600px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Form card styling */
 .lomake-kortti {
-  background: var(--background-light);
+  background: transparent;
   padding: 1.5rem;
   border-radius: 12px;
   border: 1px solid var(--border-lighter);
@@ -649,6 +651,13 @@ table {
   padding: 0.75rem;
 }
 
+/* Taustakuvalla varustettu vaihe - full-page rakenne */
+.vaihe-sisalto.taustakuvalla {
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}
+
 .vaihe-navigation {
   display: flex;
   justify-content: center;
@@ -762,6 +771,7 @@ table {
 /* Text alignment */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
+.isot-alkukirjaimet { text-transform: capitalize; }
 
 /* Layout containers */
 .layout-flex-grid {

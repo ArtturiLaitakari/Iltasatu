@@ -1,52 +1,15 @@
 import { useState } from 'react';
 import { luonteet } from '../../data/muutData.js';
-import '../HahmoVaiheet.css';
-
-const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
-  eager: true,
-  import: 'default'
-});
+import VaiheSivu, { haeTaustaKuva } from './VaiheSivu.jsx';
 
 function HenkilotiedotLomake({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const [hoverLuonne, setHoverLuonne] = useState(null);
 
   const paivitaKentta = (kentta, arvo) => {
-    const uudetHenkilotiedot = {
-      ...hahmo.henkilotiedot,
-      [kentta]: arvo
-    };
-    paivitaHahmo({ 
-      ...hahmo, 
-      henkilotiedot: uudetHenkilotiedot
-    });
+    paivitaHahmo({ ...hahmo, henkilotiedot: { ...hahmo.henkilotiedot, [kentta]: arvo } });
   };
 
-  const haeTaustaKuva = () => {
-    const tiedostoVaihtoehdot = [
-      'henkilotiedot_taustakuva.jpg',
-      'henkilotiedot_taustakuva.jpeg',
-      'henkilotiedot_taustakuva.png',
-      'henkilotiedot_taustakuva.webp'
-    ];
-
-    for (const tiedostoNimi of tiedostoVaihtoehdot) {
-      const osuma = Object.entries(taustaKuvat).find(([polku]) => polku.endsWith(`/${tiedostoNimi}`));
-      if (osuma) {
-        return osuma[1];
-      }
-    }
-
-    return null;
-  };
-
-  const taustaKuva = haeTaustaKuva();
-  const taustaTyyli = taustaKuva
-    ? {
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${taustaKuva})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
-      }
-    : undefined;
+  const taustaKuva = haeTaustaKuva('henkilotiedot_taustakuva');
 
   // Tarkista onko kaikki pakolliset kentät täytetty
   const onValmis = hahmo.henkilotiedot.nimi?.trim() && 
@@ -54,13 +17,8 @@ function HenkilotiedotLomake({ hahmo, paivitaHahmo, seuraavaVaihe }) {
                    hahmo.henkilotiedot.sidos?.trim();
 
   return (
-    <div className="vaihe-sisalto">
-      <div className="vaihe-otsikko">
-        <h2>Henkilötiedot</h2>
-        <p>Anna hahmolle nimi ja persoonallisuus</p>
-      </div>
-
-      <div className={`levea-grid sailio-kapea lomake-kortti ${taustaKuva ? 'lomake-kortti-taustalla' : ''}`} style={taustaTyyli}>
+    <VaiheSivu taustaKuva={taustaKuva} otsikko="Henkilötiedot" alaotsikko="Anna hahmolle nimi ja persoonallisuus">
+      <div className="sailio-kapea lomake-kortti lomake-kortti-taustalla">
         <div className="kentta">
           <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 10px' }}>
             <tbody>
@@ -155,29 +113,30 @@ function HenkilotiedotLomake({ hahmo, paivitaHahmo, seuraavaVaihe }) {
 
         <div className="kentta">
           <label htmlFor="sidos">Sidos</label>
-          <input
-            type="text"
-            id="sidos"
-            value={hahmo.henkilotiedot.sidos}
-            onChange={(e) => paivitaKentta('sidos', e.target.value)}
-            placeholder="Ketä voi uhata niin että antaudut automaattisesti?"
-            required
-          />
-        </div>
-        
-        {/* Seuraava-nappi */}
-        <div className="kentta">
-          {onValmis && (
-            <button 
-              onClick={seuraavaVaihe}
-              className="btn btn-primary btn-full"
-            >
-              Seuraava
-            </button>
-          )}
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'end' }}>
+            <div style={{ flex: '1' }}>
+              <input
+                type="text"
+                id="sidos"
+                value={hahmo.henkilotiedot.sidos}
+                onChange={(e) => paivitaKentta('sidos', e.target.value)}
+                placeholder="Ketä voi uhata niin että antaudut automaattisesti?"
+                required
+              />
+            </div>
+            {onValmis && (
+              <button 
+                onClick={seuraavaVaihe}
+                className="btn btn-primary"
+                style={{ minWidth: '120px', height: '3.5rem' }}
+              >
+                Seuraava
+              </button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </VaiheSivu>
   );
 }
 

@@ -10,7 +10,7 @@ export const adjektiivit = [
     id: 'nopea',
     nimi: 'Nopea',
     alias: 'Ketterä',
-    kuvaus: 'Ketterä ja vaikea osua',
+    kuvaus: 'Ketterä ja nppea liikkeissään, nopea reagoimaan',
     kuva: 'nopea.jpg'
   },
   {

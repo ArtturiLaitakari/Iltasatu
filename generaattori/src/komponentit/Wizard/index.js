@@ -11,3 +11,4 @@ export { default as VoimaValinta } from './VoimaValinta.jsx';
 export { default as HahmoLomake } from './HahmoLomake.jsx';
 export { default as Wizard } from './Wizard.jsx';
 export { default as WizardErrorBoundary } from './WizardErrorBoundary.jsx';
+export { default as VaiheSivu, haeTaustaKuva } from './VaiheSivu.jsx';

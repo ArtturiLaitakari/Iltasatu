@@ -346,7 +346,7 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
         {/* Lyhyt yhteenveto */}
         <div className="info-kortti">
           <p className="olen-teksti">
-            Olen {hahmo.kuvaaja?.nimi || 'tuntematon'} ja {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.keho, 0, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.keho)}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.mieli, 1, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.mieli)} ja {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.sielu, 2, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.sielu)}, sekä {hahmo.rotu?.nimi || ''}. Luonteeltani olen {hahmo.henkilotiedot?.luonne || ''}. {haeRajamurtoTeksti()}
+            Olen {hahmo.kuvaaja?.nimi || 'tuntematon'} ja {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.keho, 0, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.keho)}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.mieli, 1, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.mieli)} ja {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.sielu, 2, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.sielu)} sekä {hahmo.rotu?.nimi || ''}. Luonteeltani olen {hahmo.henkilotiedot?.luonne || ''}. {haeRajamurtoTeksti()}
           </p>
         </div>
         
@@ -461,7 +461,7 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
                       .filter(voima => voima.taso !== null && voima.taso !== undefined)
                       .map((voima, index) => (
                         <div key={index} className="voima-rivi">
-                          <span className="voima-nimi">{voima.nimi}</span>
+                          <span className="voima-nimi isot-alkukirjaimet">{voima.nimi}</span>
                           <span className="voima-pallot">
                             {haeVoimanPallot(voima.taso)}
                           </span>

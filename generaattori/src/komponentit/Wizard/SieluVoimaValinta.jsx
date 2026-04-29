@@ -1,13 +1,8 @@
-import '../HahmoVaiheet.css';
 import { voimat } from '../../data/voimat.js';
 import { haeVoimanTaso } from '../../data/voimaProgression.js';
 import { onkoJumalaisetVoimatSallittu, kampanjaRajoitteet } from '../../data/kampanjaRajoitteet.js';
 import Kortti from '../Kortti.jsx';
-
-const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
-  eager: true,
-  import: 'default'
-});
+import VaiheSivu, { haeTaustaKuva } from './VaiheSivu.jsx';
 
 // Voimatyypit jotka tarvitsevat vapaakuvauksen
 const VAPAAKUVAUS_OTSIKOT = {
@@ -34,10 +29,7 @@ const JUMALAISET_VOIMATYYPIT = [
 ];
 
 // Hae taustakuva
-const haeTaustaKuva = () => {
-  const osuma = Object.entries(taustaKuvat).find(([polku]) => polku.match(/voimat_taustakuva\.(jpg|jpeg|png|webp)$/));
-  return osuma ? osuma[1] : null;
-};
+const taustaKuva = haeTaustaKuva('voimat_taustakuva');
 
 // Muunna kyvyt aina arrayksi (yhteensopivuus vanhan datan kanssa)
 const haeKyvytArray = (raw) => {
@@ -55,12 +47,13 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
 
   if (!valittuVoimatyyppi) {
     return (
-      <div className="vaihe-sisalto">
-        <div className="vaihe-otsikko">
-          <h2>Voima</h2>
-          <p>Valitse ensin voimatyyppi edellisessä vaiheessa</p>
+      <VaiheSivu taustaKuva={taustaKuva} otsikko="Sielu Voiman Kyvyt" alaotsikko="Valitse kyvyt mystisille voimillesi">
+        <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+          <p style={{ color: 'white', marginBottom: '2rem', fontSize: '1.1rem' }}>
+            Valitse ensin voiman tyyppi edellisessä vaiheessa.
+          </p>
         </div>
-      </div>
+      </VaiheSivu>
     );
   }
 
@@ -83,13 +76,11 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const onMagia = valittuVoimatyyppi === 'magia';
   const magiaValittu = onMagia && radiobuttonValinta.length > 0;
 
-
   // Suodata kyvyt voiman tason mukaan - edistynyt taso näyttää edistyneet-listan
   const voimaData = voimat[valittuVoimatyyppi];
   const naytettavatKyvyt = onEdistynyt
     ? (voimaData?.edistyneet || [])
     : (voimaData?.peruskyvyt || []);
-
     
   const onTasojarjestelma = naytettavatKyvyt.some(k => k.taso !== undefined);
   
@@ -181,13 +172,11 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
       return valitutKyvyt.length >= 1 && (!tarvitseeVapaakuvaus || vapaakuvaus.trim().length >= 3);
     }
   })();
-  const taustaKuva = haeTaustaKuva();
 
   return (
-    <div className={`vaihe-sisalto ${taustaKuva ? 'taustakuvalla' : ''}`}>
+    <VaiheSivu taustaKuva={taustaKuva} otsikko="Sielu Voiman Kyvyt" alaotsikko="Valitse kyvyt mystisille voimillesi">
       <div className="levea-grid">
-        <div className={`ammatti-kategoria ${taustaKuva ? 'ammatti-kategoria-taustalla' : ''}`}>
-
+        <div className="ammatti-kategoria ammatti-kategoria-taustalla">
           <div>
             {/* Elementin hallinta: Vapaakuvaus ensimmäiseksi */}
             {onElementinHallinta && (valitutKyvyt.length === 0) && (
@@ -238,17 +227,6 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
             {/* Kykyjen valinta (kun valinta tehty) */}
             {((!onElementinHallinta && !onMagia) || (onElementinHallinta && elementtiValittu) || magiaValittu) && (
               <>
-                <p className="vaihe-indikaattori">
-                  {onEdistynyt 
-                    ? 'Valitse edistynyt kyky' 
-                    : 'Valitse kyky'}: {valittuVoimatyyppi} ({valintaAvain})
-                  {onElementinHallinta && elementtiValittu && (
-                    <span> - {vapaakuvaus}</span>
-                  )}
-                  {onMagia && magiaValittu && (
-                    <span> - {radiobuttonTiedot.vaihtoehdot.find(v => v.arvo === radiobuttonValinta)?.nimi}</span>
-                  )}
-                </p>
 
                 <div className="ammatti-kortit-lista kapea">
                   {naytettavatKyvyt.map((voima, index) => {
@@ -326,18 +304,7 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
           )}
         </div>
       </div>
-
-      {taustaKuva && (
-        <style>{`
-          .sovellus {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${taustaKuva}) !important;
-            background-size: cover !important;
-            background-position: center !important;
-          }
-        `}</style>
-      )}
-    </div>
+    </VaiheSivu>
   );
 }
-
 export default SieluVoimaValinta;
