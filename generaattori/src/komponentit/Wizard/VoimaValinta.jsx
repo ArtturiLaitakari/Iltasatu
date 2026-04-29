@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Kortti from '../Kortti.jsx';
 import { voimat } from '../../data/voimat.js';
-import { kampanjaRajoitteet } from '../../data/kampanjaRajoitteet.js';
+import { onkoVoimaSallittu } from '../../data/kampanjaRajoitteet.js';
 import '../HahmoVaiheet.css';
 
 const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
@@ -35,19 +35,25 @@ function VoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
       return Object.keys(voimat); // Kaikki voimat jos ei kampanjaa
     }
 
-    const kampanja = kampanjaRajoitteet[hahmo.kampanja];
-    if (!kampanja) {
-      return Object.keys(voimat);
+    // Määritä tulevan voiman skaala prioriteetin mukaan
+    let tulevaSkaala = 0;
+    if (nykyinenPrioriteetti === 'primary') {
+      tulevaSkaala = 0; // Primary voima heti saatavilla
+    } else if (nykyinenPrioriteetti === 'secondary') {
+      tulevaSkaala = 1; // Secondary voima saatavilla skaala 1:ssä (taso 4)
+    } else if (nykyinenPrioriteetti === 'tertiary') {
+      tulevaSkaala = 2; // Tertiary voima saatavilla skaala 2:ssa (taso 7)
     }
 
-    const rotuRajoitteet = kampanja.rajoitteet[hahmo.rotu.nimi];
-    if (!rotuRajoitteet || rotuRajoitteet.sallitutVoimat === '*') {
-      return Object.keys(voimat); // Kaikki voimat jos '*'
-    }
-
-    return Array.isArray(rotuRajoitteet.sallitutVoimat) 
-      ? rotuRajoitteet.sallitutVoimat 
-      : Object.keys(voimat);
+    // Käy läpi kaikki voimat ja tarkista onko ne sallittuja
+    return Object.keys(voimat).filter(voimatyyppi => {
+      return onkoVoimaSallittu(
+        hahmo.kampanja, 
+        hahmo.rotu.nimi, 
+        voimatyyppi, 
+        tulevaSkaala  // Käytä tulevaa skaalaa, ei nykyistä!
+      );
+    });
   };
 
   const sallitutVoimat = haeSallitutVoimat();

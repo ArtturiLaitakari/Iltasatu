@@ -121,6 +121,7 @@ function RotuValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
                 key={rotu.nimi}
                 nimi={rotu.nimi}
                 kuvaus={rotu.kuvaus}
+                extraInfo={rotu.ikakerroin != null ? `Ikäkerroin: ${rotu.ikakerroin}` : null}
                 korttiKoko="pieni"
                 otsikkoVari="#000000"
                 valittu={hahmo.rotu?.nimi === (rotu.alkuperainenRotu?.nimi || rotu.nimi)}

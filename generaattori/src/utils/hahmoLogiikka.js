@@ -48,7 +48,11 @@ export function luoTyhjaHahmo() {
       'mentalismi': 0,
       'elementin hallinta': 0,
       valitut: []
-    }
+    },
+    voimienJarjestys: null,
+    valitutKyvyt: {},
+    vapaakuvaukset: {},
+    tempKykyValinta: null
   };
 }
 

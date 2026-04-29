@@ -77,16 +77,22 @@ function HenkilotiedotLomake({ hahmo, paivitaHahmo, seuraavaVaihe }) {
                   />
                 </td>
                 <td style={{ width: '30%' }}>
-                  <label htmlFor="ika">Ikä</label>
-                  <input
-                    type="number"
-                    id="ika"
-                    value={hahmo.henkilotiedot.ika || ''}
-                    onChange={(e) => paivitaKentta('ika', e.target.value)}
-                    placeholder="Ikä..."
-                    min="1"
-                    max="999"
-                  />
+                  <label htmlFor="ika">{hahmo.rotu?.ikakerroin != null ? 'Ikä / todellinen' : 'Ikä'}</label>
+                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    <input
+                      type="number"
+                      id="ika"
+                      style={{ width: '50%' }}
+                      value={hahmo.henkilotiedot.ika || ''}
+                      onChange={(e) => paivitaKentta('ika', e.target.value)}
+                      placeholder="Ikä..."
+                      min="1"
+                      max="999"
+                    />
+                    {hahmo.rotu?.ikakerroin != null && hahmo.henkilotiedot.ika && (
+                      <span>{Math.round(hahmo.henkilotiedot.ika * hahmo.rotu.ikakerroin)}</span>
+                    )}
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -103,7 +109,7 @@ function HenkilotiedotLomake({ hahmo, paivitaHahmo, seuraavaVaihe }) {
                         checked={hahmo.henkilotiedot.sukupuoli === 'M'}
                         onChange={(e) => paivitaKentta('sukupuoli', e.target.value)}
                       />
-                      M
+                      ♂️
                     </label>
                     <label className="radio-valinta">
                       <input
@@ -113,7 +119,7 @@ function HenkilotiedotLomake({ hahmo, paivitaHahmo, seuraavaVaihe }) {
                         checked={hahmo.henkilotiedot.sukupuoli === 'N'}
                         onChange={(e) => paivitaKentta('sukupuoli', e.target.value)}
                       />
-                      N
+                      ♀️
                     </label>
                   </div>
                 </td>

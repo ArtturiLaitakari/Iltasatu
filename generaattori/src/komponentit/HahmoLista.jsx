@@ -157,7 +157,7 @@ function HahmoLista({ onTakaisin }) {
         <div className="hahmo-yksityiskohdat-header">
           <div className="wizard-floating-actions">
             <span onClick={takaisinListaan} title="Takaisin hahmolistaan" className="wizard-action-icon">
-              ←
+              👤
             </span>
             <span onClick={onTakaisin} title="Pääsivu" className="wizard-action-icon">
               🏠
@@ -172,7 +172,7 @@ function HahmoLista({ onTakaisin }) {
               💾
             </span>
             <span onClick={lisaaXpPopupista} title="Lisää XP" className="wizard-action-icon">
-              ➕
+              ✚
             </span>
             <span 
               onClick={() => {

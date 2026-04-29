@@ -10,7 +10,7 @@ import { voimat } from './voimat.js';
 
 export const kampanjaRajoitteet = {
   'avoin-fantasia': {
-    jumalaisetVoimat: 3,
+    jumalaisetVoimat: 2,
     rajoitteet: {
       '*': { // Kaikki rodut
         sallitutVoimat: '*' // Kaikki voimat sallittu, myös jumalaiset
@@ -90,6 +90,14 @@ export function onkoVoimaSallittu(kampanja, rotuNimi, voimaTyyppi, hahmonSkaala 
   const kampanjaData = kampanjaRajoitteet[kampanja];
   if (!kampanjaData || !kampanjaData.rajoitteet) return true;
   
+  // Tarkista jumalaiset voimat ensimmäiseksi
+  const jumalaisetVoimatyypit = ['heijastuksen hallinta', 'kaaossäikeet', 'tarot'];
+  if (jumalaisetVoimatyypit.includes(voimaTyyppi)) {
+    if (!onkoJumalaisetVoimatSallittu(kampanja, hahmonSkaala)) {
+      return false;
+    }
+  }
+  
   const rotuRajoitteet = kampanjaData.rajoitteet[rotuNimi] || 
                         kampanjaData.rajoitteet['*'];
   
@@ -118,26 +126,7 @@ export function onkoVoimaSallittu(kampanja, rotuNimi, voimaTyyppi, hahmonSkaala 
   return voimaIndeksi < sallitutIndeksit;
 }
 
-// Apufunktio hakemaan sallitut voimatasot skaalan perusteella
-export function getSallitutVoimaTasot(skaala) {
-  return voimaSkaalat[skaala] || [];
-}
 
-// Apufunktio hakemaan kampanjakohtaiset jumaliset voimat (vanhentunut)
-export function getJumalaisiVoimat(kampanja, voimaTyyppi = null) {
-  const kampanjaData = kampanjaRajoitteet[kampanja];
-  if (!kampanjaData || !kampanjaData.jumalaisetVoimat) return [];
-  
-  // Vanha lista-pohjainen järjestelmä (yhteensopivuus)
-  if (Array.isArray(kampanjaData.jumalaisetVoimat)) {
-    if (voimaTyyppi) {
-      return kampanjaData.jumalaisetVoimat.filter(voima => voima.voimatyyppi === voimaTyyppi);
-    }
-    return kampanjaData.jumalaisetVoimat;
-  }
-  
-  return [];
-}
 
 // Apufunktio tarkistamaan onko jumalaisiin voimiin oikeus skaalassa
 export function onkoJumalaisetVoimatSallittu(kampanja, hahmonSkaala = 0) {

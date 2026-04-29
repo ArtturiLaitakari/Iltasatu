@@ -1,10 +1,12 @@
 import Kortti from '../Kortti.jsx';
 import '../HahmoVaiheet.css';
 import { kampanjat } from '../../data/kampanjat.js';
+import { luoTyhjaHahmo } from '../../utils/hahmoLogiikka.js';
 
 function KampanjaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const valitseKampanja = (kampanjaId) => {
-    paivitaHahmo({ ...hahmo, kampanja: kampanjaId });
+    // Aloita uusi hahmo alusta - tyhjennä kaikki vanhat valinnat
+    paivitaHahmo({ ...luoTyhjaHahmo(), kampanja: kampanjaId });
     seuraavaVaihe();
   };
 

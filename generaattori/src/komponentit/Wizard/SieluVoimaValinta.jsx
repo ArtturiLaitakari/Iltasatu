@@ -1,6 +1,7 @@
 import '../HahmoVaiheet.css';
 import { voimat } from '../../data/voimat.js';
 import { haeVoimanTaso } from '../../data/voimaProgression.js';
+import { onkoJumalaisetVoimatSallittu, kampanjaRajoitteet } from '../../data/kampanjaRajoitteet.js';
 import Kortti from '../Kortti.jsx';
 
 const taustaKuvat = import.meta.glob('../../kuvat/*.{jpg,jpeg,png,webp}', {
@@ -13,6 +14,24 @@ const VAPAAKUVAUS_OTSIKOT = {
   'elementin hallinta': { otsikko: 'Valitse elementti:', placeholder: 'esim. Tuli, Maa, Ilma, Vesi' },
   'muodonmuutos': { otsikko: 'Valitse eläimen aisti:', placeholder: 'esim. Suden hajuaisti, Kotkan näkö' }
 };
+
+// Voimatyypit jotka tarvitsevat radiobutton valinnan
+const RADIOBUTTON_VALINNAT = {
+  'magia': {
+    otsikko: 'Valitse magian lähestymistapa:',
+    vaihtoehdot: [
+      { arvo: 'hermeettinen', nimi: 'Hermeettinen magia', kuvaus: 'Kirjoihin ja oppiin perustuva magia' },
+      { arvo: 'instrumentaali', nimi: 'Instrumentaali magia', kuvaus: 'Välineisiin ja esineisiin perustuva magia' }
+    ]
+  }
+};
+
+// Jumalaiset voimatyypit - vaativat korkeaa skaalaa
+const JUMALAISET_VOIMATYYPIT = [
+  'heijastuksen hallinta',
+  'kaaossäikeet', 
+  'tarot'
+];
 
 // Hae taustakuva
 const haeTaustaKuva = () => {
@@ -51,9 +70,18 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const vapaakuvausTiedot = VAPAAKUVAUS_OTSIKOT[valittuVoimatyyppi];
   const tarvitseeVapaakuvaus = !!vapaakuvausTiedot;
   
+  // Radiobutton valinta (magia)
+  const radiobuttonTiedot = RADIOBUTTON_VALINNAT[valittuVoimatyyppi];
+  const tarvitseeRadiobutton = !!radiobuttonTiedot;
+  const radiobuttonValinta = hahmo.vapaakuvaukset?.[valintaAvain] || '';
+  
   // Elementin hallinta erityiskäsittely
   const onElementinHallinta = valittuVoimatyyppi === 'elementin hallinta';
   const elementtiValittu = onElementinHallinta && vapaakuvaus.trim().length >= 3;
+  
+  // Magia erityiskäsittely
+  const onMagia = valittuVoimatyyppi === 'magia';
+  const magiaValittu = onMagia && radiobuttonValinta.length > 0;
 
 
   // Suodata kyvyt voiman tason mukaan - edistynyt taso näyttää edistyneet-listan
@@ -81,7 +109,21 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
       : voimanTasoRaw;
   }
 
-  const onKaytettavissa = (kyky) => !onTasojarjestelma || (kyky.taso || 1) <= voimanTaso;
+  const onKaytettavissa = (kyky) => {
+    // Tarkista tasovalinta 
+    if (onTasojarjestelma && (kyky.taso || 1) > voimanTaso) {
+      return false;
+    }
+    
+    // Tarkista jumalaisten voimien kampanjarajoitteet
+    if (JUMALAISET_VOIMATYYPIT.includes(valittuVoimatyyppi)) {
+      if (!onkoJumalaisetVoimatSallittu(hahmo.kampanja, hahmo.skaala || 0)) {
+        return false;
+      }
+    }
+    
+    return true;
+  };
 
   // Lisää kyky valittujen joukkoon (merkitään edistyneet)
   const valitseVoima = (voima) => {
@@ -103,6 +145,9 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
       if (onElementinHallinta) {
         // Elementin hallinnassa: elementti valittu ja kyky valittu
         return elementtiValittu;
+      } else if (onMagia) {
+        // Magiassa: lähestymistapa valittu ja kyky valittu
+        return magiaValittu;
       } else {
         // Muut voimat: ei tarvita vapaakuvausta
         return !tarvitseeVapaakuvaus;
@@ -128,6 +173,9 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     if (onElementinHallinta) {
       // Elementin hallinnassa: elementti valittu JA kyky valittu
       return elementtiValittu && valitutKyvyt.length >= 1;
+    } else if (onMagia) {
+      // Magiassa: lähestymistapa valittu JA kyky valittu  
+      return magiaValittu && valitutKyvyt.length >= 1;
     } else {
       // Muut voimat: kyky valittu JA vapaakuvaus (jos tarvitaan)
       return valitutKyvyt.length >= 1 && (!tarvitseeVapaakuvaus || vapaakuvaus.trim().length >= 3);
@@ -162,8 +210,33 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
               </div>
             )}
 
-            {/* Kykyjen valinta (elementin hallinnassa vain kun elementti valittu) */}
-            {(!onElementinHallinta || elementtiValittu) && (
+            {/* Magia: Radiobutton valinta ensimmäiseksi */}
+            {onMagia && !magiaValittu && (
+              <div className="mb-3">
+                <p className="vaihe-indikaattori">{radiobuttonTiedot.otsikko}</p>
+                <div className="radio-group">
+                  {radiobuttonTiedot.vaihtoehdot.map((vaihtoehto, index) => (
+                    <label key={index} className="radio-option">
+                      <input
+                        type="radio"
+                        name={`magia-${valintaAvain}`}
+                        value={vaihtoehto.arvo}
+                        checked={radiobuttonValinta === vaihtoehto.arvo}
+                        onChange={(e) => paivitaVapaakuvaus(e.target.value)}
+                        className="radio-input"
+                      />
+                      <div className="radio-content">
+                        <strong>{vaihtoehto.nimi}</strong>
+                        <small>{vaihtoehto.kuvaus}</small>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Kykyjen valinta (kun valinta tehty) */}
+            {((!onElementinHallinta && !onMagia) || elementtiValittu || magiaValittu) && (
               <>
                 <p className="vaihe-indikaattori">
                   {onEdistynyt 
@@ -172,15 +245,30 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
                   {onElementinHallinta && elementtiValittu && (
                     <span> - {vapaakuvaus}</span>
                   )}
+                  {onMagia && magiaValittu && (
+                    <span> - {radiobuttonTiedot.vaihtoehdot.find(v => v.arvo === radiobuttonValinta)?.nimi}</span>
+                  )}
                 </p>
 
                 <div className="ammatti-kortit-lista kapea">
                   {naytettavatKyvyt.map((voima, index) => {
                     const onValittu = valitutKyvyt.some(k => k.nimi === voima.nimi);
                     const onDisabloitu = !onKaytettavissa(voima) || onValittu;
-                    const extraInfo = !onKaytettavissa(voima)
-                      ? `Vaatii voimatason ${voima.taso || 1}`
-                      : undefined;
+                    
+                    let extraInfo = undefined;
+                    if (!onKaytettavissa(voima)) {
+                      // Tarkista onko taso-ongelma
+                      if (onTasojarjestelma && (voima.taso || 1) > voimanTaso) {
+                        extraInfo = `Vaatii voimatason ${voima.taso || 1}`;
+                      }
+                      // Tarkista onko skaala-ongelma jumalaisille voimille
+                      else if (JUMALAISET_VOIMATYYPIT.includes(valittuVoimatyyppi) && 
+                               !onkoJumalaisetVoimatSallittu(hahmo.kampanja, hahmo.skaala || 0)) {
+                        const kampanjaData = kampanjaRajoitteet[hahmo.kampanja];
+                        const vaadittavaSkaala = kampanjaData?.jumalaisetVoimat || 0;
+                        extraInfo = `Vaatii skaalan ${vaadittavaSkaala}+ (jumalainen voima)`;
+                      }
+                    }
 
                     return (
                       <Kortti

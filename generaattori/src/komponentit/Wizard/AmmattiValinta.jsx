@@ -88,7 +88,7 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
             'mentalismi': ammatti.voima === 'mentalismi' ? 1 : 0,
             'elementin hallinta': ammatti.voima === 'elementin hallinta' ? 1 : 0,
             'heijastuksen hallinta': ammatti.voima === 'heijastuksen hallinta' ? 1 : 0,
-            'kaaosnäikeet': ammatti.voima === 'kaaosnäikeet' ? 1 : 0,
+            'kaaossäikeet': ammatti.voima === 'kaaossäikeet' ? 1 : 0,
             'tarot': ammatti.voima === 'tarot' ? 1 : 0,
             valitut: []
           }

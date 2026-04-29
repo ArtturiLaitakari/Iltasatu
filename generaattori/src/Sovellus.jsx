@@ -23,6 +23,18 @@ function Sovellus() {
   const [wizardValmis, asetaWizardValmis] = useState(false);
   const [nakyma, asetaNakyma] = useState('wizard'); // 'wizard', 'hahmolista', 'valmis'
 
+  // Migraatio: kaaosnäikeet -> kaaossäikeet (kirjoitusvirheen korjaus)
+  useEffect(() => {
+    try {
+      const data = localStorage.getItem('iltasatu_hahmot');
+      if (!data || !data.includes('kaaosnäike')) return;
+      const korjattu = data.replace(/kaaosnäike/g, 'kaaossäike');
+      localStorage.setItem('iltasatu_hahmot', korjattu);
+    } catch {
+      // Ohita migraatiovirheet
+    }
+  }, []);
+
   // Yksinkertaistettu - tarkista vain return_to_hahmolista
   useEffect(() => {
     const tempMode = localStorage.getItem('wizard_temp_mode');
@@ -114,6 +126,9 @@ function Sovellus() {
   const aloitaUudelleen = () => {
     asetaHahmo(luoTyhjaHahmo());
     asetaWizardValmis(false);
+    // Tyhjennä wizard-tilan localStorage jotta voimakyky-valinta ei jää muistiin
+    localStorage.removeItem(UI_CONSTANTS.LOCAL_STORAGE_KEYS.CURRENT_STEP);
+    localStorage.removeItem('wizard_temp_mode');
     asetaNakyma('wizard');
   };
 

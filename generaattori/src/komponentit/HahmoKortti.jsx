@@ -1,8 +1,8 @@
-import { arkkityypit } from '../data/arkkityypit.js';
+import { SKAALA_NIMET } from '../data/voimaProgression.js';
 import './HahmoVaiheet.css';
 
 function HahmoKortti({ hahmo, onKlikkaus, onPoista }) {
-  const arkkityyppiData = arkkityypit[hahmo.arkkityyppi];
+  const skaalaNimi = SKAALA_NIMET[hahmo.skaala || 0] || 'Tavallinen';
   const luontiAika = new Date(hahmo.luotu);
   
   // Etsi aktiivinen voima
@@ -44,7 +44,7 @@ function HahmoKortti({ hahmo, onKlikkaus, onPoista }) {
       </div>
       
       <div className="hahmo-kortti-info">
-        <p><strong>Arkkityyppi:</strong> {arkkityyppiData?.nimi || 'Tuntematon'}</p>
+        <p><strong>Skaala:</strong> {skaalaNimi}</p>
         <p><strong>Rotu:</strong> {hahmo.rotu?.nimi || 'Ei valittu'}</p>
         <p><strong>Voima:</strong> {aktiivinenVoima}</p>
         <p><strong>Luonne:</strong> {hahmo.henkilotiedot?.luonne || 'Ei määritetty'}</p>

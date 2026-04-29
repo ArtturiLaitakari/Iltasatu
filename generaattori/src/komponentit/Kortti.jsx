@@ -49,9 +49,9 @@ function Kortti({
           <p className="kortti-kuvaus">{kuvaus}</p>
         )}
         {extraInfo && (
-          <div className="kortti-extra">
+          <p className="kortti-kuvaus">
             {extraInfo}
-          </div>
+          </p>
         )}
       </div>
     </div>

@@ -3,6 +3,7 @@ import { skaala, taitotasoSanallisesti, luonteet, haeVoimarajat, onkoJumalainen,
 import { aistit, voimat } from '../../data/voimat.js';
 import { ammatit } from '../../data/ammatit.js';
 import { adjektiivit } from '../../data/adjektiivit.js';
+import { rodut } from '../../data/rodut.js';
 import { tallennaHahmo } from '../../utils/hahmoLogiikka.js';
 import { haeVoimanPallot, haeSkaalaText, voikoNostaa, haeOminaisuudenPallot, laskeOminaisuudenMaksimi, laskeVoimaMaksimi, VOIMAN_MAKSIMIT, voimaProgression, selvitaMuuttunutVoima } from '../../data/voimaProgression.js';
 import React from 'react';
@@ -43,6 +44,18 @@ function HahmoLomake({ hahmo, paivitaHahmo, onHahmoLista, aloitaUudelleen, setKo
         backgroundPosition: 'center'
       }
     : undefined;
+
+  const haeSukupuoli = (isoAlkukirjain = false) => {
+    const sukupuoli = hahmo.henkilotiedot?.sukupuoli;
+    if (sukupuoli === 'M') return isoAlkukirjain ? 'Mies' : 'mies';
+    if (sukupuoli === 'N') return isoAlkukirjain ? 'Nainen' : 'nainen';
+    return isoAlkukirjain ? 'Sukupuoli ei määritelty' : 'henkilö';
+  };
+
+  const haeRajamurtoTeksti = () => {
+    if ((hahmo.voimaTaso || 1) > 13) return '';
+    return hahmo.onkoRajamurto ? ' <Ääriraja murtuma>.' : '';
+  };
 
   // Apufunktiot tietojen hakuun
   const haeAdjektiivinNimi = (adjektiiviId) => {
@@ -320,18 +333,30 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
     <div className="vaihe-sisalto form-container-centered">
       <div className={`paa-kortti form-card-fullwidth ${taustaKuva ? 'taustalla' : ''}`} style={{ ...taustaTyyli }}>
         <h3 className="kapitalisoi">
-          {hahmo.henkilotiedot.nimi || 'Anonyymi'}, {hahmo.henkilotiedot.ika || '??'} vuotta, {hahmo.henkilotiedot.sukupuoli === 'M' ? 'Mies' : hahmo.henkilotiedot.sukupuoli === 'N' ? 'Nainen' : 'Sukupuoli ei määritelty'}
+          {hahmo.henkilotiedot.nimi || 'Anonyymi'}, {hahmo.henkilotiedot.ika || '??'}
+          {(() => {
+            const kerroin = Object.values(rodut).flat().find(r => r.nimi === hahmo.rotu?.nimi)?.ikakerroin;
+            return kerroin != null && hahmo.henkilotiedot.ika
+              ? ` (${Math.round(hahmo.henkilotiedot.ika * kerroin)})`
+              : '';
+          })()} vuotta, {haeSukupuoli(true)}
         </h3>
         
         {/* Lyhyt yhteenveto */}
         <div className="info-kortti">
           <p className="olen-teksti">
-            Olen {hahmo.kuvaaja?.nimi || 'tuntematon'}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.keho, 0, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.keho)}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.mieli, 1, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.mieli)} ja {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.sielu, 2, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.sielu)}, rotuni on {hahmo.rotu?.nimi || ''}. Luonteeltani olen {hahmo.henkilotiedot?.luonne || ''}.{hahmo.onkoRajamurto ? ' Ääriraja murtuma.' : ''}
+            Olen {hahmo.kuvaaja?.nimi || 'tuntematon'} ja {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.keho, 0, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.keho)}, {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.mieli, 1, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.mieli)} ja {haeAdjektiivinNimiAliasSaannolla(hahmo.adjektiivit?.sielu, 2, hahmo.adjektiivit)} {haeAmmatinNimi(hahmo.ammatit?.sielu)}, sekä {hahmo.rotu?.nimi || ''}. Luonteeltani olen {hahmo.henkilotiedot?.luonne || ''}. {haeRajamurtoTeksti()}
           </p>
         </div>
         
         {/* ominaisuudet*/}
-        <div className="teksti-osio popup-otsikko">
+        <div className="teksti-osio popup-otsikko" style={{ position: 'relative' }}>
+          <div
+            className="teksti-osio popup-otsikko"
+            style={{ position: 'absolute', top: '-0.5rem', right: '0.5rem', padding: '0.25rem 0.75rem', margin: 0 }}
+          >
+            DP:<span>○ ○ ○ ○ ○</span>
+          </div>
           <h4>Ominaisuudet</h4>
         <div className="layout-flex-grid">
               <p
@@ -342,7 +367,7 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
                 <br />
                 <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, false, hahmo.ammatit?.keho))} {haeAmmatinNimi(hahmo.ammatit?.keho)}</small>
                 <br />
-                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, hahmo.ammatit?.keho))} {haeAdjektiivinNimi(hahmo.adjektiivit?.keho).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.keho).toLowerCase()}.</small>
+                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, hahmo.ammatit?.keho))} {haeAdjektiivinNimi(hahmo.adjektiivit?.keho).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.keho).toLowerCase()}. ({haeTaitotasonNimi(laskeTaitotaso(hahmo.keho, hahmo.adjektiivit?.keho, hahmo.ammatit?.keho) + (hahmo.skaala || 0))})</small>
               </p>
               <p
                 className={`voima-item ${voikoNostaa(hahmo, 'mieli') && kayttamattomatHahmopisteet > 0 ? 'voima-item-upgradeable' : ''}`}
@@ -352,7 +377,7 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
                 <br />
                 <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, false, hahmo.ammatit?.mieli))} {haeAmmatinNimi(hahmo.ammatit?.mieli)}</small>
                 <br />
-                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, hahmo.ammatit?.mieli))} {haeAdjektiivinNimi(hahmo.adjektiivit?.mieli).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.mieli).toLowerCase()}.</small>
+                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, hahmo.ammatit?.mieli))} {haeAdjektiivinNimi(hahmo.adjektiivit?.mieli).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.mieli).toLowerCase()}. ({haeTaitotasonNimi(laskeTaitotaso(hahmo.mieli, hahmo.adjektiivit?.mieli, hahmo.ammatit?.mieli) + (hahmo.skaala || 0))})</small>
               </p>
               <p
                 className={`voima-item ${voikoNostaa(hahmo, 'sielu') && kayttamattomatHahmopisteet > 0 ? 'voima-item-upgradeable' : ''}`}
@@ -362,7 +387,7 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
                 <br />
                 <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, false, hahmo.ammatit?.sielu))} {haeAmmatinNimi(hahmo.ammatit?.sielu)}</small>
                 <br />
-                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, hahmo.ammatit?.sielu))} {haeAdjektiivinNimi(hahmo.adjektiivit?.sielu).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.sielu).toLowerCase()}.</small>
+                <small>&nbsp;{haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, hahmo.ammatit?.sielu))} {haeAdjektiivinNimi(hahmo.adjektiivit?.sielu).toLowerCase()} {haeAmmatinNimi(hahmo.ammatit?.sielu).toLowerCase()}. ({haeTaitotasonNimi(laskeTaitotaso(hahmo.sielu, hahmo.adjektiivit?.sielu, hahmo.ammatit?.sielu) + (hahmo.skaala || 0))})</small>
               </p>
               <p className="voima-item">
                 <strong>{hahmo.kuvaaja?.nimi || 'Ei kuvaajaa valittu'}</strong>
@@ -463,7 +488,7 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
                 { tasoArvo: progressData.voima3, voimatyyppi: hahmo.voimienJarjestys.tertiary }
               ];
               aistiKentat.forEach(({ tasoArvo, voimatyyppi }, idx) => {
-                if (tasoArvo > 0 && voimatyyppi && aistit[voimatyyppi]) {
+                if (tasoArvo != null && voimatyyppi && aistit[voimatyyppi]) {
                   const aisti = aistit[voimatyyppi];
                   kykyRivit.push(
                     <div key={`aisti-${idx}`}>
@@ -583,19 +608,17 @@ Skaala: ${hahmonSkaala?.nimi || 'Tuntematon'} (${hahmonSkaala?.kuvaus || 'Ei kuv
         })()}
 
         <div className="teksti-osio">
-          <div className="layout-flex-center">
-            <div className="kehittyminen-boksi kestotasot">
+          <div>
+            <div>
               <strong>Kesto:</strong> {luoYmpyraEsitys(0, (hahmo.keho || 0) + 2 + (hahmo.skaala || 0))}
               {' '}&nbsp;&nbsp;
               <strong>Tahdonvoima:</strong> {luoYmpyraEsitys(0, (hahmo.mieli || 0) + 2 + (hahmo.skaala || 0))}
               {' '}&nbsp;&nbsp;
               <strong>Mana:</strong> {luoYmpyraEsitys(0, (hahmo.sielu || 0) + 2 + (hahmo.skaala || 0))}
               {' '}&nbsp;&nbsp;
-              <strong>Fate-pisteet:</strong> <span style={{ verticalAlign: 'middle' }}>○ ○ ○ ○ ○</span>
-              {' '}&nbsp;&nbsp;
               <strong>Hahmopisteet:</strong> <span style={{ verticalAlign: 'middle' }}>({kayttamattomatHahmopisteet}/{hahmopisteetYhteensa})</span> <span>&nbsp;</span><strong> XP:</strong> <span style={{ verticalAlign: 'middle' }}>{hahmo.xp || 0}</span>
               {' '}&nbsp;&nbsp;
-              <strong>Skaala:</strong> {hahmonSkaala?.nimi } ({hahmonSkaala?.kuvaus })
+              <strong>Skaala:</strong> {hahmonSkaala?.nimi } <span style={{ fontSize: '0.85em' }}>({hahmonSkaala?.kuvaus })</span>
             </div>
           </div>
           

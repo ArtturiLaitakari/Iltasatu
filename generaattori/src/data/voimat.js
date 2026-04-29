@@ -203,21 +203,21 @@ export const voimat = {
     ]
   },
   
-  'kaaosnäikeet': {
+  'kaaossäikeet': {
     peruskyvyt: [
       {
         nimi: 'Henkiset säikeet',
-        kuvaus: 'Varjosäikeet näkö. Näe ja manipuloi henkisiä yhteyksiä ja mentaalisia lankoja.',
+        kuvaus: 'Lähetä säikeet läpi todellisuuksien ja etsi kohde, voit luoda henkisen yhteyden elollisiin kohteisiin, elottomissa näet ja tunnet sijainnin',
         taso: 1
       },
       {
         nimi: 'Fyysiset säikeet',
-        kuvaus: 'Hae esineitä ja olentoja kaaosnäikeillä. Vedä fyysisiä asioita läpi todellisuuksien.',
+        kuvaus: 'Hae esineitä ja olentoja kaaossäikeillä. Vedä fyysisiä asioita läpi todellisuuksien. Vedä itseäsi niitä kohti läpi todellisuuksien seinien',
         taso: 2
       },
       {
         nimi: 'Varjosäikeet esineet',
-        kuvaus: 'Luo min/piste. Muodosta pysyviä yhteyksiä ja säikeitä esineiden välille.',
+        kuvaus: 'Luo kaaos esine min/piste. Muodosta pysyviä yhteyksiä ja säikeitä esineiden välille. Kaaosesineet eivät ole pitkäikäisiä.',
         taso: 3
       },
       {
@@ -320,10 +320,10 @@ export const aistit = {
     kuvaus: 'Tunne kun taivaallisia voimia käytetään. Aisti todellisuuden heijastuksia ja varjojen välisiä yhteyksiä.',
     lisakuvaus: 'Näe pehmeän kaaoksen todellisuuden manipulaatiomahdollisuudet ympärilläsi. Havaitse kun joku muuttaa todellisuuden kerroksia.'
   },
-  'kaaosnäikeet': {
+  'kaaossäikeet': {
     nimi: 'Varjosäikeiden näkö',
     kuvaus: 'Skannaa pehmeää potentiaalia ja aisti kaaoksen säikeitä. Näe henkisiä ja fyysisiä yhteyksiä.',
-    lisakuvaus: 'Tunne mitä asioita voi tuoda ja viedä kaaosnäikeillä lähistöllä. Havaitse todellisuuksien väliset langat.'
+    lisakuvaus: 'Tunne mitä asioita voi tuoda ja viedä kaaossäikeillä lähistöllä. Havaitse todellisuuksien väliset langat.'
   },
   tarot: {
     nimi: 'Tarotaisti',
