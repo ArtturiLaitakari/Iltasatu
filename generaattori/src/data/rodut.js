@@ -62,33 +62,33 @@ export const rodut = {
   jumalaiset: [
     {
       nimi: 'Puolienkeli',
-      kuvaus: 'Järjestyksenkeijun ja ihmisen jälkeläinen, kantaa pyhän kipinän',
-      stuntti: 'Aistii pahuuden ja valheet, säteilee tyyneyttä joka rauhoittaa muita',
-      rajoitus: 'Ei voi valehdella suoraan, vetää puoleensa demonista huomiota',
+      kuvaus: 'Enkelin ja ihmisen jälkeläinen, pyhää verta.',
+      stuntti: 'Aistii yliluonnolliset olennot ja pahat aikomukset lähellä.',
+      rajoitus: 'Ei osaa valehdella suoraan, vetää puoleensa demonista huomiota',
     },
     {
-      nimi: 'Puolidemoni',
+      nimi: 'Puolitalvikeiju',
       kuvaus: 'Tuonpuoleisenkeijun ja ihmisen jälkeläinen, puoliepäkuollut',
-      stuntti: 'Näkee pimeässä, tuntee toisten heikkoudet ja pelot vaistomaisesti',
+      stuntti: 'Näkee pimeässä kuin päivällä. Tuntee toisten heikkoudet ja pelot vaistomaisesti.',
       rajoitus: 'Pyhät esineet ja paikat aiheuttavat epämukavuutta, herättää epäluuloa',
     },
     {
-      nimi: 'Puolitulikeiju',
-      kuvaus: 'Tulen keijun ja ihmisen jälkeläinen, liekit ja hiillos puhuvat hänelle',
-      stuntti: 'Nauttii kuumasta säästä, kestää kuumaa hyvin.',
+      nimi: 'Puolitkesäkeiju',
+      kuvaus: 'Kesäkeijun ja ihmisen jälkeläinen',
+      stuntti: 'Ensivaikutelma on aina myönteinen. Kestää tulta ja kuumuutta yliluonnollisen hyvin.',
       rajoitus: 'Tarvitsee lämmintä ilmaa, ahdistuu kylmästä ja kosteasta.',
     },
     {
-      nimi: 'Puolimerikeiju',
-      kuvaus: 'Merten keijun ja ihmisen jälkeläinen, vesi on toinen koti',
-      stuntti: 'Uiminen on helppoa ja vaivatonta.',
+      nimi: 'Puolisyyskeiju',
+      kuvaus: 'Syyskeijun ja ihmisen jälkeläinen',
+      stuntti: 'Sukeltaa 2 kertaa pidempään. Aistii tulevat myrskyt ja sään muutokset etukäteen.',
       rajoitus: 'Ahdistuu jos ei ole lähellä vettä.',
     },
     {
-      nimi: 'Puolimetsäkeiju',
-      kuvaus: 'Metsän keijun ja ihmisen jälkeläinen, kasvit ja eläimet ystäviä',
-      stuntti: 'Toimii luontevasti eläinten seurassa, ei ikinä eksy metsässä.',
-      rajoitus: 'Kaupungit ja koneet tuntuvat tukahduttavilta, ei kestä rautaa iholla.',
+      nimi: 'Puolikevätkeiju',
+      kuvaus: 'Kevätkeijun ja ihmisen jälkeläinen',
+      stuntti: 'Toimii luontevasti eläinten seurassa. Ei ikinä eksy luonnossa, tuntee ympäristön vaistomaisesti.',
+      rajoitus: 'Kaupungit ja koneet tuntuvat tukahduttavilta.',
     }
   ]
 };
