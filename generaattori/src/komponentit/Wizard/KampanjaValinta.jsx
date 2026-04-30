@@ -30,6 +30,7 @@ function KampanjaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
             kuva={kampanja.kuva}
             valittu={hahmo.kampanja === kampanja.id}
             onClick={() => valitseKampanja(kampanja.id)}
+            tyyliluokka={kampanja.id} 
           />
         ))}
       </div>

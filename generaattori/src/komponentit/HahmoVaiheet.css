@@ -17,6 +17,35 @@
   /* Single text shadow for all text */
   --text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
 }
+/* kampanja */
+.kortti-taustakuvalla.avoin-fantasia {
+  min-width: 400px;
+}
+.kortti-taustakuvalla.hopea-fantasia{
+  min-width: 400px;
+}
+.kortti-taustakuvalla.heijastus-matkaajat {
+  min-width: 400px;
+}
+/* Specific card styling classes */
+.soturi {
+  background-position: top;
+}
+.temppeliritari {
+  background-position: top;
+}
+
+.bardi {
+  background-position: top;
+}
+
+.soturimaagi {
+  background-position: top;
+}
+
+.nopea {
+  background-position: top;}
+
 
 .vaihe-sisalto {
   padding: 0;
@@ -169,8 +198,7 @@ table {
 
 .kuvaaja-kortit-lista > .kortti {
   flex: 1 1 300px;
-  min-width: 280px;
-  max-width: 400px;
+  width: 280px;
 }
 
 /* Kapea asettelu kuvaajille - kortit allekkain */
@@ -662,6 +690,7 @@ table {
 /* Sivut taustakuvalla */
 .taustakuvalla {
   padding: 2rem;
+
 }
 
 .taustakuvalla .vaihe-otsikko h2,
@@ -675,6 +704,10 @@ table {
   background: rgba(255, 255, 255, 0.95) !important;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+.kortti-taustakuvalla {
+  min-width: 280px;
+  max-width: 280px;
 }
 
 .taustakuvalla .kortti:not(.kortti-taustakuvalla) .kortti-nimi,

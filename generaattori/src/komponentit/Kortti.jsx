@@ -10,6 +10,7 @@ function Kortti({
   kuva = null,
   extraInfo = null,
   korttiKoko = null,
+  tyyliluokka = null,
 }) {
   const lopullinenKorttiKoko = korttiKoko || (!kuva ? KORTTI_VARIANTS.PIENI : KORTTI_VARIANTS.NORMAALI);
 
@@ -21,7 +22,7 @@ function Kortti({
         lopullinenKorttiKoko === KORTTI_VARIANTS.TIIVIS ? 'kortti-tiivis' : ''
       } ${
         lopullinenKorttiKoko === KORTTI_VARIANTS.KORKEA ? 'kortti-korkea' : ''
-      }`}
+      } ${tyyliluokka || ''}`}
       style={kuva ? { '--kortti-kuva': `url(${kuva})` } : undefined}
       onClick={disabled ? undefined : onClick}
       role="button"

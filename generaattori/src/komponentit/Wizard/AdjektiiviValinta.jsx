@@ -26,6 +26,7 @@ const korttiLista = (lista, valittu, onClick) => lista.map((adj) => (
     korttiKoko="korkea"
     valittu={valittu(adj)}
     onClick={() => onClick(adj.id)}
+    tyyliluokka={adj.id}
   />
 ));
 

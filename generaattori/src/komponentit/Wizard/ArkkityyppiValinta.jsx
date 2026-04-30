@@ -62,6 +62,7 @@ function ArkkityyppiValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
             valittu={hahmo.arkkityyppi === id}
             onClick={() => valitseArkkityyppi(id)}
             extraInfo={luoStatsKuvaus(arkkityyppi)}
+            tyyliluokka={id}
           />
         ))}
       </div>
