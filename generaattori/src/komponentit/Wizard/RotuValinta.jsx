@@ -26,7 +26,8 @@ function RotuValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const luoNaytettavatRodut = () => {
     if (!hahmo.kampanja) return rodut.fantasia;
     const naytettavat = [];
-    for (const alkuperainenRotu of rodut.fantasia) {
+    const kaikkiRodut = [...rodut.fantasia, ...(rodut.jumalaiset || [])];
+    for (const alkuperainenRotu of kaikkiRodut) {
       if (onkoRotuSallittu(hahmo.kampanja, alkuperainenRotu.nimi)) {
         naytettavat.push({ ...alkuperainenRotu, alkuperainenRotu: null });
       }
@@ -51,7 +52,6 @@ function RotuValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
             kuvaus={rotu.kuvaus}
             extraInfo={rotu.ikakerroin != null ? `Ikäkerroin: ${rotu.ikakerroin}` : null}
             korttiKoko="pieni"
-            otsikkoVari="#000000"
             valittu={hahmo.rotu?.nimi === (rotu.alkuperainenRotu?.nimi || rotu.nimi)}
             onClick={() => valitseRotu(rotu, rotu.alkuperainenRotu)}
           />

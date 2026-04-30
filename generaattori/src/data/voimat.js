@@ -168,27 +168,27 @@ export const voimat = {
     peruskyvyt: [
       {
         nimi: 'Kuvaile näyttämön takaa maisemia',
-        kuvaus: 'Varjonhallinta, kirous. Näe ja manipuloi ympäristön todellisuuden taakse.',
+        kuvaus: 'Näe ja manipuloi ympäristön todellisuuden taakse.',
         taso: 1
       },
       {
         nimi: 'Kuvaile näyttämön kulissien sisältö',
-        kuvaus: 'Paljasta todellisuuden piilotetut kerrokset ja näe mitä näkyy pintaa syvemmältä.',
+        kuvaus: 'Määrittele mitä on laatikoissa mitä ei ole avattu, määrittele potentiaali.',
         taso: 2
       },
       {
         nimi: 'Kuvaile näyttämön takaa hahmoja',
-        kuvaus: 'Näe olentojen ja henkilöiden todellinen olemus ja piilotettu luonne.',
+        kuvaus: 'Kerro ihmisstä jotka eivät ole paikalla, mutta lähellä',
         taso: 3
       },
       {
         nimi: 'Kuvaile näyttämöä, ohjaa tarinaa',
-        kuvaus: 'Samanajan näkö. Hallitse tapahtumien kulkua ja ohjaa todellisuuden kerronnan suuntaa.',
+        kuvaus: 'Voit kirjoittaa tarinaa reaaliajassa, kuvaile mitä nyt tapahtuu lähelläsi',
         taso: 4
       },
       {
         nimi: 'Kuvaile kaupunkia, hallitse säätä',
-        kuvaus: 'Kirous. Laajenna hallintaasi koskemaan laajoja alueita ja luonnonvoimia.',
+        kuvaus: 'Laajenna hallintaasi koskemaan laajoja alueita ja luonnonvoimia.',
         taso: 5
       }
     ],

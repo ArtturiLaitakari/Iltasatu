@@ -1,6 +1,6 @@
 import fantasiaKuva from '../kuvat/fantasia.jpg';
 import multiverseKuva from '../kuvat/multiverse.jpg';
-import miekanhampaatKuva from '../kuvat/Miekkahampaat.png';
+import miekanhampaatKuva from '../kuvat/Miekkahampaat.jpg';
 
 export const kampanjat = {
   'avoin-fantasia': {

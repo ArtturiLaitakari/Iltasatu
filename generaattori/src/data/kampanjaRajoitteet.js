@@ -1,20 +1,26 @@
 // Kampanjakohtaiset rajoitteet roduille ja voimille
-// Skaalaperusteinen järjestelmä:
-// - Skaala 0 (Tavallinen): 1. voima listasta
-// - Skaala 1 (Erinomainen): 2 ensimmäistä voimaa listasta
-// - Skaala 2 (Uskomaton): 3 ensimmäistä voimaa listasta
-// - Skaala 3+ (Eeppinen+): kaikki mahdolliset voimat (koko voimat.js)
-// - Jumalaisten voimien saatavuus: jumalaisetVoimat määrittää alarajan skaala
+//
+// sallitutVoimat-lista määrittää rodun voimajärjestyksen:
+// - Listan position 0 = 1. voima, position 1 = 2. voima, position 2 = 3. voima
+// - Hahmon skaala määrittää montako voimaa hahmolla on:
+//     Skaala 0 (Tavallinen): 1 voima  | Skaala 1 (Erinomainen): 2 voimaa
+//     Skaala 2 (Uskomaton):  3 voimaa | Skaala 3+ (Eeppinen+): kaikki voimat (voimat.js)
+//
+// Slotin sisältö voi olla:
+// - 'voimanNimi' = täsmälleen tämä voima
+// - '*' = mikä tahansa maallinen voima paitsi aiemmin valittu
+// - '#' = mikä tahansa voima (myös jumalainen) paitsi aiemmin valittu
+//
+// Esim. ['*', '*', '#'] = 1. ja 2. voima maallinen, 3. voima voi olla jumalainen.
 
 import { voimat } from './voimat.js';
 
 export const kampanjaRajoitteet = {
   'avoin-fantasia': {
     ammattiTyyppi: 'fantasia',
-    jumalaisetVoimat: 2,
     rajoitteet: {
       '*': { // Kaikki rodut
-        sallitutVoimat: '*' // Kaikki voimat sallittu, myös jumalaiset
+        sallitutVoimat: ['*', '*', '#'] // 1.-2. voima maallinen, 3. voima voi olla jumalainen
       }
     },
     variantit: {}
@@ -22,31 +28,30 @@ export const kampanjaRajoitteet = {
 
   'hopea-fantasia': {
     ammattiTyyppi: 'fantasia',
-    jumalaisetVoimat: 5,
     rajoitteet: { // Sallitut rodut: Ihminen + 6 muuta rotua
       'Ihminen': {
-        sallitutVoimat: '*' // Ihminen saa kaikki voimat
+        sallitutVoimat: ['*', '*', '*'] // Kaikki 3 voimaa maallisia (ei jumalaisia)
       },
       'Hopeahaltia': {
-        sallitutVoimat: ['magia', 'mentalismi', 'elementin hallinta'] // Skaala 0: magia, Skaala 1: +mentalismi, Skaala 2+: +elementin hallinta
+        sallitutVoimat: ['magia', 'mentalismi', 'elementin hallinta']
       },
       'Kultahaltia': {
-        sallitutVoimat: ['mentalismi', 'magia', 'elementin hallinta'] // Skaala 0: mentalismi, Skaala 1: +magia, Skaala 2+: +elementin hallinta
+        sallitutVoimat: ['mentalismi', 'magia', 'elementin hallinta']
       },
       'Päivähaltia': {
-        sallitutVoimat: ['magia', 'mentalismi', 'elementin hallinta'] // Skaala 0: magia, Skaala 1: +mentalismi, Skaala 2+: +elementin hallinta
+        sallitutVoimat: ['magia', 'mentalismi', 'elementin hallinta']
       },
       'Pimentohaltia': {
-        sallitutVoimat: ['mentalismi', 'magia', 'elementin hallinta'] // Skaala 0: mentalismi, Skaala 1: +magia, Skaala 2+: +elementin hallinta
+        sallitutVoimat: ['mentalismi', 'magia', 'elementin hallinta']
       },
       'Kääpiö': {
-        sallitutVoimat: ['elementin hallinta', 'magia', 'mentalismi'] // Skaala 0: elementin hallinta, Skaala 1: +magia, Skaala 2+: +mentalismi
+        sallitutVoimat: ['elementin hallinta', 'magia', 'mentalismi']
       },
       'Puolituinen': {
-        sallitutVoimat: '*' // Kaikki voimat kaikilla skaaloilla
+        sallitutVoimat: ['*', '*', '*']
       },
       'Kimera': {
-        sallitutVoimat: ['muodonmuutos', 'mentalismi', 'elementin hallinta'] 
+        sallitutVoimat: ['muodonmuutos', 'mentalismi', 'elementin hallinta']
       }
     },
     variantit: {
@@ -63,10 +68,24 @@ export const kampanjaRajoitteet = {
 
   'heijastus-matkaajat': {
     ammattiTyyppi: 'moderni',
-    jumalaisetVoimat: 0,
     rajoitteet: {
       'Ihminen': {
-        sallitutVoimat: '*'
+        sallitutVoimat: ['*', '*', '*']
+      },
+      'Puolienkeli': {
+        sallitutVoimat: ['heijastuksen hallinta', '*', '*'] // Jumalaista verta - kaikki voimat sallittu
+      },
+      'Puolidemoni': {
+        sallitutVoimat: ['tarot', '*', '*']
+      },
+      'Puolitulikeiju': {
+        sallitutVoimat: ['kaaossäikeet', '*', '*']
+      },
+      'Puolimerikeiju': {
+        sallitutVoimat: ['kaaossäikeet', '*', '*']
+      },
+      'Puolimetsäkeiju': {
+        sallitutVoimat: ['kaaossäikeet', '*', '*']
       }
     },
     variantit: {}
@@ -88,65 +107,44 @@ export function onkoRotuSallittu(kampanja, rotuNimi) {
   return false;
 }
 
+const JUMALAISET_VOIMATYYPIT = ['heijastuksen hallinta', 'kaaossäikeet', 'tarot'];
+
 // Apufunktio tarkistamaan onko voimatyyppi sallittu rodulle kampanjassa ja skaalassa
-export function onkoVoimaSallittu(kampanja, rotuNimi, voimaTyyppi, hahmonSkaala = 0) {
+// valitutVoimat = jo valitut voimat, käytetään '*' ja '#' wildcardien "paitsi aiemmin valittu" -logiikkaan
+export function onkoVoimaSallittu(kampanja, rotuNimi, voimaTyyppi, hahmonSkaala = 0, valitutVoimat = []) {
   const kampanjaData = kampanjaRajoitteet[kampanja];
   if (!kampanjaData || !kampanjaData.rajoitteet) return true;
-  
-  // Tarkista jumalaiset voimat ensimmäiseksi
-  const jumalaisetVoimatyypit = ['heijastuksen hallinta', 'kaaossäikeet', 'tarot'];
-  if (jumalaisetVoimatyypit.includes(voimaTyyppi)) {
-    if (!onkoJumalaisetVoimatSallittu(kampanja, hahmonSkaala)) {
-      return false;
-    }
-  }
-  
-  // Käytä suoraan rotuNimi:ä - variantit on määritelty omilla nimillään
-  const rotuRajoitteet = kampanjaData.rajoitteet[rotuNimi] || 
-                        kampanjaData.rajoitteet['*'];
-  
+
+  const rotuRajoitteet = kampanjaData.rajoitteet[rotuNimi] || kampanjaData.rajoitteet['*'];
   if (!rotuRajoitteet) return false;
-  
-  // Tarkista wildcard - voi olla '*' string tai ['*'] array
-  if (rotuRajoitteet.sallitutVoimat === '*' || 
-      (Array.isArray(rotuRajoitteet.sallitutVoimat) && rotuRajoitteet.sallitutVoimat[0] === '*')) {
-    return true;
-  }
-  
+
   // Skaala 3+: Salli kaikki voimat mitä löytyy voimat.js tiedostosta
   if (hahmonSkaala >= 3) {
     return Object.prototype.hasOwnProperty.call(voimat, voimaTyyppi);
   }
-  
-  // Skaala 0-2: Tarkista voiman indeksi listassa ja onko skaala tarpeeksi korkea
-  const voimaIndeksi = rotuRajoitteet.sallitutVoimat.indexOf(voimaTyyppi);
-  if (voimaIndeksi === -1) return false; // Voima ei ole listassa
-  
-  // Skaala määrittää montako voimaa on saatavilla:
-  // Skaala 0: 1 voima (indeksi 0)
-  // Skaala 1: 2 voimaa (indeksit 0-1) 
-  // Skaala 2: 3 voimaa (indeksit 0-2)
+
+  const onJumalainen = JUMALAISET_VOIMATYYPIT.includes(voimaTyyppi);
+  if (!Object.prototype.hasOwnProperty.call(voimat, voimaTyyppi)) return false;
+
+  // Skaala 0-2: Käy positiot 0..skaala läpi ja katso sopiiko voima johonkin
   const sallitutIndeksit = Math.min(hahmonSkaala + 1, rotuRajoitteet.sallitutVoimat.length);
-  return voimaIndeksi < sallitutIndeksit;
-}
+  for (let i = 0; i < sallitutIndeksit; i++) {
+    const slotti = rotuRajoitteet.sallitutVoimat[i];
 
+    // Suora match
+    if (slotti === voimaTyyppi) return true;
 
+    // '*' = mikä tahansa maallinen voima paitsi aiemmin valittu
+    if (slotti === '*' && !onJumalainen && !valitutVoimat.includes(voimaTyyppi)) {
+      return true;
+    }
 
-// Apufunktio tarkistamaan onko jumalaisiin voimiin oikeus skaalassa
-export function onkoJumalaisetVoimatSallittu(kampanja, hahmonSkaala = 0) {
-  const kampanjaData = kampanjaRajoitteet[kampanja];
-  if (!kampanjaData) return false;
-  
-  // Numero-pohjainen järjestelmä: jumalaisetVoimat = alaraja
-  if (typeof kampanjaData.jumalaisetVoimat === 'number') {
-    return hahmonSkaala >= kampanjaData.jumalaisetVoimat;
+    // '#' = mikä tahansa voima (myös jumalainen) paitsi aiemmin valittu
+    if (slotti === '#' && !valitutVoimat.includes(voimaTyyppi)) {
+      return true;
+    }
   }
-  
-  // Vanha lista-pohjainen järjestelmä (yhteensopivuus)
-  if (Array.isArray(kampanjaData.jumalaisetVoimat)) {
-    return kampanjaData.jumalaisetVoimat.includes(hahmonSkaala);
-  }
-  
+
   return false;
 }
 

@@ -58,5 +58,37 @@ export const rodut = {
       stuntti: 'Kerran per kohtaus käytä eläimen kykyä',
       rajoitus: 'Vieras ulkomuoto, ensivaikutelma negatiivinen.',
     }
+  ],
+  jumalaiset: [
+    {
+      nimi: 'Puolienkeli',
+      kuvaus: 'Järjestyksenkeijun ja ihmisen jälkeläinen, kantaa pyhän kipinän',
+      stuntti: 'Aistii pahuuden ja valheet, säteilee tyyneyttä joka rauhoittaa muita',
+      rajoitus: 'Ei voi valehdella suoraan, vetää puoleensa demonista huomiota',
+    },
+    {
+      nimi: 'Puolidemoni',
+      kuvaus: 'Tuonpuoleisenkeijun ja ihmisen jälkeläinen, puoliepäkuollut',
+      stuntti: 'Näkee pimeässä, tuntee toisten heikkoudet ja pelot vaistomaisesti',
+      rajoitus: 'Pyhät esineet ja paikat aiheuttavat epämukavuutta, herättää epäluuloa',
+    },
+    {
+      nimi: 'Puolitulikeiju',
+      kuvaus: 'Tulen keijun ja ihmisen jälkeläinen, liekit ja hiillos puhuvat hänelle',
+      stuntti: 'Nauttii kuumasta säästä, kestää kuumaa hyvin.',
+      rajoitus: 'Tarvitsee lämmintä ilmaa, ahdistuu kylmästä ja kosteasta.',
+    },
+    {
+      nimi: 'Puolimerikeiju',
+      kuvaus: 'Merten keijun ja ihmisen jälkeläinen, vesi on toinen koti',
+      stuntti: 'Uiminen on helppoa ja vaivatonta.',
+      rajoitus: 'Ahdistuu jos ei ole lähellä vettä.',
+    },
+    {
+      nimi: 'Puolimetsäkeiju',
+      kuvaus: 'Metsän keijun ja ihmisen jälkeläinen, kasvit ja eläimet ystäviä',
+      stuntti: 'Toimii luontevasti eläinten seurassa, ei ikinä eksy metsässä.',
+      rajoitus: 'Kaupungit ja koneet tuntuvat tukahduttavilta, ei kestä rautaa iholla.',
+    }
   ]
 };

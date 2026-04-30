@@ -194,7 +194,6 @@ function VoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
                   nimi={voimatyyppi}
                   kuvaus={voimaData.kuvaus}
                   korttiKoko="pieni"
-                  otsikkoVari="#000000"
                   valittu={onValittu}
                   disabled={onJoValittuMuualla}
                   onClick={() => !onJoValittuMuualla && valitseVoima(voimatyyppi)}

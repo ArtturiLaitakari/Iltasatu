@@ -21,7 +21,6 @@ function OlenValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
             kuvaus={kuvaaja.selite}
             extraInfo={`Kyky: ${kuvaaja.kyky}`}
             korttiKoko="tiivis"
-            otsikkoVari="#000000"
             valittu={hahmo.kuvaaja?.nimi === kuvaaja.nimi}
             onClick={() => valitseKuvaaja(kuvaaja)}
           />

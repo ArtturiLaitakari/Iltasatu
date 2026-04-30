@@ -29,7 +29,8 @@ export const UI_CONSTANTS = {
 export const KORTTI_VARIANTS = {
   NORMAALI: 'normaali',
   PIENI: 'pieni',
-  TIIVIS: 'tiivis'
+  TIIVIS: 'tiivis',
+  KORKEA: 'korkea'
 };
 
 export const KORTTI_DEFAULTS = {

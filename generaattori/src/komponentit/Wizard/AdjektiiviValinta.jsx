@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { adjektiivit } from '../../data/adjektiivit.js';
 import Kortti from '../Kortti.jsx';
-import { KORTTI_DEFAULTS } from '../../constants';
 import adjektiiviTausta from '../../kuvat/hahmot_taustakuva.jpg';
 import VaiheSivu from './VaiheSivu.jsx';
 
@@ -24,7 +23,7 @@ const korttiLista = (lista, valittu, onClick) => lista.map((adj) => (
     nimi={adj.nimi}
     kuvaus={adj.kuvaus}
     kuva={adj.kuva ? new URL(`../../kuvat/${adj.kuva}`, import.meta.url).href : null}
-    korttiKorkeus={KORTTI_DEFAULTS.KORKEUS}
+    korttiKoko="korkea"
     valittu={valittu(adj)}
     onClick={() => onClick(adj.id)}
   />

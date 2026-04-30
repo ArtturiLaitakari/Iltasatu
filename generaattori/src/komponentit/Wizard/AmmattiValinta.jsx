@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { haeKategorianAmmatit } from '../../utils/hahmoLogiikka.js';
 import { arkkityypit } from '../../data/arkkityypit.js';
-import { onkoVoimaSallittu, onkoJumalaisetVoimatSallittu } from '../../data/kampanjaRajoitteet.js';
+import { onkoVoimaSallittu } from '../../data/kampanjaRajoitteet.js';
 import Kortti from '../Kortti.jsx';
 import VaiheSivu, { haeTaustaKuva } from './VaiheSivu.jsx';
 
@@ -30,18 +30,9 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
 
     // Filttteröi mystisen kategorian ammatteja kampanjarajoitteiden mukaan
     if (aktiivinenKategoria.avain === 'sielu' && hahmo.kampanja && hahmo.rotu) {
-      ammatit = ammatit.filter(ammatti => {
-        // Tarkista onko ammatin voima sallittu rodulle kampanjassa ja skaalassa
-        const voimaSallittu = onkoVoimaSallittu(hahmo.kampanja, hahmo.rotu.nimi, ammatti.voima, hahmo.skaala || 0);
-        
-        // Jos ammatti on jumalainen, tarkista että jumalaiset voimat on sallittu
-        if (ammatti.jumalainenAmmatii) {
-          const jumalaisetSallittu = onkoJumalaisetVoimatSallittu(hahmo.kampanja, hahmo.skaala || 0);
-          return voimaSallittu && jumalaisetSallittu;
-        }
-        
-        return voimaSallittu;
-      });
+      ammatit = ammatit.filter(ammatti =>
+        onkoVoimaSallittu(hahmo.kampanja, hahmo.rotu.nimi, ammatti.voima, hahmo.skaala || 0)
+      );
     }
 
     // Hae taustakuva kategorian mukaan
@@ -86,7 +77,6 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
                 nimi={ammatti.nimi}
                 kuvaus={ammatti.kuvaus}
                 korttiKoko="pieni"
-                otsikkoVari="#000000"
                 valittu={hahmo.ammatit?.[aktiivinenKategoria.avain] === ammatti.id}
                 onClick={() => valitseAmmatti(ammatti)}
               />
@@ -201,18 +191,9 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
   
   // Suodata mystisiä ammatteja kampanjarajoitteiden mukaan
   if (aktiivinenVaihe.avain === 'sielu' && hahmo.kampanja && hahmo.rotu) {
-    ammatit = ammatit.filter(ammatti => {
-      // Tarkista onko ammatin voima sallittu rodulle kampanjassa ja skaalassa
-      const voimaSallittu = onkoVoimaSallittu(hahmo.kampanja, hahmo.rotu.nimi, ammatti.voima, hahmo.skaala || 0);
-      
-      // Jos ammatti on jumalainen, tarkista että jumalaiset voimat on sallittu
-      if (ammatti.jumalainenAmmatii) {
-        const jumalaisetSallittu = onkoJumalaisetVoimatSallittu(hahmo.kampanja, hahmo.skaala || 0);
-        return voimaSallittu && jumalaisetSallittu;
-      }
-      
-      return voimaSallittu;
-    });
+    ammatit = ammatit.filter(ammatti =>
+      onkoVoimaSallittu(hahmo.kampanja, hahmo.rotu.nimi, ammatti.voima, hahmo.skaala || 0)
+    );
   }
   
   const avain = aktiivinenVaihe.avain;
@@ -228,7 +209,6 @@ function AmmattiValinta({ hahmo, paivitaHahmo, seuraavaVaihe, kategoria = null }
             nimi={ammatti.nimi}
             kuvaus={ammatti.kuvaus}
             korttiKoko="pieni"
-            otsikkoVari="#000000"
             valittu={hahmo.ammatit[aktiivinenVaihe.avain] === ammatti.id}
             onClick={() => valitseAmmatti(aktiivinenVaihe.avain, ammatti)}
           />

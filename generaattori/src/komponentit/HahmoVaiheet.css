@@ -13,6 +13,9 @@
   --transition-standard: all 0.2s ease;
   --border-radius-standard: 8px;
   --border-radius-pill: 25px;
+  
+  /* Single text shadow for all text */
+  --text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
 }
 
 .vaihe-sisalto {
@@ -37,7 +40,7 @@ table {
   color: #ffffff;
   font-size: 2rem;
   margin: 0 0 0.5rem 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: var(--text-shadow);
 }
 
 .vaihe-otsikko p {
@@ -74,13 +77,13 @@ table {
   color: #ffffff;
   font-size: 1.3rem;
   margin: 0 0 1rem 0;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  text-shadow: var(--text-shadow);
 }
 
 .adjektiivi-kategoria.adjektiivi-kategoria-taustalla .adjektiivi-kategoria-otsikko,
 .adjektiivi-kategoria.adjektiivi-kategoria-taustalla .vaihe-indikaattori {
   color: #ffffff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  text-shadow: var(--text-shadow);
 }
 
 .vaihe-indikaattori {
@@ -115,7 +118,7 @@ table {
 .ammatti-kategoria.ammatti-kategoria-taustalla h3,
 .ammatti-kategoria.ammatti-kategoria-taustalla .vaihe-indikaattori {
   color: #ffffff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  text-shadow: var(--text-shadow);
 }
 
 .ammatti-kortit-lista {
@@ -199,29 +202,19 @@ table {
 
 /* Kortit-grid - adjektiiville */
 .kortit-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   padding: 0;
   margin: 2rem 0;
-}
-
-.kortit-grid > .kortti {
-  flex: 1 1 300px;
-  min-width: 280px;
-  max-width: 400px;
+  justify-items: center;
 }
 
 /* Kapea asettelu adjektiiveille - kortit allekkain */
 .kortit-grid.kapea {
   max-width: 500px;
   margin: 2rem auto;
-}
-
-.kortit-grid.kapea > .kortti {
-  flex: 1 1 100%;
-  min-width: auto;
-  max-width: none;
+  grid-template-columns: 1fr;
 }
 
 .adjektiivi-valinnat,
@@ -279,7 +272,7 @@ table {
 
 .lomake-kortti.lomake-kortti-taustalla .kentta label {
   color: #ffffff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  text-shadow: var(--text-shadow);
 }
 
 .kentta label {
@@ -512,7 +505,7 @@ table {
 .paa-kortti.taustalla .tiedot-osio,
 .paa-kortti.taustalla p {
   color: #ffffff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  text-shadow: var(--text-shadow);
 }
 
 .paa-kortti.taustalla .info-kortti,
@@ -673,7 +666,7 @@ table {
 
 .taustakuvalla .vaihe-otsikko h2,
 .taustakuvalla .vaihe-otsikko p {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  text-shadow: var(--text-shadow);
   color: white;
 }
 
@@ -705,7 +698,7 @@ table {
 .taustakuvalla .adjektiivi-kategoria .vaihe-indikaattori,
 .taustakuvalla .adjektiivi-kategoria .adjektiivi-kategoria-otsikko {
   color: #ffffff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  text-shadow: var(--text-shadow);
 }
 
 .keskitetty-nakyma h1 {
@@ -1321,7 +1314,7 @@ table {
 .valkoinen-otsikko {
   color: #ffffff !important;
   white-space: nowrap;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  text-shadow: var(--text-shadow);
 }
 
 /* ===== FORM AND TABLE STYLING ===== */
@@ -1480,7 +1473,7 @@ table {
 .sovellus[style*="background-image"] .hahmolista-header h1,
 .sovellus[style*="background-image"] .hahmolista-tilastot {
   color: #ffffff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  text-shadow: var(--text-shadow);
 }
 
 .hahmo-grid {

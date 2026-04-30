@@ -1,6 +1,5 @@
 import { voimat } from '../../data/voimat.js';
 import { haeVoimanTaso } from '../../data/voimaProgression.js';
-import { onkoJumalaisetVoimatSallittu, kampanjaRajoitteet } from '../../data/kampanjaRajoitteet.js';
 import Kortti from '../Kortti.jsx';
 import VaiheSivu, { haeTaustaKuva } from './VaiheSivu.jsx';
 
@@ -20,13 +19,6 @@ const RADIOBUTTON_VALINNAT = {
     ]
   }
 };
-
-// Jumalaiset voimatyypit - vaativat korkeaa skaalaa
-const JUMALAISET_VOIMATYYPIT = [
-  'heijastuksen hallinta',
-  'kaaossäikeet', 
-  'tarot'
-];
 
 // Hae taustakuva
 const taustaKuva = haeTaustaKuva('voimat_taustakuva');
@@ -101,18 +93,10 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   }
 
   const onKaytettavissa = (kyky) => {
-    // Tarkista tasovalinta 
+    // Tarkista tasovalinta
     if (onTasojarjestelma && (kyky.taso || 1) > voimanTaso) {
       return false;
     }
-    
-    // Tarkista jumalaisten voimien kampanjarajoitteet
-    if (JUMALAISET_VOIMATYYPIT.includes(valittuVoimatyyppi)) {
-      if (!onkoJumalaisetVoimatSallittu(hahmo.kampanja, hahmo.skaala || 0)) {
-        return false;
-      }
-    }
-    
     return true;
   };
 
@@ -234,18 +218,8 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
                     const onDisabloitu = !onKaytettavissa(voima) || onValittu;
                     
                     let extraInfo = undefined;
-                    if (!onKaytettavissa(voima)) {
-                      // Tarkista onko taso-ongelma
-                      if (onTasojarjestelma && (voima.taso || 1) > voimanTaso) {
-                        extraInfo = `Vaatii voimatason ${voima.taso || 1}`;
-                      }
-                      // Tarkista onko skaala-ongelma jumalaisille voimille
-                      else if (JUMALAISET_VOIMATYYPIT.includes(valittuVoimatyyppi) && 
-                               !onkoJumalaisetVoimatSallittu(hahmo.kampanja, hahmo.skaala || 0)) {
-                        const kampanjaData = kampanjaRajoitteet[hahmo.kampanja];
-                        const vaadittavaSkaala = kampanjaData?.jumalaisetVoimat || 0;
-                        extraInfo = `Vaatii skaalan ${vaadittavaSkaala}+ (jumalainen voima)`;
-                      }
+                    if (!onKaytettavissa(voima) && onTasojarjestelma && (voima.taso || 1) > voimanTaso) {
+                      extraInfo = `Vaatii voimatason ${voima.taso || 1}`;
                     }
 
                     return (
@@ -254,7 +228,6 @@ function SieluVoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
                         nimi={voima.nimi}
                         kuvaus={voima.kuvaus}
                         korttiKoko="pieni"
-                        otsikkoVari={onValittu ? "#2e7d32" : "#000000"}
                         extraInfo={extraInfo}
                         valittu={onValittu}
                         onClick={() => valitseVoima(voima)}

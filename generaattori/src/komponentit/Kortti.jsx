@@ -1,5 +1,5 @@
 import './Kortti.css';
-import { KORTTI_DEFAULTS, KORTTI_VARIANTS } from '../constants';
+import { KORTTI_VARIANTS } from '../constants';
 
 function Kortti({ 
   nimi, 
@@ -8,30 +8,10 @@ function Kortti({
   onClick, 
   disabled = false,
   kuva = null,
-  kuvaKoko = KORTTI_DEFAULTS.KUVA_KOKO,
   extraInfo = null,
-  korttiKoko = null, // Ei oletusarvoa - päätellään jälkempänä
-  korttiKorkeus = KORTTI_DEFAULTS.KORKEUS,
-  otsikkoVari = null
+  korttiKoko = null,
 }) {
-  // Jos korttiKoko ei ole määritelty ja kuvaa ei ole, käytä pientä kokoa
   const lopullinenKorttiKoko = korttiKoko || (!kuva ? KORTTI_VARIANTS.PIENI : KORTTI_VARIANTS.NORMAALI);
-  const taustaTyyli = kuva
-    ? {
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${kuva})`,
-        backgroundSize: kuvaKoko === 'fit-width' ? '100% auto' : kuvaKoko,
-        backgroundPosition: KORTTI_DEFAULTS.TAUSTA_SIJAINTI,
-        backgroundRepeat: 'no-repeat'
-      }
-    : undefined;
-
-  const korttiTyyli = {
-    ...taustaTyyli,
-    // Älä aseta eksplisiittistä korkeutta pienille tai tiivisille korteille - anna CSS:n hoitaa min-height
-    ...(korttiKorkeus && lopullinenKorttiKoko === KORTTI_VARIANTS.NORMAALI && { height: `${korttiKorkeus}px` })
-  };
-
-  const otsikkoTyyli = otsikkoVari ? { color: otsikkoVari } : undefined;
 
   return (
     <div 
@@ -39,15 +19,17 @@ function Kortti({
         lopullinenKorttiKoko === KORTTI_VARIANTS.PIENI ? 'kortti-pieni' : ''
       } ${
         lopullinenKorttiKoko === KORTTI_VARIANTS.TIIVIS ? 'kortti-tiivis' : ''
+      } ${
+        lopullinenKorttiKoko === KORTTI_VARIANTS.KORKEA ? 'kortti-korkea' : ''
       }`}
-      style={korttiTyyli}
+      style={kuva ? { '--kortti-kuva': `url(${kuva})` } : undefined}
       onClick={disabled ? undefined : onClick}
       role="button"
       tabIndex={disabled ? -1 : 0}
       aria-pressed={valittu}
     >
       <div className="kortti-sisalto">
-        <h3 className="kortti-nimi" style={otsikkoTyyli}>{nimi}</h3>
+        <h3 className="kortti-nimi">{nimi}</h3>
         {kuvaus && (
           <p className="kortti-kuvaus">{kuvaus}</p>
         )}
