@@ -31,6 +31,8 @@ export function luoTyhjaHahmo() {
     },
     henkilotiedot: {
       nimi: '',
+      ika: 20,
+      sukupuoli: 'N',
       luonne: null,
       yksillioivaKuvaaja: '',
       heikous: '',

@@ -67,8 +67,8 @@ export const rodut = {
       rajoitus: 'Ei osaa valehdella suoraan, vetää puoleensa demonista huomiota',
     },
     {
-      nimi: 'Puolitalvikeiju',
-      kuvaus: 'Tuonpuoleisenkeijun ja ihmisen jälkeläinen, puoliepäkuollut',
+      nimi: 'Puolidemoni',
+      kuvaus: 'Talvikeijun ja ihmisen jälkeläinen, demonista verta.',
       stuntti: 'Näkee pimeässä kuin päivällä. Tuntee toisten heikkoudet ja pelot vaistomaisesti.',
       rajoitus: 'Pyhät esineet ja paikat aiheuttavat epämukavuutta, herättää epäluuloa',
     },

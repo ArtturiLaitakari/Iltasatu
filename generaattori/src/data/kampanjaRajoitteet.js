@@ -78,13 +78,13 @@ export const kampanjaRajoitteet = {
       'Puolidemoni': {
         sallitutVoimat: ['tarot', '*', '*']
       },
-      'Puolitulikeiju': {
+      'Puolitkesäkeiju': {
         sallitutVoimat: ['kaaossäikeet', '*', '*']
       },
-      'Puolimerikeiju': {
+      'Puolisyyskeiju': {
         sallitutVoimat: ['kaaossäikeet', '*', '*']
       },
-      'Puolimetsäkeiju': {
+      'Puolikevätkeiju': {
         sallitutVoimat: ['kaaossäikeet', '*', '*']
       }
     },
