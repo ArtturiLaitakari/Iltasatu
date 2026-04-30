@@ -5,21 +5,27 @@ import VaiheSivu, { haeTaustaKuva } from './VaiheSivu.jsx';
 
 function RotuValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
   const valitseRotu = (rotu, alkuperainenRotu = null) => {
-    // Tallenna valittu rotu (variantti) eikä alkuperäistä rotua
-    const tallennettuRotu = rotu; 
+    console.log('[RotuValinta] valitseRotu:', rotu.nimi, '| kampanja:', hahmo.kampanja);
     let voimienJarjestys = null;
     if (hahmo.kampanja && kampanjaRajoitteet[hahmo.kampanja]) {
       const kampanja = kampanjaRajoitteet[hahmo.kampanja];
       // Käytä valitun rodun nimeä (variantin nimi) rajoitteissa
-      const rotuRajoitteet = kampanja.rajoitteet[rotu.nimi];
+      const rotuRajoitteet = kampanja.rajoitteet[rotu.nimi] || kampanja.rajoitteet['*'];
+      console.log('[RotuValinta] rotuRajoitteet:', rotuRajoitteet);
       if (rotuRajoitteet && rotuRajoitteet.sallitutVoimat) {
         const sallitutVoimat = rotuRajoitteet.sallitutVoimat;
-        if (Array.isArray(sallitutVoimat) && sallitutVoimat.length >= 3) {
+        console.log('[RotuValinta] sallitutVoimat:', sallitutVoimat);
+        // Aseta voimienJarjestys vain jos kaikki 3 voimaa ovat konkreettisia nimia (ei wildcardseja)
+        if (Array.isArray(sallitutVoimat) && sallitutVoimat.length >= 3 &&
+            !sallitutVoimat[0].includes('*') && !sallitutVoimat[0].includes('#') &&
+            !sallitutVoimat[1].includes('*') && !sallitutVoimat[1].includes('#') &&
+            !sallitutVoimat[2].includes('*') && !sallitutVoimat[2].includes('#')) {
           voimienJarjestys = { primary: sallitutVoimat[0], secondary: sallitutVoimat[1], tertiary: sallitutVoimat[2] };
         }
       }
     }
-    paivitaHahmo({ ...hahmo, rotu: tallennettuRotu, voimienJarjestys });
+    console.log('[RotuValinta] voimienJarjestys:', voimienJarjestys, '| siirtyy automaattisesti:', !!voimienJarjestys);
+    paivitaHahmo({ ...hahmo, rotu, voimienJarjestys });
     setTimeout(() => seuraavaVaihe(), 100);
   };
 

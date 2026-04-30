@@ -73,7 +73,7 @@ export const rodut = {
       rajoitus: 'Pyhät esineet ja paikat aiheuttavat epämukavuutta, herättää epäluuloa',
     },
     {
-      nimi: 'Puolitkesäkeiju',
+      nimi: 'Puolikesäkeiju',
       kuvaus: 'Kesäkeijun ja ihmisen jälkeläinen',
       stuntti: 'Ensivaikutelma on aina myönteinen. Kestää tulta ja kuumuutta yliluonnollisen hyvin.',
       rajoitus: 'Tarvitsee lämmintä ilmaa, ahdistuu kylmästä ja kosteasta.',

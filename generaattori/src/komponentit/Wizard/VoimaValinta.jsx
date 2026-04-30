@@ -26,15 +26,19 @@ function VoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     tertiary: null
   });
 
-  // Jos voimienJarjestys on jo asetettu (esim. Pimentohaltia), ohita tämä vaihe
+  // Jos kaikki 3 voimaa on jo asetettu (esim. hopea-fantasia kiinteillä voimilla), ohita tämä vaihe
+  const kaikkiVoimatAsetettu = hahmo.voimienJarjestys?.primary &&
+    hahmo.voimienJarjestys?.secondary &&
+    hahmo.voimienJarjestys?.tertiary;
+
   useEffect(() => {
-    if (hahmo.voimienJarjestys) {
+    if (kaikkiVoimatAsetettu) {
       seuraavaVaihe();
     }
-  }, [hahmo.voimienJarjestys, seuraavaVaihe]);
+  }, [kaikkiVoimatAsetettu, seuraavaVaihe]);
 
   // Jos voimat on jo asetettu, älä renderöi mitään
-  if (hahmo.voimienJarjestys) {
+  if (kaikkiVoimatAsetettu) {
     return null;
   }
 
@@ -108,11 +112,8 @@ function VoimaValinta({ hahmo, paivitaHahmo, seuraavaVaihe }) {
     } else if (nykyinenPrioriteetti === 'secondary') {
       setNykyinenPrioriteetti('tertiary');
     } else if (nykyinenPrioriteetti === 'tertiary') {
-      // Kun kaikki valittu, tallenna ja siirry eteenpäin
-      setTimeout(() => {
-        paivitaHahmo(paivitettyHahmo);
-        seuraavaVaihe();
-      }, 300);
+      // Kun kaikki valittu, tallenna — useEffect hoitaa siirtymisen
+      paivitaHahmo(paivitettyHahmo);
       return;
     }
     
