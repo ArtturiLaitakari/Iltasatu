@@ -17,9 +17,9 @@ Tämä peli on sekä Fate rpg että Wushu rpg yhteensopiva, mutta käyttää hie
 - **Kolmiportainen ominaisuusjärjestelmä**: Keho, Mieli, Sielu - jokainen arkkityyppi priorisoi niitä eri tavoin
 - **Mystinen voimajärjestelmä**: Magia, mentalismi, muodonmuutos, elementin hallinta
 - **FATE-yhteensopiva**: Aspects, stunts ja fate ladder -järjestelmä
-- **Helen Fisher persoonallisuustyypit**: Tieteeseen perustuvat neljä persoonallisuustyyppiä
+- Mutta ei ihan sama, skaala pienempi, vain pelaajat heittävät noppia.
 - **Visuaalinen kehitysjärjestelmä**: Ympyräindikaattorit taitojen ja voimien kehitykselle
-- **Suomenkielinen**: Täysin suomeksi lokalisoitu käyttöliittymä
+- **Suomenkielinen**: Täysin suomeksi lokalisoitu käyttöliittymä ja koodi
 
 ### Teknologia
 
@@ -36,4 +36,5 @@ npm install
 npm run dev
 ```
 
-Generaattori avautuu osoitteeseen `http://localhost:1974`
+Generaattori avautuu osoitteeseen `http://localhost:1974` ja
+`https://iltasatu-hahmogeneraattori.netlify.app/`

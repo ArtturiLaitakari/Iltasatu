@@ -17,34 +17,14 @@
   /* Single text shadow for all text */
   --text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
 }
-/* kampanja */
-.kortti-taustakuvalla.avoin-fantasia {
-  min-width: 400px;
-}
-.kortti-taustakuvalla.hopea-fantasia{
-  min-width: 400px;
-}
-.kortti-taustakuvalla.heijastus-matkaajat {
-  min-width: 400px;
-}
-/* Specific card styling classes */
-.soturi {
-  background-position: top;
-}
-.temppeliritari {
-  background-position: top;
-}
-
-.bardi {
-  background-position: top;
-}
-
-.soturimaagi {
-  background-position: top;
-}
-
+/* kampanja - ammattikorttien kuvat ylös */
+.soturi,
+.temppeliritari,
+.bardi,
+.soturimaagi,
 .nopea {
-  background-position: top;}
+  background-position: top;
+}
 
 
 .vaihe-sisalto {
@@ -228,16 +208,6 @@ table {
   justify-content: center;
 }
 
-/* Kortit-grid - adjektiiville */
-.kortit-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  padding: 0;
-  margin: 2rem 0;
-  justify-items: center;
-}
-
 /* Kapea asettelu adjektiiveille - kortit allekkain */
 .kortit-grid.kapea {
   max-width: 500px;
@@ -345,7 +315,7 @@ table {
 
 .luonne-valinnat {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
   gap: 1rem;
   margin-top: 0.5rem;
   position: relative;
@@ -639,24 +609,7 @@ table {
   line-height: 1.6;
 }
 
-/* Common button styles - merge all button definitions */
-.btn,
-.vaihe-navigation .btn {
-  padding: 0.75rem 2rem;
-  border: none;
-  border-radius: var(--border-radius-standard);
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition-standard);
-  min-width: 120px;
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
+/* Button overrides for wizard/list context */
 .btn-primary {
   background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
   color: white;
@@ -706,8 +659,8 @@ table {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 .kortti-taustakuvalla {
-  min-width: 280px;
-  max-width: 280px;
+  min-width: 250px;
+  max-width: 100%;
 }
 
 .taustakuvalla .kortti:not(.kortti-taustakuvalla) .kortti-nimi,
@@ -1424,21 +1377,6 @@ table {
   width: 4ch;
 }
 
-@media print {
-  .development-equipment-section {
-    /* page-break-before poistettu */
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-  }
-
-  /* Piilota navigointi- ja toimintonapit tulostuksessa */
-  .wizard-back-button,
-  .wizard-floating-actions,
-  .wizard-progress-popup {
-    display: none !important;
-  }
-}
-
 /* Info text styling */
 .small-info-text {
   display: block;
@@ -1520,7 +1458,7 @@ table {
 
 .arkkityyppi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1.5rem;
   padding: 0 2rem;
   margin: 2rem 0;
@@ -1535,8 +1473,8 @@ table {
 }
 
 .kuvaaja-grid > .kortti {
-  flex: 1 1 300px;
-  min-width: 280px;
+  flex: 1 1 250px;
+  min-width: 250px;
   max-width: 400px;
 }
 

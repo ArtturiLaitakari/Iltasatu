@@ -11,13 +11,21 @@
   justify-content: center;
 }
 
+.kortti-taustakuvalla,
+.kortti-korkea {
+  min-height: 250px;
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
 .kortti-taustakuvalla {
   background-image: var(--kortti-kuva);
-  background-color: rgba(0, 0, 0, 0.45);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: 250px;
+}
+
+.kortti-korkea {
+  padding: 2rem;
 }
 
 .kortti-pieni {
@@ -25,12 +33,6 @@
   padding: 0.45rem;
   width: 40%;
   justify-self: center;
-}
-
-.kortti-korkea {
-  min-height: 250px;
-  padding: 2rem;
-  background-color: rgba(0, 0, 0, 0.45);
 }
 
 .kortti-korkea .kortti-nimi,
@@ -103,6 +105,7 @@
   font-weight: 600;
   color: #2c3e50;
   margin: 0 0 0.5rem 0;
+  overflow-wrap: break-word;
 }
 
 .kortti-kuvaus {
@@ -110,6 +113,7 @@
   color: #666;
   line-height: 1.4;
   margin: 0;
+  white-space: pre-line;
 }
 
 .kortti-extra {
@@ -152,7 +156,15 @@
   }
   
   .kortti {
-    min-height: 160px;
     padding: 1rem;
+  }
+
+  .kortti-pieni {
+    min-height: auto;
+    max-height: 100px;
+  }
+  .kortti-tiivis {
+    min-height: auto;
+    max-height: 100px;
   }
 }

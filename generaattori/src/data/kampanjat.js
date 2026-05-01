@@ -12,7 +12,7 @@ export const kampanjat = {
   'hopea-fantasia': {
     id: 'hopea-fantasia', 
     nimi: 'Arthur Silverin maailma',
-    kuvaus: 'Fantasia maailma kaukana tulevaisuudessa, jossa teknologia on unohtunut mutta vielä ylläpitää planeettoja',
+    kuvaus: 'Fantasia maailma kaukana tulevaisuudessa, jossa \nteknologia on unohtunut mutta vielä ylläpitää planeettoja',
     kuva: fantasiaKuva
   },
   'heijastus-matkaajat': {
