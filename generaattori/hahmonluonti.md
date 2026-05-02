@@ -28,11 +28,11 @@
 
 ## Kampanjat
 
-| Nimi | Kuvaus | Ammattityyppi | Jumalaisten voimien Minimi skaala |
-|------|--------|---------------|----------------------------|
-| **Miekkarannikko** (`avoin-fantasia`) | Maailma jossa seikkailijoista voi tulla jumalia. Avoin fantasiamaailma. | fantasia | 2 |
-| **Arthur Silverin maailma** (`hopea-fantasia`) | Fantasiamaailma kaukana tulevaisuudessa, jossa teknologia on unohtunut mutta vielä ylläpitää planeettoja. | fantasia | x |
-| **Heijastus Matkaajat** (`heijastus-matkaajat`) | Tarina ihmisistä jotka löytävät kyvyn matkustaa eri tarinoihin. | moderni | 0 |
+| Nimi | Kuvaus | Ammattityyppi |
+|------|--------|---------------|
+| **Miekanhampaat** (`avoin-fantasia`) | Maailma jossa seikkailijoista voi tulla jumalia. Avoin fantasia maailma. | fantasia |
+| **Arthur Silverin maailma** (`hopea-fantasia`) | Fantasia maailma kaukana tulevaisuudessa, jossa teknologia on unohtunut mutta vielä ylläpitää planeettoja. | fantasia |
+| **Heijastus Matkaajat** (`heijastus-matkaajat`) | Tarina ihmisistä jotka löytävät kyvyn matkustaa eri tarinoihin. | moderni |
 
 ---
 
@@ -40,15 +40,25 @@
 
 | Nimi | Kuvaus | Stuntti | Rajoitus |
 |------|--------|---------|----------|
-| **Ihminen** | Yleisin ja sopeutuvaisin rotu maailmassa. | Ylimääräinen kielitaito | – |
-| **Kääpiö** | Sitkeä ja taitava käsityöläinen, steampunkin hallitsija. | Ylimääräinen Voimakas-fyysinen adjektiivi | Koko −1, −1 voima, −1 liikkuminen, +1 piiloutuminen |
-| **Puolituinen** | Pieni mutta rohkea ja ketterä kansanosa. | Näyttää viattomalta, piileskely ja väistely +2 | Koko −1, −1 voima, −1 liikkuminen, +1 piiloutuminen |
-| **Golemi** | Magialla luotu itsenäistynyt konstruktio, tarvitsee polttoainetta. | Immuuni myrkkyille ja taudeille, +2 kestävyyteen | Syö polttoainetta (öljy/hiili/puu), kohdellaan koneena |
-| **Örkki** | Geenimanipuloitu rotu, kykenee fotosynteesiin, nopea kasvu. | Tohtoritason asiantuntija perityssä taidossa +2 | Vanhenee 5× nopeammin, älykkyys −2 |
-| **Päivähaltia** | Auringonvaloon sopeutunut haltia, poikkeuksellinen näkö päivällä, tumma pigmentti. | +2 havainnointiin päivänvalossa | Ei hämäränäköä – sokea pimeässä |
-| **Pimentohaltia** | Pimeyteen sopeutunut haltia, erinomainen yönäkö, vaalea iho. | Näe hämärässä kuin päivällä | Ei värinäköä, harmaan sävyjä |
-| **Lohikäärme** | Alle 100-vuotias lohikäärme on humanoidi. | Kerran per kohtaus lohikäärmeen Hönkäys-hyökkäys | Pelottava ulkomuoto, sosiaalinen haitta −2 |
-| **Kimera** | Ihmisen ja keijun sekoitus, jolla on eläimen ominaisuuksia. | Kerran per kohtaus käytä eläimen kykyä | Vieras ulkomuoto, sosiaalinen haitta −2 |
+| **Ihminen** | Yleisin ja sopeutuvaisin rotu maailmassa | ylimääräinen kielitaito | – |
+| **Kääpiö** | Sitkeä ja taitava käsityöläinen, steampunk hallitsija, koko -1 | Poikkeuksellinen fyysinen voima (+1) ja käsityötaito | Lyhyet jalat hidastavat liikettä, pieni koko rajoittaa ulottuvuutta |
+| **Puolituinen** | Pieni mutta rohkea ja ketterä kansanosa, koko -1 | Näyttää viattomalta, mahtuu pieniin tiloihin ja liikkuu huomaamatta | Pieni koko rajoittaa voimaa ja ulottuvuutta |
+| **Golemi** | Magialla luotu itsenäistynyt konstruktio, tarvitsee polttoainetta | Olet immuuni myrkkyille ja taudeille, +1 kestävyyttä vaativiin tehtäviin | Syö polttoainetta (öljy, hiili, puu), kohdellaan koneena |
+| **Örkki** | Geenimanipuloitu rotu, kykenee fotosynteesiin, nopea kasvu | Synnynnäinen mestarilahjakkuus yhdellä taidolla, ei tarvitse ruokaa auringossa | Vanhenee nopeasti, impulsiivinen ja yksinkertainen |
+| **Päivähaltia** | Auringonvaloon sopeutunut haltia, poikkeuksellinen näköaisti päivällä, tumma pigmentti | Terävä näköaisti kirkkaassa valossa, näkee yksityiskohtia kaukaa | Sokea pimeässä, tarvitsee valoa toimiakseen |
+| **Pimentohaltia** | Pimeyteen sopeutunut haltia, erinomainen yönäkö, hyvin vaalea | Näe hämärässä kuin päivällä | Ei värinäköä ollenkaan, näet harmaan sävyjä |
+| **Lohikäärme** | Alle 100-vuotias lohikäärme on humanoidi | Kerran per kohtaus voit käyttää lohikäärmeen Hönkäys hyökkäystä | Pelottava ulkomuoto, ensivaikutelma negatiivinen |
+| **Kimera** | Ihmisrotuisen ja keijun sekoitus, jolla on eläimen ominaisuuksia | Kerran per kohtaus käytä eläimen kykyä | Vieras ulkomuoto, ensivaikutelma negatiivinen |
+
+## Rodut (jumalaiset)
+
+| Nimi | Kuvaus | Stuntti | Rajoitus |
+|------|--------|---------|----------|
+| **Puolienkeli** | Enkelin ja ihmisen jälkeläinen, pyhää verta | Aistii yliluonnolliset olennot ja pahat aikomukset lähellä | Ei osaa valehdella suoraan, vetää puoleensa demonista huomiota |
+| **Puolidemoni** | Talvikeijun ja ihmisen jälkeläinen, demonista verta | Näkee pimeässä kuin päivällä. Tuntee toisten heikkoudet ja pelot vaistomaisesti | Pyhät esineet ja paikat aiheuttavat epämukavuutta, herättää epäluuloa |
+| **Puolikesäkeiju** | Kesäkeijun ja ihmisen jälkeläinen | Ensivaikutelma on aina myönteinen. Kestää tulta ja kuumuutta yliluonnollisen hyvin | Tarvitsee lämmintä ilmaa, ahdistuu kylmästä ja kosteasta |
+| **Puolisyyskeiju** | Syyskeijun ja ihmisen jälkeläinen | Sukeltaa 2 kertaa pidempään. Aistii tulevat myrskyt ja sään muutokset etukäteen | Ahdistuu jos ei ole lähellä vettä |
+| **Puolikevätkeiju** | Kevätkeijun ja ihmisen jälkeläinen | Toimii luontevasti eläinten seurassa. Ei ikinä eksy luonnossa, tuntee ympäristön vaistomaisesti | Kaupungit ja koneet tuntuvat tukahduttavilta |
 
 > Joissain kampanjoissa on muunnelmia perusroduista kuten
 > **Kultahaltia** ja **Hopeahaltia** (samat säännöt, eri voimajärjestys).
@@ -73,10 +83,10 @@
 | Nimi | Alias | Kuvaus |
 |------|-------|--------|
 | **Voimakas** | Voimallinen | Omaa raakaa voimaa ja taitoa käyttää sitä |
-| **Nopea** | Ketterä | Ketterä ja nopea liikkeissään |
-| **Varovainen** | Harkitseva | Harkitseva ja tarkka toimissaan, syväajattelija |
-| **Nokkela** | Fiksu | Nopea ajattelija ja kekseliäs ongelmanratkaisija |
-| **Näyttävä** | Karismaattinen | Karismaattinen ja huomiota herättävä, kaunis |
+| **Nopea** | Ketterä | Ketterä ja nopea liikkeissään, nopea reagoimaan |
+| **Varovainen** | Harkitseva | Harkitseva ja tarkka toimissaan |
+| **Nokkela** | Fiksu | Nopea ajattelija kekseliäs ongelmanratkaisija |
+| **Näyttävä** | Karismaattinen | Karismaattinen ja huomiota herättävä |
 | **Ovela** | Juonikas | Juonikas ja vaikeasti ennakoitava |
 
 ---
@@ -92,9 +102,9 @@
 | **Temppeliritari** | Vannoutunut suojelija, joka yhdistää uskon ja miekan. |
 | **Paladiini** | Pyhä soturi, joka vannoo valan ja käyttää jumalallista voimaa. |
 | **Samooja** | Eränkävijä, jäljittäjä ja luonnossa selviytyjä. |
-| **Ryövari** | Nopea, tarkka ja varjoissa toimiva ammattilainen. |
+| **Voro** | Nopea, tarkka ja varjoissa toimiva ammattilainen. |
 | **Soturimaagi** | Yhdistää taistelutaidon ja taikuuden yhdeksi tyyliksi. |
-| **Käsityöläinen** | Taitava käden työn mestari (seppä, puuseppä tms.). |
+| **Käsityöläinen** | Taitava käden työn mestari, sepän, puusepän tai muun ammatin osaaja. |
 
 ### Fantasia – Henkinen
 | Nimi | Kuvaus |
@@ -106,7 +116,7 @@
 | **Kartturi** | Reittien, maiden ja salapaikkojen tarkka tuntija. |
 | **Aatelinen** | Suhteita, vaikutusvaltaa ja hovin pelisilmää. |
 | **Huijari** | Neuvokas manipuloija, joka kääntää tilanteet edukseen. |
-| **Insinööri** | Höyrykoneiden ja kellokoneistojen nerokas keksijä. |
+| **Insinööri** | Höyrykoneiden, kellokoneistojen ja mekaanisten vempeleiden nerokas keksijä. |
 
 ### Fantasia – Mystinen
 | Nimi | Kuvaus | Voima |
@@ -114,10 +124,10 @@
 | **Maagi** | Monipuolinen loitsija, joka hallitsee klassista magiaa. | Magia |
 | **Muodonmuuttaja** | Kehon ja olemuksen muokkaaja eri tilanteisiin. | Muodonmuutos |
 | **Mentalisti** | Mielen voimiin erikoistunut psyykkinen käyttäjä. | Mentalismi |
-| **Elementalisti** | Tulen, veden, maan tai ilman hallitsija. | Elementin hallinta |
+| **Elementalisti** | Elementtien, tulen, veden, maan tai ilman hallitsija. | Elementin hallinta |
 | **Todellisuuden mestari** *(jumalainen)* | Manipuloi pehmeää kaaoksen todellisuutta hienovaraisesti. | Heijastuksen hallinta |
-| **Kaaosmestari** *(jumalainen)* | Skannaa pehmeää potentiaalia kaaossäikeillä. | Kaaossäikeet |
-| **Tarot mestari** *(jumalainen)* | Luo yhteys kuvan ja asian välillä, matkaa korttien kautta. | Tarot |
+| **Kaaosmestari** *(jumalainen)* | Skannaa pehmeää potentiaalia kaaossäikeillä, tuo ja vie asioita niillä. | Kaaossäikeet |
+| **Tarot mestari** *(jumalainen)* | Luo yhteys kuvan ja asian välillä, matkaa korttien avulla ja luo mahtiesineitä. | Tarot |
 
 ### Moderni – Fyysinen
 | Nimi | Kuvaus |
@@ -152,20 +162,59 @@ Elementalisti, Todellisuuden mestari, Kaaosmestari, Tarot mestari).
 
 ## Kuvaajat (persoonallisuuspiirteet)
 
-Generaattorissa on yli 30 kuvaajaa. Kukin antaa **kyvyn** (tilanteessa +2 tai
+Generaattorissa on 48 kuvaajaa. Kukin antaa **kyvyn** (tilanteessa +1 tai
 kerran istunnossa erityistoiminto) ja **heikkouden** (haitta tai pakote, josta
-voi saada draamapisteen). Esimerkkejä:
+voi saada draamapisteen).
 
 | Nimi | Selite | Kyky | Heikkous |
 |------|--------|------|----------|
-| **Mukautuva** | Sopeudun nopeasti uusiin tilanteisiin. | +2 Tieto/Tutkiminen uudessa ympäristössä. | Yliluottamus oppimiskykyyn. |
-| **Röyhkeä** | Rohkea, impulsiivinen ja nopea toimimaan. | +2 Taistelu kun ryntäät ilman suunnitelmaa. | Pakote: juokset suoraan vaaraan. |
-| **Rauhallinen** | Tyyni ja harkitseva. | +2 Tahto vastustaessasi pelkoa tai stressiä. | Hidas reagoimaan äkillisiin tilanteisiin. |
-| **Empaattinen** | Aistin tunteita ja luen ihmisiä. | +2 Empatia tunnetilan tulkintaan. | Tunnekuorma uuvuttaa → pakote. |
-| **Kunniallinen** | Elän tiukan kunniakoodin mukaan. | +2 Suhdetaito rehellisessä neuvottelussa. | Pakote: et voi rikkoa sääntöjä. |
-| **Onnekas** | Hyvä onni seuraa minua. | Kerran istunnossa +2 mihin tahansa heittoon. | Onni kääntyy joskus vastaan → pakote. |
-| **Mystinen** | Luontainen yhteys yliluonnolliseen. | +2 Tieto magiasta ja yliluonnollisesta. | Yliluottamus mystisiin selityksiin. |
-| **Skeptinen** | En usko mitään ilman todisteita. | +2 Tieto/Tutkiminen valheiden kumoamiseen. | Vaikea hyväksyä tunnepohjaisia päätöksiä. |
+| **Mukautuva** | Sopeudun nopeasti uusiin tilanteisiin ja opin lennosta. | +1 kaikkiin Tieto/Tutkiminen‑heittoihin kun kohtaat uuden ympäristön tai teknologian. | Yliluottamus kykyyn oppia nopeasti. |
+| **Röyhkeä** | Rohkea, impulsiivinen ja nopea toimimaan. | +1 Taistelu kun ryntäät taisteluun ilman suunnitelmaa. | Harkitsemattomuus → pakote: juokset suoraan vaaraan. |
+| **Rauhallinen** | Tyyni ja harkitseva, en hätkähdä helposti. | +1 Tahto kun vastustat pelkoa tai stressia. | Hidas reagoimaan äkillisiin tilanteisiin. |
+| **Kömpelö** | Hyväntahtoinen mutta kömpelö. | +1 Käsityötaidot kun työskentelet rauhassa ilman kiirettä. | Pakote: pudotat, rikot tai kompastut. |
+| **Julma** | Kylmä, laskelmoiva ja valmis satuttamaan. | +1 Pelottelu kun käytät pelkoa työkaluna. | Empatian puute aiheuttaa konflikteja. |
+| **Epärehellinen** | Luonteva valehtelija ja manipuloija. | +1 Petos kun kerrot harkitun valheen. | Rehelliset ihmiset epäilevät sinua. |
+| **Tuomittu** | Kohtalo seuraa minua, ja huono onni on liittolaiseni. | Saat draamapisteen kerran istunnossa kun kohtalosi tuo ongelman. | Kohtalo tuo ongelmia jatkuvasti. |
+| **Empaattinen** | Aistin tunteita ja luen ihmisiä vaivatta. | +1 Empatia kun tulkitset jonkun tunnetilaa. | Tunnekuorma uuvuttaa → pakote. |
+| **Uhkarohkea** | Uhkarohkea ja peloton, joskus liiankin. | +1 Taistelu kun hyökkäät ylivoimaista vihollista vastaan. | Pakote: et tunne pelkoa → vaaralliset valinnat. |
+| **Varuillaan** | Varautunut ja vaikea lähestyä. | +1 Tahto kun vastustat mielenhallintaa tai manipulointia. | Vaikea luottaa muihin. |
+| **Sitkeä** | Kestän kylmää, kipua ja rasitusta paremmin kuin muut. | +1 Fysiikka kun vastustat ympäristöhaittoja. | Hidas reagoimaan nopeisiin uhkiin. |
+| **Kunniallinen** | Elän tiukan kunniakoodin mukaan. | +1 Suhdetaito kun neuvottelet rehellisesti. | Pakote: et voi rikkoa sääntöjä edes tarpeen vaatiessa. |
+| **Impulsiivinen** | Toimin ennen kuin ajattelen. | +1 Urheilu kun teet äkillisen, vaistonvaraisen liikkeen. | Pakote: teet päätöksiä liian nopeasti. |
+| **Utelias** | Utias, tutkiva ja aina kyselemässä. | +1 Tutkiminen kun tutkit paikkoja tai esineitä. | Uteliaisuus vie sinut ongelmiin. |
+| **Älykäs** | Terävä ja analyyttinen ajattelija. | +1 Tieto kun analysoit tietoa tai teorioita. | Ylpeys älykkyydestä → aliarvioit muita. |
+| **Vaistonvarainen** | Luotan vaistoihini ja teen oikeita päätöksiä ilman täydellistä tietoa. | +1 Empatia tai Havainnointi kun arvioit jonkun aikomuksia vaistonvaraisesti. | Vaistot voivat olla väärässä → pakote. |
+| **Iloinen** | Hyväntuulinen, sosiaalinen ja helposti lähestyttävä. | +1 Suhdetaito kun kevennät tunnelmaa tai rikot jään. | Etäiset tai vakavat ihmiset ärsyyntyvät sinusta. |
+| **Ystävällinen** | Lempeä ja myötätuntoinen, aina valmis auttamaan. | +1 Empatia kun rauhoitat tai lohdutat jotakuta. | Liian hyväuskoinen → pakote. |
+| **Oppinut** | Sivistynyt ja laajasti lukenut. | +1 Tieto kun ammennat tietoa historiasta, kulttuurista tai teoriasta. | Yli-intellektualisoi käytännön tilanteet. |
+| **Onnekas** | Hyvä onni seuraa minua — useimmiten. | Kerran istunnossa saat +1 mihin tahansa heittoon, jos voit perustella onnen vaikutuksen. | Onni kääntyy joskus sinua vastaan → pakote. |
+| **Hullu** | Ajatteluni on epäsovinnaista, joskus vaarallisen rajalla. | +1 Tieto tai Luo etu kun käytät outoa logiikkaa. | Epävakaus aiheuttaa sosiaalisia ongelmia. |
+| **Mekaanikko** | Ymmärrän koneita paremmin kuin ihmisiä. | +1 Käsityötaidot kun korjaat tai rakennat mekaanisia laitteita. | Sosiaaliset tilanteet ovat hankalia. |
+| **Mystinen** | Minulla on luontainen yhteys yliluonnolliseen. | +1 Tieto kun tutkit magiaa, rituaaleja tai yliluonnollisia ilmiöitä. | Yliluottamus mystisiin selityksiin. |
+| **Sinisilmäinen** | Luotan ihmisiin ja uskon hyvään — joskus liikaa. | +1 Empatia kun arvioit jonkun vilpittömyyttä. | Helppo huijata → pakote. |
+| **Karski** | Karkea, luonnon karaisema selviytyjä. | +1 Selviytyminen kun toimit luonnossa tai erämaassa. | Huono kaupunkiympäristössä. |
+| **Skeptinen** | En usko mitään ilman todisteita. | +1 Tieto tai Tutkiminen kun kumoat valheita tai epäilyttäviä väitteitä. | Vaikea hyväksyä tunteisiin perustuvia päätöksiä. |
+| **Raaka** | Raaka, aggressiivinen ja armoton. | +1 Taistelu kun hyökkäät täysillä ilman pidäkkeitä. | Liiallinen väkivalta aiheuttaa konflikteja. |
+| **Outo** | Omituinen, epäsovinnainen ja täynnä outoja ideoita. | +1 Luo etu kun hyödynnät epätavallista ajattelua. | Sosiaalisesti hankala. |
+| **Viisas** | Kokenut, harkitseva ja täynnä elämänviisautta. | +1 Tieto tai Empatia kun annat neuvoja tai tulkitset ihmisten motiiveja. | Hidas tekemään päätöksiä, koska punnitset liikaa. |
+| **Nuori** | Nuori, energinen ja oppimishaluinen — mutta kokematon. | +1 Urheilu kun hyödynnät nuorta energiaasi. | Kokemattomuus → pakote: teet aloittelijamaisia virheitä. |
+| **Vanha** | Ikä on tuonut viisautta, mutta keho ei ole entisensä. | +1 Tieto kun hyödynnät elämänkokemusta. | Heikompi fyysinen suorituskyky. |
+| **Varakas** | Varakas ja hyvin verkostoitunut. | Kerran istunnossa voit käyttää varallisuutta automaattisena Luo etu ‑onnistumisena. | Ihmiset olettavat sinun maksavan kaiken. |
+| **Köyhä** | Köyhä, mutta kekseliäs ja tottunut vähään. | +1 Käsityötaidot tai Selviytyminen kun improvisoit ratkaisuja vähillä resursseilla. | Taloudelliset ongelmat → pakote. |
+| **Määrätietoinen** | Tavoitteellinen ja määrätietoinen, en luovuta koskaan. | +1 Tahto kun jatkat tehtävää vastoinkäymisistä huolimatta. | Pakkomielteisyys vie sinut liian pitkälle. |
+| **Syyllisyydentuntoinen** | Kannat menneisyyden taakkaa, joka ohjaa valintojasi. | +1 Empatia kun autat jotakuta välttää tekemästä samaa virhettä. | Menneisyys palaa kummittelemaan → pakote. |
+| **Sankarillinen** | Luontainen sankari, joka ryntää apuun. | +1 Urheilu tai Taistelu kun suojelet jotakuta heikompaa. | Et voi olla auttamatta, vaikka se olisi typerää. |
+| **Pelokas** | Pelokas ja välttelevä, mutta selviytymiskykyinen. | +1 Hiiviskely kun pakenet tai vältät vaaraa. | Pelko ohjaa päätöksiä → pakote. |
+| **Salaperäinen** | Salaperäinen ja vaikeasti luettava. | +1 Petos kun pidät todelliset motiivisi piilossa. | Ihmiset eivät luota sinuun. |
+| **Koulutettu** | Hyvin koulutettu ja akateemisesti lahjakas. | +1 Tieto kun hyödynnät muodollista koulutustasi. | Teoreettinen ajattelu ei aina toimi kentällä. |
+| **Kouluttamaton** | Oppinut elämän kautta, ei kirjoista. | +1 Selviytyminen tai Käsityötaidot kun ratkaset ongelmia käytännöllisesti. | Heikko teoreettisissa aiheissa. |
+| **Kapinallinen** | Vastustan auktoriteetteja ja kuljen omaa polkuani. | +1 Pelottelu kun haastat vallanpitäjiä. | Auktoriteettien kanssa jatkuvia konflikteja. |
+| **Uskollinen** | Uskollinen ystäville ja liittolaisille. | +1 Suhdetaito kun puolustat tai tuet läheisiäsi. | Uskollisuus väärälle henkilölle → pakote. |
+| **Uhkaava** | Uhkaava, pelottava ja väkivaltaan valmis. | +1 Pelottelu kun käytät pelkoa aseena. | Ihmiset pelkäävät sinua liikaa. |
+| **Stoalainen** | Kylmähermoinen ja tunteita näyttämätön. | +1 Tahto kun vastustat emotionaalista manipulointia. | Vaikea ilmaista tunteita → sosiaalisia ongelmia. |
+| **Kummajainen** | Omituinen, epäsovinnainen ja täynnä outoja tapoja. | +1 Luo etu kun hyödynnät epätavallista ajattelua. | Sosiaalisesti hankala. |
+| **Kostaja** | En unohda vääryyksiä — enkä anna anteeksi. | +1 Taistelu tai Pelottelu kun kohtaat henkilön, joka on tehnyt sinulle vääryyttä. | Kostonhimo ohjaa liikaa. |
+| **Syrjäänvetäytyvä** | Hiljainen, syrjäänvetäytyvä ja tarkkaileva. | +1 Havainnointi kun tarkkailet sivusta. | Vaikea osallistua ryhmätoimintaan. |
 
 > Koko lista löytyy tiedostosta
 > [src/data/kuvaajat.js](generaattori/src/data/kuvaajat.js).
@@ -176,10 +225,10 @@ voi saada draamapisteen). Esimerkkejä:
 
 | Nimi | Kuvaus | Stuntti |
 |------|--------|---------|
-| **Seikkailija** | Janoaa uusia kokemuksia, spontaani ja energinen. | Voit uusia epäonnistuneen heiton uudessa, jännittävässä tilanteessa. |
-| **Rakentaja** | Arvostaa perinteitä ja turvallisuutta, järjestelmällinen. | +2 kun noudatat suunnitelmaa tai käytät aiempaa kokemustasi. |
-| **Johtaja** | Analyyttinen ja looginen, kilpailuhenkinen ja päättäväinen. | Voit ottaa komentovallan kriisissä, liittolaisille +1. |
-| **Neuvottelija** | Empaattinen ja intuitiivinen, diplomaattinen. | +2 sosiaalisissa tilanteissa kun ymmärrät toisten tunteita. |
+| **Seikkailija** | Janoaa uusia kokemuksia ja ärsykkeitä, spontaani ja energinen. | Voit uudelleen heittää epäonnistuneen heiton uudessa ja yllättävässä tilanteessa. |
+| **Rakentaja** | Arvostaa perinteitä ja turvallisuutta, järjestelmällinen ja vastuuntuntoinen. | Yksityiskohtaisen suunnitelman laatiminen +1. |
+| **Johtaja** | Analyyttinen ja looginen ajattelija, kilpailuhenkinen ja päättäväinen. | Ihmisten johtaminen +1. |
+| **Neuvottelija** | Empaattinen ja intuitiivinen, diplomaattinen ja yhteistyökykyinen. | Neuvottelu molempia hyödyttävään ratkaisuun +1. |
 
 ---
 
@@ -348,19 +397,20 @@ ilma=kaukokuulo, vesi=näkö veden alla. Lisäksi voit puhua elementtisi kieltä
 
 | Taso | Nimi | Kuvaus |
 |------|------|--------|
-| 0 | **Tavallinen** | Normaalin maailman toimija |
-| 1 | **Erinomainen** | Tavallista suurempia kykyjä, 1 lisäonnistuminen |
-| 2 | **Uskomaton** | Tarinoiden sankari, 2 lisäonnistumista |
-| 3 | **Eeppinen** | Jumalten suosikki, 3 lisäonnistumista |
-| 4 | **Jumalainen** | Mytologinen olento, 4 lisäonnistumista |
+| 0 | **Tavallinen** | Normaali |
+| 1 | **Erinomainen** | +1 onnistuminen |
+| 2 | **Uskomaton** | +2 onnistumista |
+| 3 | **Eeppinen** | +3 onnistumista |
+| 4 | **Jumalainen** | +4 onnistumista |
 
 ## Taitotasot
 
 | Taso | Nimi |
 |------|------|
-| 0 | Surkea |
-| 1 | Huono |
-| 2 | Tavallinen |
+| -1 | Surkea |
+| 0 | Huono |
+| 1 | Tavallinen |
+| 2 | Hyvä |
 | 3 | Erinomainen |
 | 4 | Loistava |
 | 5 | Uskomaton |
@@ -391,13 +441,13 @@ voimaa: 2. avautuu tasolla 4, 3. tasolla 7.
 | 10 | 4e | 3 | 2 |
 | 11 | 5 | 3 | 2 |
 | 12 | 5 | 4 | 2 |
-| 13 | 5 | 4e | 3 |
+| 13 | 5 | 4 | 3 |
 | 14 | 5e | 4 | 3 |
 | 15 | 5e | 4e | 3 |
 
 - **Perustasot 1–5**: tavallinen voiman hallinta.
 - **4e**: 4 perusvoimaa + 1 edistynyt kyky (5 kykyä).
-- **5e**: 5 perusvoimaa + 2 edistynyttä kykyä (8 kykyä).
+- **5e**: 5 perusvoimaa + 3 edistynyttyä kykyä (8 kykyä).
 
 ### Skaalan automaattinen nousu
 
@@ -408,4 +458,99 @@ voimaa: 2. avautuu tasolla 4, 3. tasolla 7.
 | 7–9 | Uskomaton 2 |
 | 10–12 | Eeppinen 3 |
 | 13+ | Jumalainen 4 |
+
+---
+
+## Kampanjarajoitteet
+
+Kampanjat rajoittavat sallittuja rotuja ja voimajärjestystä. Voimaslotit
+merkitään wildcard-merkinnöin:
+
+- `*` = mikä tahansa maallinen voima (paitsi aiemmin valittu)
+- `#` = mikä tahansa voima, myös jumalainen (paitsi aiemmin valittu)
+- Suora nimi = täsmälleen tämä voima
+
+Skaala määrittää montako voimaa hahmolla on:
+- Skaala 0 (Tavallinen): 1 voima
+- Skaala 1 (Erinomainen): 2 voimaa
+- Skaala 2 (Uskomaton): 3 voimaa
+- Skaala 3+ (Eeppinen+): kaikki voimat (voimat.js)
+
+### Miekanhampaat (`avoin-fantasia`)
+
+- Ammattityyppi: fantasia
+- Kaikki fantasiarodut sallittu
+- Voimat: `['*', '*', '#']` — 1.–2. voima maallinen, 3. voima voi olla jumalainen
+
+### Arthur Silverin maailma (`hopea-fantasia`)
+
+- Ammattityyppi: fantasia
+- Sallitut rodut ja voimajärjestys:
+
+| Rotu | 1. voima | 2. voima | 3. voima |
+|------|----------|----------|----------|
+| Ihminen | `*` | `*` | `*` |
+| Hopeahaltia | magia | mentalismi | elementin hallinta |
+| Kultahaltia | mentalismi | magia | elementin hallinta |
+| Päivähaltia | magia | mentalismi | elementin hallinta |
+| Pimentohaltia | mentalismi | magia | elementin hallinta |
+| Kääpiö | elementin hallinta | magia | mentalismi |
+| Puolituinen | `*` | `*` | `*` |
+| Kimera | muodonmuutos | mentalismi | elementin hallinta |
+
+- Rotuvariantit: Pimentohaltia → Hopeahaltia, Päivähaltia → Kultahaltia
+
+### Heijastus Matkaajat (`heijastus-matkaajat`)
+
+- Ammattityyppi: moderni
+- Sallitut rodut ja voimajärjestys:
+
+| Rotu | 1. voima | 2. voima | 3. voima |
+|------|----------|----------|----------|
+| Ihminen | `*` | `*` | `*` |
+| Puolienkeli | heijastuksen hallinta | `*` | `*` |
+| Puolidemoni | tarot | `*` | `*` |
+| Puolikesäkeiju | kaaossäikeet | `*` | `*` |
+| Puolisyyskeiju | kaaossäikeet | `*` | `*` |
+| Puolikevätkeiju | kaaossäikeet | `*` | `*` |
+
+---
+
+## Kuvaukset (aspektit)
+
+Hahmolla on yksilöivä kuvaaja (Fate-tyyppinen aspekti) joka antaa edun ja
+haitan. Generaattorissa on 15 valmista kuvausta:
+
+| Nimi | Etu | Haitta |
+|------|-----|--------|
+| **Hurmaava** | Kerran per kohtaus +1 sosiaaliseen vuorovaikutukseen tai uusintaheitto | Turhautuminen tai epätoivo kun viehätysvoima ei tehoa |
+| **Ovela** | Kerran per kohtaus +1 juonien havaitsemiseen tai suunnitteluun | Mutkistaa tilannetta tarpeettomasti |
+| **Vahva** | Kerran per kohtaus +1 voimaa vaativaan tehtävään | Ratkaisee ongelman raakalla voimalla, sivullisia vahinkoja |
+| **Nopea** | Kerran per kohtaus +1 nopeutta vaativaan tehtävään tai toimii ensin | Toimii impulsiivisesti ja ennenaikaisesti |
+| **Viisas** | Kerran per kohtaus +1 tarujen, historian tai taikuuden tuntemukseen | Jää pohtimaan asiaa liian pitkäksi aikaa |
+| **Karski** | Kerran per kohtaus +1 kestävyyteen tai vahingon vähentämiseen | Jatkaa taistelua järjen vastaisesti |
+| **Salaperäinen** | Kerran per kohtaus +1 harhautukseen | Joku epäilee tai kieltäytyy auttamasta |
+| **Mystinen** | Kerran per kohtaus +1 taian tai yliluonnollisen tunnistamiseen | Keskittyy näkymättömiin voimiin, unohtaa ilmeiset asiat |
+| **Röyhkeä** | Kerran per kohtaus +1 rohkeutta vaativaan tehtävään | Hyökkää pää edellä ansaan |
+| **Kunniallinen** | Kerran per kohtaus +1 kun rehellisyyttä tai luotettavuutta tarvitaan | Tekee tyhmän tai jalon ratkaisun kunnian vuoksi |
+| **Hiiviskelevä** | Kerran per kohtaus +1 hiipimiseen tai varjostamiseen | Vetäytyy varjoihin kun pitäisi olla esillä |
+| **Utelias** | Kerran per kohtaus +1 tutkimiseen tai salaisuuksien paljastamiseen | Avaa kielletyn oven tai herättää jotain vaarallista |
+| **Tarkkasilmäinen** | Kerran per kohtaus +1 havainnointiin | Jää tutkimaan yksityiskohtia liian pitkään |
+| **Hyveellinen** | Kerran per kohtaus +1 kun autat heikompaa | Puuttuu vääryyteen vaikka se vaarantaisi tehtävän |
+| **Julma** | Kerran per kohtaus +1 pelotteluun tai uhkailuun | Toimii itsekkäästi ja menettää luottamuksen |
+
+> Koko lista löytyy tiedostosta
+> [src/data/muutData.js](generaattori/src/data/muutData.js).
+
+---
+
+## Voimarajat
+
+| Skaala | Nimi | Voiman maksimitasot |
+|--------|------|---------------------|
+| 0 | Tavallinen | max 3 |
+| 1 | Erinomainen | max 5 |
+| 2 | Uskomaton | max 5 |
+| 3 | Eeppinen | max 5, max 3 |
+| 4 | Jumalainen | max 5, max 4, max 3 |
 

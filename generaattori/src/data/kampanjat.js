@@ -6,7 +6,7 @@ export const kampanjat = {
   'avoin-fantasia': {
     id: 'avoin-fantasia',
     nimi: 'Miekanhampaat',
-    kuvaus: 'Maailma jossa seikkailijoista voi tulla jumalia. Avoin fantasia maailma.',
+    kuvaus: 'Maailma jossa seikkailijoista voi tulla jumalia. \nAvoin fantasia maailma.',
     kuva: miekanhampaatKuva
   },
   'hopea-fantasia': {
@@ -18,7 +18,7 @@ export const kampanjat = {
   'heijastus-matkaajat': {
     id: 'heijastus-matkaajat',
     nimi: 'Heijastus Matkaajat', 
-    kuvaus: 'Tarina ihmisistä jotka löytävät kyvyn matkustaa eri tarinoihin.',
+    kuvaus: 'Tarina ihmisistä jotka löytävät kyvyn \nmatkustaa eri tarinoihin.',
     kuva: multiverseKuva
   }
 };

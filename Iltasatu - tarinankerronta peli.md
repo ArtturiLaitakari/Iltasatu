@@ -60,16 +60,22 @@ Ihmiset, joilla on synnynnäistä magiaa, ovat harvinaisia arkimaailmassa. Näit
 
 **Noppa mekaniikka**
 
-Iltasatu käyttää FATE noppapinoa. Kun on kysymys siitä, tapahtuuko jotain, ja jos siitä voi seurata mahdollisia seurauksia, teet heiton käyttäen tätä noppapinoa.
+Iltasatu käyttää FATE noppia, eli 4DF. VAIN PELAAJAT heittävät noppia. Kun pelaajahahmo taistelee NPC vihollista vastaan, pelaaja heittää noppaa ja vaikeustaso on vastustajan taitotaso. Jokainen + merkki on +1, jokainen - on -1.
 
-- Jos heität plussia, onnistut. Jokainen plussa on onnistuminen
-- Pelaajahahmon ja vastustajan onnistumiset kumoavat toisensa, miekat kalistelevat vastakkain. Jos tasapeli, kumpikaan ei osu. Jos toinen saa enemmän onnistumisia, hän saa vaurion läpi.
-- Jos saat 0 plussaa, epäonnistut.
-- Jos heität 0 plussaa ja saat miinuksia, hahmo saa haitan. Haitta merkitsee sitä, että hahmo menettää yhden edun, se voi olla taistelussa esimerkiksi varuste edun, asema edun, tai muun edun. Hän voi kaatua tai joutua seinää vasten. Mitä enemmän miinuksia, sen näyttävämpi haitta, mutta silti, vain 1 haitta.
-- Jos heität saman verran plussaa ja miinuksia tai enemmän miinuksia, onnistut täpärästi. Miekkaillessa torjut hyökkäykset mutta joudut perääntymään, asemasi menee tukalammaksi. Jos tiirikoit lukkoa, saat lukon auki mutta hajotat tiirikan. Jos myyt kamelin hyvään hintaan, ostaja onkin hankala tyyppi, joka reklamoi jokaisesta pikkuasiasta jälkikäteen. Taistelussa tappavan vaurion sijaan aiheutat murskaavaa vauriota.
-- 1 onnistuminen voi aiheuttaa stressi vauriota, tai seurauksia. Tästä lisää taistelu osiossa.
+* jos pelaaja heittää yli vaikeustason, hänen hahmonsa osuu
+* jos pelaaja heittää alle vaikeustason, vihollinen osuu häneen
+* jos pelaaja heittää tasan vaikeustasolle, hän saa pienen tilanne edun
 
- 
+Jos Fate noppia ei ole käytössä, voit kokeilla Wushu noppasysteemiä.
+
+## Wushu Kuvaile toimintaa → saat noppia
+Jokainen “Detail” eli yksityiskohta toiminnan kuvauksessa antaa 1 nopan.
+Esim.
+*  “Lyön häntä” → 1 noppa
+* “Hyppään pöydälle, potkaisen tuolin sivuun ja isken häntä polvella leukaan” → 3 noppaa
+* Tämä on pelin ydin: enemmän kuvausta = enemmän noppia.
+* Kun noppaheitto on hahmon taitotason tai alle, saat 1 onnistumisen.
+* NPC saavat vakiomäärän onnistumisia. 
 
  **Hahmon taidot** 
 
@@ -81,13 +87,13 @@ Hahmon taitotaso on yhteenlaskettuna hänen
 
 Dani haluaa tarkistaa huoneen nähdäkseen, seuraako kukaan väkijoukossa hänen piiriään. GM käskee hänen tehdä tarkasteluheiton. 
 
-- Danin rooli on Bardi, joten hänellä on mieli omineisuus 3.
-- Danin adjektiivi on Varovainen, joten hän saa nopan kaikkiin tarkkuutta vaativiin tehtäviin kuten tarkkailuun.
-- Danin koulutus on magister, joten hän saa nopan kaikkeen toimintaan, jossa pitää havainnoida pieniä yksityiskohtia.
-- Täten Dani saa yhteensä 5 noppaa.
-- Dani heittää +++--, eli loistava onnistuminen.
+- Danin rooli on Bardi, joten hänellä on mieli ominaisuus 3.
+- Danin adjektiivi on Varovainen, joten hän saa +1 kaikkiin tarkkuutta vaativiin tehtäviin kuten tarkkailuun.
+- Danin koulutus on magister, joten hän saa +1 kaikkeen toimintaan, jossa pitää havainnoida pieniä yksityiskohtia.
+- Täten Dani saa yhteensä 5 eli Uskomaton taitotaso
+- Dani heittää +++-, eli +2 onnistuminen, eli eeppinen. Koska vaikeustaso oli Erinomainen, hän onnistuu tyylillä
 - Dani havaitsee seuraajan ja myös tunnistaa tämän.
-- Skaala antaa automaattisia onnistumisia, ei noppia.
+- Skaala antaa automaattisia onnistumisia.
 
 **Taitotaso sanallisesti**
 
@@ -102,7 +108,7 @@ Ominaisuus + adjektiivi + koulutus + skaala
 7. Eeppinen
 8. Tarumainen
 9. Jumalainen
-10. Avatar
+10. Avatar (kyseisen taidon ehdottomasti paras edustaja)
 
 Joten voit kääntää kaikki FATE hahmot suoraan Iltasatu systeemiin. 
  Tai voit pelata iltasatua FATE säännöillä.
@@ -115,11 +121,15 @@ Taistelua on 3 erityyppistä
 - Henkinen taistelu on Mieli ominaisuus versus mieli. (myös taloudellinen taistelu on mieli taistelu)
 - Maaginen taistelu on Sielu ominaisuus versus sielu.
 
-Taistelussa vastapuolten onnistumiset kumoavat toisensa. Thomas kohtaa pimeän jumalan temppeliritarin, molemmilla on miekka ja he taistelevat.
+### Varusteet eli suhteelinen etu
 
-- Thomas heittää ++---, eli 2 onnistumista. Temppeliritari heittää +--. Eli saa 1 onnistumisen. Temppeliritari saa lievän haavan.
-- Toisella kierroksella temppeliritari heittää +++ ja Thomas vain ++--- joten Thomas saa lievän haavan. Hän linkuttaa.
-- Kolmannella kierroksella Thomas heittää +++ ja ritari heittää - joten hän saa kuolettavan haavan ja kaatuu maahan pidelleen suoliaan kiinni, ettei ne valuisivat ulos.
+Varusteet eivät anna numeraalista etua, vaan suhteellisen edun. Slaine pimentohaltia rapierin kanssa kohtaa ritarin jolla on iso bastardimiekka ja levy haarniska, Slainella kevyt nahkahaarniska ja kevyt ase. Tarinankertoja arvioi että vihollisella on +2 suhteellinen etu, eli vaikeus taistella häntä vastaan nousee +2. Slainen pelaaja käyttää kierroksen saavuttaakseen paremman aseman saadakseen +1 ympäristöedun, tiputtaen vihollisen edu +1. Sen jälkeen hän aktivoi zen prana kyvyn ja saa muu edun +1 koska näkee varjokuvana mitä vastustaja on seuraavaksi tekemässä, tiputtaen suhteellisen edun nollaan. Nyt puhdas taito, keho + adjektiivi + ammatti ratkaisee.
+
+| Suhteellinen etu |      |      |      | bonus   |      |
+| ---------------- | ---- | ---- | ---- | ------- | ---- |
+| Varuste etu      |      |      |      | +1 (+2) |      |
+| Ympäristö etu    |      |      |      | +1      |      |
+| Muu etu          |      |      |      | +1*     |      |
 
 **Taistelutyylit**
 
@@ -141,7 +151,7 @@ Taistelussa vastapuolten onnistumiset kumoavat toisensa. Thomas kohtaa pimeän j
 
 
 
-**Murskaava vaurio**
+**Pinta vaurio**
 
 Onnistumiset vievät ensin stressipisteitä, kun ne loppuvat, loppu on tappavaa vauriota.
 
