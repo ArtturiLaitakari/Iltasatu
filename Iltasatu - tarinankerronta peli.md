@@ -62,6 +62,8 @@ Ihmiset, joilla on synnynnäistä magiaa, ovat harvinaisia arkimaailmassa. Näit
 
 Iltasatu käyttää FATE noppia, eli 4DF. VAIN PELAAJAT heittävät noppia. Kun pelaajahahmo taistelee NPC vihollista vastaan, pelaaja heittää noppaa ja vaikeustaso on vastustajan taitotaso. Jokainen + merkki on +1, jokainen - on -1.
 
+Toisin kuin FATE systeemissä, mittakaava on puolet pienempi, siksi suntti +2 konvertoidaan +1 bonukseksi iltasadun, koska FATE pelissä heitetään 8DF, eli pelinjohtajan 4DF ja pelaajan 4DF. Iltasadussa vain pelaaja heittää noppaa.
+
 * jos pelaaja heittää yli vaikeustason, hänen hahmonsa osuu
 * jos pelaaja heittää alle vaikeustason, vihollinen osuu häneen
 * jos pelaaja heittää tasan vaikeustasolle, hän saa pienen tilanne edun
@@ -133,39 +135,24 @@ Varusteet eivät anna numeraalista etua, vaan suhteellisen edun. Slaine pimentoh
 
 **Taistelutyylit**
 
-- **Varovainen**: Varovainen taistelu vaatii aina kierroksen tähtäämistä ja toimintaa vasta seuraavalla kierroksella. Mitä tahansa asetta voi käyttää varovaisesti, mutta jousipyssyyn se sopii parhaiten koska sitä ei voi käyttää nopeammin.
+- **Varovainen**: Varovainen taistelu vaatii aina kierroksen tähtäämistä ja toimintaa vasta seuraavalla kierroksella. Mitä tahansa asetta voi käyttää varovaisesti, mutta jousipyssyyn se sopii parhaiten koska sitä ei voi käyttää nopeammin - meleessä hätäisesti voi mutta ilman lähestymistapa bonusta.
 - **Nokkela**: Nokkela taistelija käyttää aikaa vihollisen analysointiin ja iskee kun löytää heikkouden jota käyttää hyväkseen. 
 - **Näyttävä**: Näyttävä taistelija on keskittynyt enemmän näyttävään toimintaan kuin tehokkuuteen. Akrobatiaa, nokkelaa sanailua ja neidon hurmaamista taistelun tuoksinassa. Kerää huomion itseensä.
 - **Voimakas**: Voimakas toiminta ei ole hienovaraista, vaan kyse on raavasta voimasta. Paini karhun kanssa. Vaatii raskaan aseen.
 - **Nopea**: Nopea taistelu vaatii kevyen aseen, joista rapier on suurin.
 -  **Ovela**: Ovela taistelu tehdään painottaen harhautusta, varjelua tai petosta. On lähes mahdotonta huijata joka kierroksella, joten ovela taistelija tekee yllätyshyökkäyksiä, juoksee pakoon ja kulman takaa kolkkaa, ei pysy paikallaan. Salamurhaaja.
 
+**Pintavaurio**
+
+Pintavaurio paranee nopeasti, lievä päivässä, vakava muuttuu viikossa lieväksi, kuolettava kuukaudessa vakavaksi.
+
 **Tappava vaurio**
 
-1. Lievä seuraus
-2. Vakava seuraus
-3. Kuolettava seuraus
-4. Pysyvä seuraus
-
-
-
-
-
-**Pinta vaurio**
-
-Onnistumiset vievät ensin stressipisteitä, kun ne loppuvat, loppu on tappavaa vauriota.
-
-Mikäli hahmo heittää enemmän miinus noppia kuin plus noppia, hän onnistuu sähläten. Tappavan vaurion sijaan hän tekee murskaavaa vauriota.
-
-Mikäli hän heittää enemmän plus noppia kuin miinus noppia, hän onnistuu hallitusti.
-
-Mikäli hahmo heittää vain plus noppia, ei miinus noppia, hän onnistuu tyylillä.
-
-Mikäli hahmo heittää vain miinuksia, ei plussia, hän mokaa tyylikkäästi. Miinus noppien määrä kertoo kuinka isosti.
+Paranee jos lepää ja saa hoitoa. Lääkärin taito heitto aina aikarajan välein lievä joka päivä, vakava viikon välein, kuolettavan kuukauden välein.
 
 **Stressi.**
 
-Hahmolla on 1 keho stressipiste eli kesto per keho ominaisuus + adjektiivi + koulutus + skaala. Jokainen murskaava vaurio vähentää 1 stressipisteen. Jos ne loppuvat hahmo menee tajuttomaksi.
+Hahmolla on 1 keho stressipiste eli kesto per keho ominaisuus + adjektiivi + koulutus + skaala. Jokainen pinta vaurio vähentää 1 stressipisteen. Jos ne loppuvat hahmo menee tajuttomaksi.
 
 Hahmolla on 1 mieli stressipiste eli tahdonvoima per mieli ominaisuus + adjektiivi plus koulutus + skaala. Jokainen mieli vaurio vähentää 1 stressipisteen. Jos ne loppuvat pelaaja menettää hahmon hallinnan. Hän sekoaa, eli saa henkisiä seurauksia.
 
@@ -193,15 +180,11 @@ Samalle riville voi merkata erityyppisiä seurauksia. Jos tulee 2 samaa, uusi hy
 
 **Koko**
 
-| **Lisää**          | **Vähentää**            |
-| ------------------ | ----------------------- |
-| Kestopisteen       | Nopan piiloutumisisessa |
-| Nopan meleessä     | Nopan hiipimisessä      |
-| Nopan pelottelussa | Nopan luottamuksessa    |
-
-**Alakynnessä**
-
-Jos hahmon heikkous tai vaurio haittaa hahmon toimintaa, hän on alakynnessä. Esimerkiksi vakava vaurio miekkakädessä sattuu. Silloin hahmo tarvitsee onnistumiseen vähintään yhtä monta plussaa kuin miinusta. Jos miinuksia tulee enemmän kuin plussia, haava estää hyökkäyksen ja se epäonnistuu. 
+| **Lisää**          | **Vähentää**      |
+| ------------------ | ----------------- |
+| Kestopisteen       | piiloutumisisessa |
+| Nopan meleessä     | hiipimisessä      |
+| Nopan pelottelussa | luottamuksessa    |
 
 **Kuvaukset (toiminnat)**
 
@@ -224,9 +207,9 @@ Pitkänmatkan juoksu on keho + atleettinen taito + nopea + skaala kilometriä tu
 
 **Tokenit**
 
-| **Kesto**                                                    | **Tahdon  voima**                                            | **Mana**                                                     | **Draama**                                                   |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **** | | | |
+| **Kesto** | **Tahdon  voima** | **Mana** | **Draama** |
+| --------- | ----------------- | -------- | ---------- |
+|           |                   |          |            |
 
 Anna pelaajille 1 tokeni per stressi. Pelaajahahmo kirjaa seuraukset hahmolomakkeelle, tokeneita ei tarvita.
 
@@ -275,10 +258,6 @@ Valitse yksi adjektiivi kullekin ominaisuudelle prioriteettijärjestyksessä (ar
 *Mieli-adjektiivit:* Nokkela, Ovela, Näyttävä  
 *Sielu-adjektiivit:* Varovainen, Rohkea, Syvä
 
-
-
-
-
 **Vaihe 4: Ammatit (Ominaisuudet +1)**
 
 Fyysiset ja henkiset koulutukset ovat lähtökohta, pelaajan kuuluu yksilöidä koulutus lisä adjektiiveilla kuten ”kung fu mestari” tai Temppeli-(ritari).
@@ -292,10 +271,6 @@ Kortteja laitetaan 1 setti per 1-4 pelaajaa.
 - Pelinjohtaja jakaa 13 voimatyyppiä ja 6 erikoistaitoa. Äänestyksen voittaja valitsee ensimmäisenä.
 
 Taidot ja erikoislahjakkuus
-
-
-
-
 
 **Voima arkkityypit**
 
@@ -1402,8 +1377,8 @@ Nosferatut ovat eläviä kuolleita, riivaajahengen animoimia ruumiita, jotka pys
 **Heikkoudet**
 
 1. Succubus, auringonvalo estää mentalismi voiman käytön
-2. Vampyyri, auringonvalo aiheuttaa 1 murskaavan vaurion kierroksessa
-3. Nosferatu, auringonvalo aiheuttaa 1 murskaavan vaurion kierroksessa ja estää mentalismin käytön
+2. Vampyyri, auringonvalo aiheuttaa 1 pinta vaurion kierroksessa
+3. Nosferatu, auringonvalo aiheuttaa 1 pinta vaurion kierroksessa ja estää mentalismin käytön
 
 **Succubus, Incubus** 
 
@@ -1481,8 +1456,8 @@ Nousseet ovat ihmisiä, jotka ovat taikuudella palautettu elämään. He ovat ta
  Zombi on elävä kuollut, joka on helppo valmistaa Shamanismilla tai Kuoleman hallinnalla. Muumio taas vaatii vaikean rituaalin.
 
 1. Herännyt, pyhämaa estää magian käytön
-2. Zombie, pyhämaa aiheuttaa 1 murskaavan vaurion kierroksessa
-3. Muumio, pyhämaa aiheuttaa 1 murskaavan vaurion kierroksessa ja estää magian käytön
+2. Zombie, pyhämaa aiheuttaa 1 pinta vaurion kierroksessa
+3. Muumio, pyhämaa aiheuttaa 1 pinta vaurion kierroksessa ja estää magian käytön
 
 Zombien magia on kylmää pahaenteistä magiaa, jolla on kylmä aura ja loitsut on rajoitettu kykyihin, jotka perustuvat pimeään, kylmään ja petoihin, hirviöihin. Parantaminen onnistuu viemällä elinvoimaa itselle, ei kenellekään muulle. Poikkeus yö ja kylmyys teemaan on tulitaiat, jotka onnistuvat.
 
